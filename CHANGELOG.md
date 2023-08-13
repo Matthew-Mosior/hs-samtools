@@ -11,3 +11,7 @@
 ## 0.2.0.0 -- 2023-08-13
 
 * Added Eq, Generic, Show and Typeable classes/instances to Data.SAM.Version1_6.Header.CO, Data.SAM.Version1_6.Header.HD, Data.SAM.Version1_6.Header.PG, Data.SAM.Version1_6.Header.RG, Data.SAM.Version1_6.Header.SQ data types.
+
+## 0.2.0.1 -- 2023-08-13
+
+* Removed unnecessary Eq and Show instance comments.

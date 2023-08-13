@@ -56,11 +56,9 @@ data SAM_V1_6_One_Line_Comment = SAM_V1_6_One_Line_Comment { sam_v1_6_one_line_c
                                                            }
   deriving (Generic,Typeable)
 
--- | Eq instance for @"SAM_V1_6_One_Line_Comment"@.
 instance Eq SAM_V1_6_One_Line_Comment where
   SAM_V1_6_One_Line_Comment sam_v1_6_one_line_comment_tag1 sam_v1_6_one_line_comment_value1 == SAM_V1_6_One_Line_Comment sam_v1_6_one_line_comment_tag2 sam_v1_6_one_line_comment_value2 = sam_v1_6_one_line_comment_tag1 == sam_v1_6_one_line_comment_tag2 && sam_v1_6_one_line_comment_value1 == sam_v1_6_one_line_comment_value2
 
--- | Show instance for @"SAM_V1_6_One_Line_Comment"@.
 instance Show SAM_V1_6_One_Line_Comment where
   show (SAM_V1_6_One_Line_Comment tag value) = "SAM_V1_6_One_Line_Comment { " ++
                                                "tag = "                                                            ++
