@@ -69,11 +69,9 @@ data SAM_V1_6_File_Level_Metadata_Format_Version = SAM_V1_6_File_Level_Metadata_
                                                                                                }
   deriving (Generic,Typeable)
 
--- | Eq instance for @"SAM_V1_6_File_Level_Metadata_Format_Version"@.
 instance Eq SAM_V1_6_File_Level_Metadata_Format_Version where
   SAM_V1_6_File_Level_Metadata_Format_Version sam_v1_6_file_level_metadata_format_version_tag1 sam_v1_6_file_level_metadata_format_version_value1 == SAM_V1_6_File_Level_Metadata_Format_Version sam_v1_6_file_level_metadata_format_version_tag2 sam_v1_6_file_level_metadata_format_version_value2 = sam_v1_6_file_level_metadata_format_version_tag1 == sam_v1_6_file_level_metadata_format_version_tag2 && sam_v1_6_file_level_metadata_format_version_value1 == sam_v1_6_file_level_metadata_format_version_value2
 
--- | Show instance for @"SAM_V1_6_File_Level_Metadata_Format_Version"@.
 instance Show SAM_V1_6_File_Level_Metadata_Format_Version where
   show (SAM_V1_6_File_Level_Metadata_Format_Version tag value) = "SAM_V1_6_File_Level_Metadata_Format_Version { " ++
                                                                  "tag = "                                         ++
@@ -88,11 +86,9 @@ data SAM_V1_6_File_Level_Metadata_Sorting_Order = SAM_V1_6_File_Level_Metadata_S
                                                                                              }
   deriving (Generic,Typeable)
 
--- | Eq instance for @"SAM_V1_6_File_Level_Metadata_Sorting_Order"@.
 instance Eq SAM_V1_6_File_Level_Metadata_Sorting_Order where
   SAM_V1_6_File_Level_Metadata_Sorting_Order sam_v1_6_file_level_metadata_sorting_order_tag1 sam_v1_6_file_level_metadata_sorting_order_value1 == SAM_V1_6_File_Level_Metadata_Sorting_Order sam_v1_6_file_level_metadata_sorting_order_tag2 sam_v1_6_file_level_metadata_sorting_order_value2 = sam_v1_6_file_level_metadata_sorting_order_tag1 == sam_v1_6_file_level_metadata_sorting_order_tag2 && sam_v1_6_file_level_metadata_sorting_order_value1 == sam_v1_6_file_level_metadata_sorting_order_value2
 
--- | Show instance for @"SAM_V1_6_File_Level_Metadata_Sorting_Order"@.
 instance Show SAM_V1_6_File_Level_Metadata_Sorting_Order where
   show (SAM_V1_6_File_Level_Metadata_Sorting_Order tag value) = "SAM_V1_6_File_Level_Metadata_Sorting_Order { " ++
                                                                 "tag = "                                        ++
@@ -107,11 +103,9 @@ data SAM_V1_6_File_Level_Metadata_Alignment_Grouping = SAM_V1_6_File_Level_Metad
                                                                                                        }
   deriving (Generic,Typeable)
 
--- | Eq instance for @"SAM_V1_6_File_Level_Metadata_Alignment_Grouping"@.
 instance Eq SAM_V1_6_File_Level_Metadata_Alignment_Grouping where
   SAM_V1_6_File_Level_Metadata_Alignment_Grouping sam_v1_6_file_level_metadata_alignment_grouping_tag1 sam_v1_6_file_level_metadata_alignment_grouping_value1 == SAM_V1_6_File_Level_Metadata_Alignment_Grouping sam_v1_6_file_level_metadata_alignment_grouping_tag2 sam_v1_6_file_level_metadata_alignment_grouping_value2 = sam_v1_6_file_level_metadata_alignment_grouping_tag1 == sam_v1_6_file_level_metadata_alignment_grouping_tag2 && sam_v1_6_file_level_metadata_alignment_grouping_value1 == sam_v1_6_file_level_metadata_alignment_grouping_value2
 
--- | Show instance for @"SAM_V1_6_File_Level_Metadata_Alignment_Grouping"@.
 instance Show SAM_V1_6_File_Level_Metadata_Alignment_Grouping where
   show (SAM_V1_6_File_Level_Metadata_Alignment_Grouping tag value) = "SAM_V1_6_File_Level_Metadata_Alignment_Grouping { " ++
                                                                      "tag = "                                             ++
@@ -126,11 +120,9 @@ data SAM_V1_6_File_Level_Metadata_SubSorting_Order = SAM_V1_6_File_Level_Metadat
                                                                                                    }
   deriving (Generic,Typeable)
 
--- | Eq instance for @"SAM_V1_6_File_Level_Metadata_SubSorting_Order"@.
 instance Eq SAM_V1_6_File_Level_Metadata_SubSorting_Order where
   SAM_V1_6_File_Level_Metadata_SubSorting_Order sam_v1_6_file_level_metadata_subsorting_order_tag1 sam_v1_6_file_level_metadata_subsorting_order_value1 == SAM_V1_6_File_Level_Metadata_SubSorting_Order sam_v1_6_file_level_metadata_subsorting_order_tag2 sam_v1_6_file_level_metadata_subsorting_order_value2 = sam_v1_6_file_level_metadata_subsorting_order_tag1 == sam_v1_6_file_level_metadata_subsorting_order_tag2 && sam_v1_6_file_level_metadata_subsorting_order_value1 == sam_v1_6_file_level_metadata_subsorting_order_value2
 
--- | Show instance for @"SAM_V1_6_File_Level_Metadata_SubSorting_Order"@.
 instance Show SAM_V1_6_File_Level_Metadata_SubSorting_Order where
   show (SAM_V1_6_File_Level_Metadata_SubSorting_Order tag value) = "SAM_V1_6_File_Level_Metadata_SubSorting_Order { " ++
                                                                    "tag = "                                           ++

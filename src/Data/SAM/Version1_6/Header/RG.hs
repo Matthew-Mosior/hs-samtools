@@ -88,11 +88,9 @@ data SAM_V1_6_Read_Group_Identifier = SAM_V1_6_Read_Group_Identifier { sam_v1_6_
                                                                      }
   deriving (Generic,Typeable)
 
--- | Eq instance for @"SAM_V1_6_Read_Group_Identifier"@.
 instance Eq SAM_V1_6_Read_Group_Identifier where
   SAM_V1_6_Read_Group_Identifier sam_v1_6_read_group_identifier_tag1 sam_v1_6_read_group_identifier_value1 == SAM_V1_6_Read_Group_Identifier sam_v1_6_read_group_identifier_tag2 sam_v1_6_read_group_identifier_value2 = sam_v1_6_read_group_identifier_tag1 == sam_v1_6_read_group_identifier_tag2 && sam_v1_6_read_group_identifier_value1 == sam_v1_6_read_group_identifier_value2
 
--- | Show instance for @"SAM_V1_6_Read_Group_Identifier"@.
 instance Show SAM_V1_6_Read_Group_Identifier where
   show (SAM_V1_6_Read_Group_Identifier tag value) = "SAM_V1_6_Read_Group_Identifier { " ++
                                                     "tag = "                            ++
@@ -107,11 +105,9 @@ data SAM_V1_6_Read_Group_Barcode_Sequence = SAM_V1_6_Read_Group_Barcode_Sequence
                                                                                  }
   deriving (Generic,Typeable)
 
--- | Eq instance for @"SAM_V1_6_Read_Group_Barcode_Sequence"@.
 instance Eq SAM_V1_6_Read_Group_Barcode_Sequence where
   SAM_V1_6_Read_Group_Barcode_Sequence sam_v1_6_read_group_barcode_sequence_tag1 sam_v1_6_read_group_barcode_sequence_value1 == SAM_V1_6_Read_Group_Barcode_Sequence sam_v1_6_read_group_barcode_sequence_tag2 sam_v1_6_read_group_barcode_sequence_value2 = sam_v1_6_read_group_barcode_sequence_tag1 == sam_v1_6_read_group_barcode_sequence_tag2 && sam_v1_6_read_group_barcode_sequence_value1 == sam_v1_6_read_group_barcode_sequence_value2
 
--- | Show instance for @"SAM_V1_6_Read_Group_Barcode_Sequence"@.
 instance Show SAM_V1_6_Read_Group_Barcode_Sequence where
   show (SAM_V1_6_Read_Group_Barcode_Sequence tag value) = "SAM_V1_6_Read_Group_Barcode_Sequence { " ++
                                                           "tag = "                                  ++
@@ -126,11 +122,9 @@ data SAM_V1_6_Read_Group_Sequencing_Center = SAM_V1_6_Read_Group_Sequencing_Cent
                                                                                    }
   deriving (Generic,Typeable)
 
--- | Eq instance for @"SAM_V1_6_Read_Group_Sequencing_Center"@.
 instance Eq SAM_V1_6_Read_Group_Sequencing_Center where
   SAM_V1_6_Read_Group_Sequencing_Center sam_v1_6_read_group_sequencing_center_tag1 sam_v1_6_read_group_sequencing_center_value1 == SAM_V1_6_Read_Group_Sequencing_Center sam_v1_6_read_group_sequencing_center_tag2 sam_v1_6_read_group_sequencing_center_value2 = sam_v1_6_read_group_sequencing_center_tag1 == sam_v1_6_read_group_sequencing_center_tag2 && sam_v1_6_read_group_sequencing_center_value1 == sam_v1_6_read_group_sequencing_center_value2
 
--- | Show instance for @"SAM_V1_6_Read_Group_Sequencing_Center"@.
 instance Show SAM_V1_6_Read_Group_Sequencing_Center where
   show (SAM_V1_6_Read_Group_Sequencing_Center tag value) = "SAM_V1_6_Read_Group_Sequencing_Center { " ++
                                                            "tag = "                                   ++
@@ -145,11 +139,9 @@ data SAM_V1_6_Read_Group_Description = SAM_V1_6_Read_Group_Description { sam_v1_
                                                                        }
   deriving (Generic,Typeable)
 
--- | Eq instance for @"SAM_V1_6_Read_Group_Description"@.
 instance Eq SAM_V1_6_Read_Group_Description where
   SAM_V1_6_Read_Group_Description sam_v1_6_read_group_description_tag1 sam_v1_6_read_group_description_value1 == SAM_V1_6_Read_Group_Description sam_v1_6_read_group_description_tag2 sam_v1_6_read_group_description_value2 = sam_v1_6_read_group_description_tag1 == sam_v1_6_read_group_description_tag2 && sam_v1_6_read_group_description_value1 == sam_v1_6_read_group_description_value2
 
--- | Show instance for @"SAM_V1_6_Read_Group_Description"@.
 instance Show SAM_V1_6_Read_Group_Description where
   show (SAM_V1_6_Read_Group_Description tag value) = "SAM_V1_6_Read_Group_Description { " ++
                                                      "tag = "                             ++
@@ -164,11 +156,9 @@ data SAM_V1_6_Read_Group_Run_Date = SAM_V1_6_Read_Group_Run_Date { sam_v1_6_read
                                                                  }
   deriving (Generic,Typeable)
 
--- | Eq instance for @"SAM_V1_6_Read_Group_Run_Date"@.
 instance Eq SAM_V1_6_Read_Group_Run_Date where
   SAM_V1_6_Read_Group_Run_Date sam_v1_6_read_group_run_date_tag1 sam_v1_6_read_group_run_date_value1 == SAM_V1_6_Read_Group_Run_Date sam_v1_6_read_group_run_date_tag2 sam_v1_6_read_group_run_date_value2 = sam_v1_6_read_group_run_date_tag1 == sam_v1_6_read_group_run_date_tag2 && sam_v1_6_read_group_run_date_value1 == sam_v1_6_read_group_run_date_value2
 
--- | Show instance for @"SAM_V1_6_Read_Group_Run_Date"@.
 instance Show SAM_V1_6_Read_Group_Run_Date where
   show (SAM_V1_6_Read_Group_Run_Date tag value) = "SAM_V1_6_Read_Group_Run_Date { " ++
                                                   "tag = "                          ++
@@ -183,11 +173,9 @@ data SAM_V1_6_Read_Group_Flow_Order = SAM_V1_6_Read_Group_Flow_Order { sam_v1_6_
                                                                      }
   deriving (Generic,Typeable)
 
--- | Eq instance for @"SAM_V1_6_Read_Group_Flow_Order"@.
 instance Eq SAM_V1_6_Read_Group_Flow_Order where
   SAM_V1_6_Read_Group_Flow_Order sam_v1_6_read_group_flow_order_tag1 sam_v1_6_one_line_comment_value1 == SAM_V1_6_Read_Group_Flow_Order sam_v1_6_read_group_flow_order_tag2 sam_v1_6_read_group_flow_order_value2 = sam_v1_6_read_group_flow_order_tag1 == sam_v1_6_read_group_flow_order_tag2 && sam_v1_6_one_line_comment_value1 == sam_v1_6_read_group_flow_order_value2
 
--- | Show instance for @"SAM_V1_6_Read_Group_Flow_Order"@.
 instance Show SAM_V1_6_Read_Group_Flow_Order where
   show (SAM_V1_6_Read_Group_Flow_Order tag value) = "SAM_V1_6_Read_Group_Flow_Order { " ++
                                                     "tag = "                            ++
@@ -202,11 +190,9 @@ data SAM_V1_6_Read_Group_Key_Sequence = SAM_V1_6_Read_Group_Key_Sequence { sam_v
                                                                          }
   deriving (Generic,Typeable)
 
--- | Eq instance for @"SAM_V1_6_Read_Group_Key_Sequence"@.
 instance Eq SAM_V1_6_Read_Group_Key_Sequence where
   SAM_V1_6_Read_Group_Key_Sequence sam_v1_6_read_group_key_sequence_tag1 sam_v1_6_read_group_key_sequence_value1 == SAM_V1_6_Read_Group_Key_Sequence sam_v1_6_read_group_key_sequence_tag2 sam_v1_6_read_group_key_sequence_value2 = sam_v1_6_read_group_key_sequence_tag1 == sam_v1_6_read_group_key_sequence_tag2 && sam_v1_6_read_group_key_sequence_value1 == sam_v1_6_read_group_key_sequence_value2
 
--- | Show instance for @"SAM_V1_6_Read_Group_Key_Sequence"@.
 instance Show SAM_V1_6_Read_Group_Key_Sequence where
   show (SAM_V1_6_Read_Group_Key_Sequence tag value) = "SAM_V1_6_Read_Group_Key_Sequence { " ++
                                                       "tag = "                              ++
@@ -221,11 +207,9 @@ data SAM_V1_6_Read_Group_Library = SAM_V1_6_Read_Group_Library { sam_v1_6_read_g
                                                                }
   deriving (Generic,Typeable)
 
--- | Eq instance for @"SAM_V1_6_Read_Group_Library"@.
 instance Eq SAM_V1_6_Read_Group_Library where
   SAM_V1_6_Read_Group_Library sam_v1_6_read_group_library_tag1 sam_v1_6_read_group_library_value1 == SAM_V1_6_Read_Group_Library sam_v1_6_read_group_library_tag2 sam_v1_6_read_group_library_value2 = sam_v1_6_read_group_library_tag1 == sam_v1_6_read_group_library_tag2 && sam_v1_6_read_group_library_value1 == sam_v1_6_read_group_library_value2
 
--- | Show instance for @"SAM_V1_6_Read_Group_Library"@.
 instance Show SAM_V1_6_Read_Group_Library where
   show (SAM_V1_6_Read_Group_Library tag value) = "SAM_V1_6_Read_Group_Library { " ++
                                                  "tag = "                         ++
@@ -240,11 +224,9 @@ data SAM_V1_6_Read_Group_Programs = SAM_V1_6_Read_Group_Programs { sam_v1_6_read
                                                                  }
   deriving (Generic,Typeable)
 
--- | Eq instance for @"SAM_V1_6_Read_Group_Programs"@.
 instance Eq SAM_V1_6_Read_Group_Programs where
   SAM_V1_6_Read_Group_Programs sam_v1_6_read_group_programs_tag1 sam_v1_6_read_group_programs_value1 == SAM_V1_6_Read_Group_Programs sam_v1_6_read_group_programs_tag2 sam_v1_6_read_group_programs_value2 = sam_v1_6_read_group_programs_tag1 == sam_v1_6_read_group_programs_tag2 && sam_v1_6_read_group_programs_value1 == sam_v1_6_read_group_programs_value2
 
--- | Show instance for @"SAM_V1_6_Read_Group_Programs"@.
 instance Show SAM_V1_6_Read_Group_Programs where
   show (SAM_V1_6_Read_Group_Programs tag value) = "SAM_V1_6_Read_Group_Programs { " ++
                                                   "tag = "                          ++
@@ -259,11 +241,9 @@ data SAM_V1_6_Read_Group_Predicted_Median_Insert_Size = SAM_V1_6_Read_Group_Pred
                                                                                                          }
   deriving (Generic,Typeable)
 
--- | Eq instance for @"SAM_V1_6_Read_Group_Predicted_Median_Insert_Size"@.
 instance Eq SAM_V1_6_Read_Group_Predicted_Median_Insert_Size where
   SAM_V1_6_Read_Group_Predicted_Median_Insert_Size sam_v1_6_read_group_predicted_median_insert_size_tag1 sam_v1_6_one_line_comment_value1 == SAM_V1_6_Read_Group_Predicted_Median_Insert_Size sam_v1_6_read_group_predicted_median_insert_size_tag2 sam_v1_6_read_group_predicted_median_insert_size_value2 = sam_v1_6_read_group_predicted_median_insert_size_tag1 == sam_v1_6_read_group_predicted_median_insert_size_tag2 && sam_v1_6_one_line_comment_value1 == sam_v1_6_read_group_predicted_median_insert_size_value2
 
--- | Show instance for @"SAM_V1_6_Read_Group_Predicted_Median_Insert_Size"@.
 instance Show SAM_V1_6_Read_Group_Predicted_Median_Insert_Size where
   show (SAM_V1_6_Read_Group_Predicted_Median_Insert_Size tag value) = "SAM_V1_6_Read_Group_Predicted_Median_Insert_Size { " ++
                                                                       "tag = "                                              ++
@@ -278,11 +258,9 @@ data SAM_V1_6_Read_Group_Platform = SAM_V1_6_Read_Group_Platform { sam_v1_6_read
                                                                  }
   deriving (Generic,Typeable)
 
--- | Eq instance for @"SAM_V1_6_Read_Group_Platform"@.
 instance Eq SAM_V1_6_Read_Group_Platform where
   SAM_V1_6_Read_Group_Platform sam_v1_6_read_group_platform_tag1 sam_v1_6_read_group_platform_value1 == SAM_V1_6_Read_Group_Platform sam_v1_6_read_group_platform_tag2 sam_v1_6_read_group_platform_value2 = sam_v1_6_read_group_platform_tag1 == sam_v1_6_read_group_platform_tag2 && sam_v1_6_read_group_platform_value1 == sam_v1_6_read_group_platform_value2
 
--- | Show instance for @"SAM_V1_6_Read_Group_Platform"@.
 instance Show SAM_V1_6_Read_Group_Platform where
   show (SAM_V1_6_Read_Group_Platform tag value) = "SAM_V1_6_Read_Group_Platform { " ++
                                                   "tag = "                          ++
@@ -297,11 +275,9 @@ data SAM_V1_6_Read_Group_Platform_Model = SAM_V1_6_Read_Group_Platform_Model { s
                                                                              }
   deriving (Generic,Typeable)
 
--- | Eq instance for @"SAM_V1_6_Read_Group_Platform_Model"@.
 instance Eq SAM_V1_6_Read_Group_Platform_Model where
   SAM_V1_6_Read_Group_Platform_Model sam_v1_6_read_group_platform_model_tag1 sam_v1_6_read_group_platform_model_value1 == SAM_V1_6_Read_Group_Platform_Model sam_v1_6_read_group_platform_model_tag2 sam_v1_6_read_group_platform_model_value2 = sam_v1_6_read_group_platform_model_tag1 == sam_v1_6_read_group_platform_model_tag2 && sam_v1_6_read_group_platform_model_value1 == sam_v1_6_read_group_platform_model_value2
 
--- | Show instance for @"SAM_V1_6_Read_Group_Platform_Model"@.
 instance Show SAM_V1_6_Read_Group_Platform_Model where
   show (SAM_V1_6_Read_Group_Platform_Model tag value) = "SAM_V1_6_Read_Group_Platform_Model { " ++
                                                         "tag = "                                ++
@@ -316,11 +292,9 @@ data SAM_V1_6_Read_Group_Platform_Unit = SAM_V1_6_Read_Group_Platform_Unit { sam
                                                                            }
   deriving (Generic,Typeable)
 
--- | Eq instance for @"SAM_V1_6_Read_Group_Platform_Unit"@.
 instance Eq SAM_V1_6_Read_Group_Platform_Unit where
   SAM_V1_6_Read_Group_Platform_Unit sam_v1_6_read_group_platform_unit_tag1 sam_v1_6_read_group_platform_unit_value1 == SAM_V1_6_Read_Group_Platform_Unit sam_v1_6_read_group_platform_unit_tag2 sam_v1_6_read_group_platform_unit_value2 = sam_v1_6_read_group_platform_unit_tag1 == sam_v1_6_read_group_platform_unit_tag2 && sam_v1_6_read_group_platform_unit_value1 == sam_v1_6_read_group_platform_unit_value2
 
--- | Show instance for @"SAM_V1_6_Read_Group_Platform_Unit"@.
 instance Show SAM_V1_6_Read_Group_Platform_Unit where
   show (SAM_V1_6_Read_Group_Platform_Unit tag value) = "SAM_V1_6_Read_Group_Platform_Unit { " ++
                                                        "tag = "                               ++
@@ -335,11 +309,9 @@ data SAM_V1_6_Read_Group_Sample = SAM_V1_6_Read_Group_Sample { sam_v1_6_read_gro
                                                              }
   deriving (Generic,Typeable)
 
--- | Eq instance for @"SAM_V1_6_Read_Group_Sample"@.
 instance Eq SAM_V1_6_Read_Group_Sample where
   SAM_V1_6_Read_Group_Sample sam_v1_6_read_group_sample_tag1 sam_v1_6_read_group_sample_value1 == SAM_V1_6_Read_Group_Sample sam_v1_6_read_group_sample_tag2 sam_v1_6_read_group_sample_value2 = sam_v1_6_read_group_sample_tag1 == sam_v1_6_read_group_sample_tag2 && sam_v1_6_read_group_sample_value1 == sam_v1_6_read_group_sample_value2
 
--- | Show instance for @"SAM_V1_6_Read_Group_Sample"@.
 instance Show SAM_V1_6_Read_Group_Sample where
   show (SAM_V1_6_Read_Group_Sample tag value) = "SAM_V1_6_Read_Group_Sample { " ++
                                                 "tag = "                        ++
