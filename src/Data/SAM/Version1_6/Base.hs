@@ -12,7 +12,7 @@
 {-# Language QuasiQuotes           #-}
 
 -- |
--- Module      :  Data.SAM.Version1_6.Internal
+-- Module      :  Data.SAM.Version1_6.Base
 -- Copyright   :  (c) Matthew Mosior 2023
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
@@ -38,15 +38,12 @@
 --
 -- This library enables the decoding/encoding of SAM, BAM and CRAM file formats.
 
-module Data.SAM.Version1_6.Internal ( -- * SAM version 1.6 data type
-                                      SAM_V1_6(..)
-                                    ) where
+module Data.SAM.Version1_6.Base ( -- * SAM version 1.6 data type
+                                  SAM_V1_6(..)
+                                ) where
 
-import Data.SAM.Version1_6.Header.CO
-import Data.SAM.Version1_6.Header.HD
-import Data.SAM.Version1_6.Header.PG
-import Data.SAM.Version1_6.Header.RG
-import Data.SAM.Version1_6.Header.SQ
+import Data.SAM.Version1_6.Alignment
+import Data.SAM.Version1_6.Header
 
 import Data.Data
 import Data.Sequence
@@ -70,5 +67,28 @@ data SAM_V1_6 = SAM_V1_6 { sam_v1_6_file_level_metadata           :: Maybe SAM_V
                                                                                                                   -- Unordered multiple @CO lines
                                                                                                                   -- are allowed. UTF-8 encoding
                                                                                                                   -- may be used.
+                         , sam_v1_6_alignment                     :: Seq SAM_V1_6_Alignment
                          }
   deriving (Generic,Typeable)
+
+instance Show SAM_V1_6 where
+  show (SAM_V1_6 file_level_metadata
+                 reference_sequence_dictionary
+                 read_group program
+                 one_line_comment
+                 alignment
+       ) =
+    "SAM_V1_6 { "                         ++
+    "file_level_metadata = "              ++
+    (show file_level_metadata)            ++
+    " , reference_sequence_dictionary = " ++
+    (show reference_sequence_dictionary)  ++
+    " , read_group = "                    ++
+    (show read_group)                     ++
+    " , program = "                       ++
+    (show program)                        ++
+    " , one_line_comment = "              ++
+    (show one_line_comment)               ++
+    " , alignment = "                     ++
+    (show alignment)                      ++
+    " }"

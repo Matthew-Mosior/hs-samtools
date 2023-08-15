@@ -20,7 +20,7 @@ name:               hs-samtools
 -- PVP summary:     +-+------- breaking API changes
 --                  | | +----- non-breaking API additions
 --                  | | | +--- code changes with no API change
-version:            0.2.0.1
+version:            0.3.1.0
 
 -- A short (one-line) description of the package.
 synopsis: Read and write SAM, BAM, and CRAM files.
@@ -59,7 +59,11 @@ library
     import:           warnings
 
     -- Modules exported by the library.
-    exposed-modules: Data.SAM.Version1_6.Internal, 
+    exposed-modules: Data.SAM.Version1_6.Base,
+                     Data.SAM.Version1_6.Alignment,
+                     Data.SAM.Version1_6.Alignment.Base,
+                     Data.SAM.Version1_6.Alignment.BOPT,
+                     Data.SAM.Version1_6.Header, 
                      Data.SAM.Version1_6.Header.CO,
                      Data.SAM.Version1_6.Header.HD,
                      Data.SAM.Version1_6.Header.PG,
@@ -75,6 +79,7 @@ library
     -- Other library packages from which modules are imported.
     build-depends:    base             ^>=4.17.1.0,
                       ascii            >= 1.7.0 && < 1.8,
+                      bitvec           >= 1.1.4 && < 1.2,
                       bytestring       >= 0.11.4 && < 0.12,
                       containers       >= 0.6.7 && < 0.7,
                       crypton          >= 0.33 && < 0.34,
