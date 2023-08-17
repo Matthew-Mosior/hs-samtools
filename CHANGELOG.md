@@ -42,3 +42,7 @@
 ## 0.4.0.3 -- 2023-08-16
 
 * Fixed comments to SAM_V1_6_Alignment(..) in Data.SAM.Version1_6.Alignment.Base.
+
+## 0.4.0.4 -- 2023-08-17
+
+* Added comment to sam_v1_6_alignment (SAM_V1_6(..)) in Data.SAM.Version1_6.Base.
