@@ -25,3 +25,20 @@
 ## 0.3.1.0 -- 2023-08-14
 
 * Added SAM_V1_6_Alignment_BOPT_Float(..) to Data.SAM.Version1_6.Alignment.BOPT.
+
+## 0.4.0.0 -- 2023-08-16
+
+* Added comments to SAM_V1_6_Alignment(..) in Data.SAM.Version1_6.Alignment.Base.
+* Changed sam_v1_6_alignment_flag (SAM_V1_6_Alignment(..)) from Int to Vector Bit in Data.SAM.Version1_6.Alignment.Base.
+
+## 0.4.0.1 -- 2023-08-16
+
+* Fixed comments to SAM_V1_6_Alignment(..) in Data.SAM.Version1_6.Alignment.Base.
+
+## 0.4.0.2 -- 2023-08-16
+
+* Fixed comments to SAM_V1_6_Alignment(..) in Data.SAM.Version1_6.Alignment.Base.
+
+## 0.4.0.3 -- 2023-08-16
+
+* Fixed comments to SAM_V1_6_Alignment(..) in Data.SAM.Version1_6.Alignment.Base.
