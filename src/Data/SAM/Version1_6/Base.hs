@@ -67,7 +67,8 @@ data SAM_V1_6 = SAM_V1_6 { sam_v1_6_file_level_metadata           :: Maybe SAM_V
                                                                                                                   -- Unordered multiple @CO lines
                                                                                                                   -- are allowed. UTF-8 encoding
                                                                                                                   -- may be used.
-                         , sam_v1_6_alignment                     :: Seq SAM_V1_6_Alignment
+                         , sam_v1_6_alignment                     :: Seq SAM_V1_6_Alignment                       -- ^ The alignment section (mandatory
+                                                                                                                  -- and optional fields).
                          }
   deriving (Generic,Typeable)
 
