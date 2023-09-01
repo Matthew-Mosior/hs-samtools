@@ -18,22 +18,6 @@
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
 --
--- = WARNING
---
--- This module is considered __internal__.
---
--- The Package Versioning Policy __does not apply__.
---
--- The contents of this module may change __in any way whatsoever__
--- and __without any warning__ between minor versions of this package.
---
--- Authors importing this library are expected to track development
--- closely.
---
--- All credit goes to the author(s)/maintainer(s) of the
--- [containers](https://hackage.haskell.org/package/containers) library
--- for the above warning text.
---
 -- = Description
 --
 -- This library enables the decoding/encoding of SAM, BAM and CRAM file formats.
@@ -63,8 +47,8 @@ import Data.Sequence
 import Data.Word
 import Generics.Deriving.Base
 
-
 -- | Custom SAM (version 1.6) @"SAM_V1_6_Read_Group"@ data type.
+--
 -- See section 1.3 of the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 data SAM_V1_6_Read_Group = SAM_V1_6_Read_Group { sam_v1_6_read_group_identifer                    :: SAM_V1_6_Read_Group_Identifier
                                                , sam_v1_6_read_group_barcode_sequence             :: Maybe SAM_V1_6_Read_Group_Barcode_Sequence
@@ -99,7 +83,7 @@ instance Show SAM_V1_6_Read_Group where
                             sample
        ) =
     "SAM_V1_6_Read_Group { "                  ++
-    "group_identifier = "                     ++
+    "read_group_identifier = "                ++
     (show group_identifier)                   ++
     " , barcode_sequence = "                  ++
     (show barcode_sequence)                   ++
@@ -130,8 +114,8 @@ instance Show SAM_V1_6_Read_Group where
     " }"
 
 -- | ID tag for @"SAM_V1_6_Read_Group"@.
-data SAM_V1_6_Read_Group_Identifier = SAM_V1_6_Read_Group_Identifier { sam_v1_6_read_group_identifer_tag   :: Seq Word8
-                                                                     , sam_v1_6_read_group_identifer_value :: ByteString
+data SAM_V1_6_Read_Group_Identifier = SAM_V1_6_Read_Group_Identifier { sam_v1_6_read_group_identifier_tag   :: Seq Word8
+                                                                     , sam_v1_6_read_group_identifier_value :: ByteString
                                                                      }
   deriving (Generic,Typeable)
 

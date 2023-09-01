@@ -18,22 +18,6 @@
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
 --
--- = WARNING
---
--- This module is considered __internal__.
---
--- The Package Versioning Policy __does not apply__.
---
--- The contents of this module may change __in any way whatsoever__
--- and __without any warning__ between minor versions of this package.
---
--- Authors importing this library are expected to track development
--- closely.
---
--- All credit goes to the author(s)/maintainer(s) of the
--- [containers](https://hackage.haskell.org/package/containers) library
--- for the above warning text.
---
 -- = Description
 --
 -- This library enables the decoding/encoding of SAM, BAM and CRAM file formats.
@@ -59,8 +43,8 @@ import Data.Sequence
 import Data.Word
 import Generics.Deriving.Base
 
-
 -- | Custom SAM (version 1.6) @"SAM_V1_6_Reference_Sequence_Dictionary"@ data type.
+--
 -- See section 1.3 of the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 data SAM_V1_6_Reference_Sequence_Dictionary = SAM_V1_6_Reference_Sequence_Dictionary { sam_v1_6_reference_sequence_dictionary_reference_sequence_name                        :: SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Name
                                                                                      , sam_v1_6_reference_sequence_dictionary_reference_sequence_length                      :: SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Length
@@ -147,8 +131,8 @@ instance Show SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Length w
     " }"
 
 -- | AH tag for @"SAM_V1_6_Reference_Sequence_Dictionary"@.
-data SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus = SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus { sam_v1_6_reference_sequence_dictionary_reference_alternative_locus_tag   :: Seq Word8
-                                                                                                                         , sam_v1_6_reference_sequence_dictionary_reference_alternative_locus_value :: ByteString
+data SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus = SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus { sam_v1_6_reference_sequence_dictionary_alternative_locus_tag   :: Seq Word8
+                                                                                                                         , sam_v1_6_reference_sequence_dictionary_alternative_locus_value :: ByteString
              }
   deriving (Generic,Typeable)
 
@@ -165,8 +149,8 @@ instance Show SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus where
     " }"
 
 -- | AN tag for @"SAM_V1_6_Reference_Sequence_Dictionary"@.
-data SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names = SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names { sam_v1_6_reference_sequence_dictionary_reference_alternative_reference_sequence_names_tag   :: Seq Word8
-                                                                                                                                                               , sam_v1_6_reference_sequence_dictionary_reference_alternative_reference_sequence_names_value :: ByteString
+data SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names = SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names { sam_v1_6_reference_sequence_dictionary_alternative_reference_sequence_names_tag   :: Seq Word8
+                                                                                                                                                               , sam_v1_6_reference_sequence_dictionary_alternative_reference_sequence_names_value :: ByteString
                                                                                                                                                                }
   deriving (Generic,Typeable)
 

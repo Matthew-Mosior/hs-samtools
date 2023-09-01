@@ -57,6 +57,7 @@ import Generics.Deriving.Base
 
 
 -- | Custom SAM (version 1.6) @"SAM_V1_6_Alignment_BOPT"@ data type.
+--
 -- See section 1.5 of the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 data SAM_V1_6_Alignment_BOPT = SAM_V1_6_Alignment_BOPT { sam_v1_6_alignment_bopt_int8   :: Maybe SAM_V1_6_Alignment_BOPT_Int8
                                                        , sam_v1_6_alignment_bopt_word8  :: Maybe SAM_V1_6_Alignment_BOPT_Word8
@@ -95,6 +96,7 @@ instance Show SAM_V1_6_Alignment_BOPT where
     " }"
 
 -- | __c__CsSiIf of the last optional field (type B).
+--
 -- See section 1.5 of the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 data SAM_V1_6_Alignment_BOPT_Int8 = SAM_V1_6_Alignment_BOPT_Int8 { sam_v1_6_alignment_bopt_int8_tag   :: Seq Word8
                                                                  , sam_v1_6_alignment_bopt_int8_type  :: Word8
@@ -120,6 +122,7 @@ instance Show SAM_V1_6_Alignment_BOPT_Int8 where
     " }"
 
 -- | c__C__sSiIf of the last optional field (type B).
+--
 -- See section 1.5 of the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 data SAM_V1_6_Alignment_BOPT_Word8 = SAM_V1_6_Alignment_BOPT_Word8 { sam_v1_6_alignment_bopt_word8_tag   :: Seq Word8
                                                                    , sam_v1_6_alignment_bopt_word8_type  :: Word8
@@ -145,6 +148,7 @@ instance Show SAM_V1_6_Alignment_BOPT_Word8 where
     " }"
 
 -- | cC__s__SiIf of the last optional field (type B).
+--
 -- See section 1.5 of the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 data SAM_V1_6_Alignment_BOPT_Int16 = SAM_V1_6_Alignment_BOPT_Int16 { sam_v1_6_alignment_bopt_int16_tag   :: Seq Word8
                                                                    , sam_v1_6_alignment_bopt_int16_type  :: Word8
@@ -170,6 +174,7 @@ instance Show SAM_V1_6_Alignment_BOPT_Int16 where
     " }"
 
 -- | cCs__S__iIf of the last optional field (type B).
+--
 -- See section 1.5 of the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 data SAM_V1_6_Alignment_BOPT_Word16 = SAM_V1_6_Alignment_BOPT_Word16 { sam_v1_6_alignment_bopt_word16_tag   :: Seq Word8
                                                                      , sam_v1_6_alignment_bopt_word16_type  :: Word8
@@ -195,6 +200,7 @@ instance Show SAM_V1_6_Alignment_BOPT_Word16 where
     " }"
 
 -- | cCsS__i__If of the last optional field (type B).
+--
 -- See section 1.5 of the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 data SAM_V1_6_Alignment_BOPT_Int32 = SAM_V1_6_Alignment_BOPT_Int32 { sam_v1_6_alignment_bopt_int32_tag   :: Seq Word8
                                                                    , sam_v1_6_alignment_bopt_int32_type  :: Word8
@@ -220,6 +226,7 @@ instance Show SAM_V1_6_Alignment_BOPT_Int32 where
     " }"
 
 -- | cCsSi__I__f of the last optional field (type B).
+--
 -- See section 1.5 of the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 data SAM_V1_6_Alignment_BOPT_Word32 = SAM_V1_6_Alignment_BOPT_Word32 { sam_v1_6_alignment_bopt_word32_tag   :: Seq Word8
                                                                      , sam_v1_6_alignment_bopt_word32_type  :: Word8
@@ -245,6 +252,7 @@ instance Show SAM_V1_6_Alignment_BOPT_Word32 where
     " }"
 
 -- | cCsSiI__f__ of the last optional field (type B).
+--
 -- See section 1.5 of the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 data SAM_V1_6_Alignment_BOPT_Float = SAM_V1_6_Alignment_BOPT_Float { sam_v1_6_alignment_bopt_float_tag   :: Seq Word8
                                                                    , sam_v1_6_alignment_bopt_float_type  :: Word8

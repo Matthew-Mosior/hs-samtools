@@ -19,22 +19,6 @@
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
 --
--- = WARNING
---
--- This module is considered __internal__.
---
--- The Package Versioning Policy __does not apply__.
---
--- The contents of this module may change __in any way whatsoever__
--- and __without any warning__ between minor versions of this package.
---
--- Authors importing this library are expected to track development
--- closely.
---
--- All credit goes to the author(s)/maintainer(s) of the
--- [containers](https://hackage.haskell.org/package/containers) library
--- for the above warning text.
---
 -- = Description
 --
 -- This library enables the decoding/encoding of SAM, BAM and CRAM file formats.
@@ -45,15 +29,14 @@ module Data.SAM.Version1_6.Alignment.Base ( -- * SAM version 1.6 alignment manda
 
 import Data.SAM.Version1_6.Alignment.BOPT
 
-import Data.Bit
 import Data.ByteString
 import Data.Data
 import Data.Sequence
 import Data.Word
 import Generics.Deriving.Base
 
-
 -- | Custom SAM (version 1.6) @"SAM_V1_6_Alignment"@ data type.
+--
 -- See section 1.4 and 1.5 of the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 data SAM_V1_6_Alignment = SAM_V1_6_Alignment { sam_v1_6_alignment_qname :: ByteString                    -- ^ Query template NAME.
                                                                                                          -- reads/segments having identical QNAME are regarded to come from
@@ -61,7 +44,7 @@ data SAM_V1_6_Alignment = SAM_V1_6_Alignment { sam_v1_6_alignment_qname :: ByteS
                                                                                                          -- is unavailable. In a SAM file, a read may
                                                                                                          -- occupy multiple alignment lines, when its alignment is chimeric
                                                                                                          -- or when multiple mappings are given.
-                                             , sam_v1_6_alignment_flag  :: Vector Bit                    -- ^ Combination of bitwise FLAGs.
+                                             , sam_v1_6_alignment_flag  :: Int                           -- ^ Combination of bitwise FLAGs.
                                              , sam_v1_6_alignment_rname :: ByteString                    -- ^ Reference sequence NAME of the alignment.
                                                                                                          -- If @SQ header lines are present, RNAME (if not
                                                                                                          -- ‘*’) must be present in one of the SQ-SN tag.
