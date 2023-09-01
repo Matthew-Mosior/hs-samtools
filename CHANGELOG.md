@@ -46,3 +46,21 @@
 ## 0.4.0.4 -- 2023-08-17
 
 * Added comment to sam_v1_6_alignment (SAM_V1_6(..)) in Data.SAM.Version1_6.Base.
+
+## 0.5.0.0 -- 2023-09-01
+
+* Added attoparsec parsers for alignment and header section of SAM_V1_6(..).
+* Added attoparsec parser for SAM_V1_6(..).
+* Added SAM_V1_6(..) reading functionality.
+
+## 0.5.0.1 -- 2023-09-01
+
+* Fixed documentation for readSAM_V1_6.
+
+## 0.5.0.2 -- 2023-09-01
+
+* Fixed/updated lots of documentation across entire codebase.
+
+## 0.5.0.3 -- 2023-09-01
+
+* Added homepage and bug-reports fields to cabal file.
