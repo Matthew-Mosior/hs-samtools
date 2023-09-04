@@ -48,8 +48,6 @@ import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
 import           Data.Attoparsec.ByteString.Lazy   as DABL
-import qualified Data.ByteString                   as DB   (unpack)
-import           Data.Sequence                     as DSeq
 import           Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the SN tag of the @SQ tag section of the SAM v1.6 file format.
@@ -57,12 +55,12 @@ import           Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_SAM_V1_6_Reference_Sequence_Dictionary_SN :: Parser SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Name
 parse_SAM_V1_6_SAM_V1_6_Reference_Sequence_Dictionary_SN = do
-  sqheadersequencenametag <- do sqheadersequencenametagp <- DABL.takeTill (== 58)
-                                -- Parse SN tag of the header section.
-                                case (sqheadersequencenametagp =~ [re|[S][N]|]) of
-                                  False -> fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Reference_Sequence_Name_Incorrect_Format
-                                  True  -> -- SN tag is in the accepted format. 
-                                           return sqheadersequencenametagp
+  _ <- do sqheadersequencenametagp <- DABL.takeTill (== 58)
+          -- Parse SN tag of the header section.
+          case (sqheadersequencenametagp =~ [re|[S][N]|]) of
+            False -> fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Reference_Sequence_Name_Incorrect_Format
+            True  -> -- SN tag is in the accepted format. 
+                     return sqheadersequencenametagp
   _ <- word8 58
   sqheadersequencenamevalue <- do sqheadersequencenamevaluep <- DABL.takeTill (== 09)
                                   -- Parse SN value of the header section.
@@ -70,6 +68,5 @@ parse_SAM_V1_6_SAM_V1_6_Reference_Sequence_Dictionary_SN = do
                                     False -> fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Reference_Sequence_Name_Invalid_Value
                                     True  -> -- SN value is in the accepted format.
                                              return sqheadersequencenamevaluep  
-  return SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Name { sam_v1_6_reference_sequence_dictionary_reference_sequence_name_tag   = DSeq.fromList $ DB.unpack sqheadersequencenametag
-                                                                        , sam_v1_6_reference_sequence_dictionary_reference_sequence_name_value = sqheadersequencenamevalue
+  return SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Name { sam_v1_6_reference_sequence_dictionary_reference_sequence_name_value = sqheadersequencenamevalue
                                                                         }

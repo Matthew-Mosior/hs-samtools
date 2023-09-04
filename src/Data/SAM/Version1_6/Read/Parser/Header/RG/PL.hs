@@ -48,8 +48,6 @@ import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
 import           Data.Attoparsec.ByteString.Lazy   as DABL
-import qualified Data.ByteString                   as DB   (unpack)
-import           Data.Sequence                     as DSeq
 import           Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the PL tag of the @RG tag section of the SAM v1.6 file format.
@@ -57,12 +55,12 @@ import           Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_SAM_V1_6_Read_Group_PL :: Parser SAM_V1_6_Read_Group_Platform 
 parse_SAM_V1_6_SAM_V1_6_Read_Group_PL = do
-  rgheaderplatformtag <- do rgheaderplatformtagp <- DABL.takeTill (== 58)
-                            -- Parse PL tag of the header section.
-                            case (rgheaderplatformtagp =~ [re|[P][L]|]) of
-                              False -> fail $ show SAM_V1_6_Error_Read_Group_Platform_Incorrect_Format
-                              True  -> -- PL tag is in the accepted format. 
-                                       return rgheaderplatformtagp
+  _ <- do rgheaderplatformtagp <- DABL.takeTill (== 58)
+          -- Parse PL tag of the header section.
+          case (rgheaderplatformtagp =~ [re|[P][L]|]) of
+            False -> fail $ show SAM_V1_6_Error_Read_Group_Platform_Incorrect_Format
+            True  -> -- PL tag is in the accepted format. 
+                     return rgheaderplatformtagp
   _ <- word8 58
   rgheaderplatformvalue <- do rgheaderplatformvaluep <- DABL.takeTill (== 09)
                               -- Parse PL value of the header section.
@@ -70,6 +68,5 @@ parse_SAM_V1_6_SAM_V1_6_Read_Group_PL = do
                                 False -> fail $ show SAM_V1_6_Error_Read_Group_Platform_Incorrect_Format
                                 True  -> -- PL value is in the accepted format.
                                          return rgheaderplatformvaluep
-  return SAM_V1_6_Read_Group_Platform { sam_v1_6_read_group_platform_tag   = DSeq.fromList $ DB.unpack rgheaderplatformtag
-                                      , sam_v1_6_read_group_platform_value = rgheaderplatformvalue
+  return SAM_V1_6_Read_Group_Platform { sam_v1_6_read_group_platform_value = rgheaderplatformvalue
                                       }

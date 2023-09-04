@@ -33,8 +33,6 @@ module Data.SAM.Version1_6.Header.HD ( -- * SAM version 1.6 File-level metadata 
 
 import Data.ByteString
 import Data.Data
-import Data.Sequence
-import Data.Word
 import Generics.Deriving.Base
 
 -- | Custom SAM (version 1.6) @"SAM_V1_6_File_Level_Metadata"@ data type.
@@ -61,73 +59,61 @@ instance Show SAM_V1_6_File_Level_Metadata where
     " }" 
 
 -- | VN tag for @"SAM_V1_6_File_Level_Metadata"@.
-data SAM_V1_6_File_Level_Metadata_Format_Version = SAM_V1_6_File_Level_Metadata_Format_Version { sam_v1_6_file_level_metadata_format_version_tag   :: Seq Word8
-                                                                                               , sam_v1_6_file_level_metadata_format_version_value :: ByteString
-                                                                                               }
+newtype SAM_V1_6_File_Level_Metadata_Format_Version = SAM_V1_6_File_Level_Metadata_Format_Version { sam_v1_6_file_level_metadata_format_version_value :: ByteString
+                                                                                                  }
   deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_File_Level_Metadata_Format_Version where
-  SAM_V1_6_File_Level_Metadata_Format_Version sam_v1_6_file_level_metadata_format_version_tag1 sam_v1_6_file_level_metadata_format_version_value1 == SAM_V1_6_File_Level_Metadata_Format_Version sam_v1_6_file_level_metadata_format_version_tag2 sam_v1_6_file_level_metadata_format_version_value2 = sam_v1_6_file_level_metadata_format_version_tag1 == sam_v1_6_file_level_metadata_format_version_tag2 && sam_v1_6_file_level_metadata_format_version_value1 == sam_v1_6_file_level_metadata_format_version_value2
+  SAM_V1_6_File_Level_Metadata_Format_Version sam_v1_6_file_level_metadata_format_version_value1 == SAM_V1_6_File_Level_Metadata_Format_Version sam_v1_6_file_level_metadata_format_version_value2 = sam_v1_6_file_level_metadata_format_version_value1 == sam_v1_6_file_level_metadata_format_version_value2
 
 instance Show SAM_V1_6_File_Level_Metadata_Format_Version where
-  show (SAM_V1_6_File_Level_Metadata_Format_Version tag value) =
+  show (SAM_V1_6_File_Level_Metadata_Format_Version value) =
     "SAM_V1_6_File_Level_Metadata_Format_Version { " ++
-    "tag = "                                         ++
-    (show tag)                                       ++
-    " , value = "                                    ++
+    "value = "                                       ++
     (show value)                                     ++
     " }"
 
 -- | SO tag for @"SAM_V1_6_File_Level_Metadata"@.
-data SAM_V1_6_File_Level_Metadata_Sorting_Order = SAM_V1_6_File_Level_Metadata_Sorting_Order { sam_v1_6_file_level_metadata_sorting_order_tag   :: Seq Word8
-                                                                                             , sam_v1_6_file_level_metadata_sorting_order_value :: ByteString
-                                                                                             }
+newtype SAM_V1_6_File_Level_Metadata_Sorting_Order = SAM_V1_6_File_Level_Metadata_Sorting_Order { sam_v1_6_file_level_metadata_sorting_order_value :: ByteString
+                                                                                                }
   deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_File_Level_Metadata_Sorting_Order where
-  SAM_V1_6_File_Level_Metadata_Sorting_Order sam_v1_6_file_level_metadata_sorting_order_tag1 sam_v1_6_file_level_metadata_sorting_order_value1 == SAM_V1_6_File_Level_Metadata_Sorting_Order sam_v1_6_file_level_metadata_sorting_order_tag2 sam_v1_6_file_level_metadata_sorting_order_value2 = sam_v1_6_file_level_metadata_sorting_order_tag1 == sam_v1_6_file_level_metadata_sorting_order_tag2 && sam_v1_6_file_level_metadata_sorting_order_value1 == sam_v1_6_file_level_metadata_sorting_order_value2
+  SAM_V1_6_File_Level_Metadata_Sorting_Order sam_v1_6_file_level_metadata_sorting_order_value1 == SAM_V1_6_File_Level_Metadata_Sorting_Order sam_v1_6_file_level_metadata_sorting_order_value2 = sam_v1_6_file_level_metadata_sorting_order_value1 == sam_v1_6_file_level_metadata_sorting_order_value2
 
 instance Show SAM_V1_6_File_Level_Metadata_Sorting_Order where
-  show (SAM_V1_6_File_Level_Metadata_Sorting_Order tag value) =
+  show (SAM_V1_6_File_Level_Metadata_Sorting_Order value) =
     "SAM_V1_6_File_Level_Metadata_Sorting_Order { " ++
-    "tag = "                                        ++
-    (show tag)                                      ++
-    " , value = "                                   ++
+    "value = "                                      ++
     (show value)                                    ++
     " }"
 
 -- | GO tag for @"SAM_V1_6_File_Level_Metadata"@.
-data SAM_V1_6_File_Level_Metadata_Alignment_Grouping = SAM_V1_6_File_Level_Metadata_Alignment_Grouping { sam_v1_6_file_level_metadata_alignment_grouping_tag   :: Seq Word8
-                                                                                                       , sam_v1_6_file_level_metadata_alignment_grouping_value :: ByteString
-                                                                                                       }
+newtype SAM_V1_6_File_Level_Metadata_Alignment_Grouping = SAM_V1_6_File_Level_Metadata_Alignment_Grouping { sam_v1_6_file_level_metadata_alignment_grouping_value :: ByteString
+                                                                                                          }
   deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_File_Level_Metadata_Alignment_Grouping where
-  SAM_V1_6_File_Level_Metadata_Alignment_Grouping sam_v1_6_file_level_metadata_alignment_grouping_tag1 sam_v1_6_file_level_metadata_alignment_grouping_value1 == SAM_V1_6_File_Level_Metadata_Alignment_Grouping sam_v1_6_file_level_metadata_alignment_grouping_tag2 sam_v1_6_file_level_metadata_alignment_grouping_value2 = sam_v1_6_file_level_metadata_alignment_grouping_tag1 == sam_v1_6_file_level_metadata_alignment_grouping_tag2 && sam_v1_6_file_level_metadata_alignment_grouping_value1 == sam_v1_6_file_level_metadata_alignment_grouping_value2
+  SAM_V1_6_File_Level_Metadata_Alignment_Grouping sam_v1_6_file_level_metadata_alignment_grouping_value1 == SAM_V1_6_File_Level_Metadata_Alignment_Grouping sam_v1_6_file_level_metadata_alignment_grouping_value2 = sam_v1_6_file_level_metadata_alignment_grouping_value1 == sam_v1_6_file_level_metadata_alignment_grouping_value2
 
 instance Show SAM_V1_6_File_Level_Metadata_Alignment_Grouping where
-  show (SAM_V1_6_File_Level_Metadata_Alignment_Grouping tag value) =
+  show (SAM_V1_6_File_Level_Metadata_Alignment_Grouping value) =
     "SAM_V1_6_File_Level_Metadata_Alignment_Grouping { " ++
-    "tag = "                                             ++
-    (show tag)                                           ++
-    " , value = "                                        ++
+    "value = "                                           ++
     (show value)                                         ++
     " }"
 
 -- | SS tag for @"SAM_V1_6_File_Level_Metadata"@.
-data SAM_V1_6_File_Level_Metadata_SubSorting_Order = SAM_V1_6_File_Level_Metadata_SubSorting_Order { sam_v1_6_file_level_metadata_subsorting_order_tag   :: Seq Word8
-                                                                                                   , sam_v1_6_file_level_metadata_subsorting_order_value :: ByteString
-                                                                                                   }
+newtype SAM_V1_6_File_Level_Metadata_SubSorting_Order = SAM_V1_6_File_Level_Metadata_SubSorting_Order { sam_v1_6_file_level_metadata_subsorting_order_value :: ByteString
+                                                                                                      }
   deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_File_Level_Metadata_SubSorting_Order where
-  SAM_V1_6_File_Level_Metadata_SubSorting_Order sam_v1_6_file_level_metadata_subsorting_order_tag1 sam_v1_6_file_level_metadata_subsorting_order_value1 == SAM_V1_6_File_Level_Metadata_SubSorting_Order sam_v1_6_file_level_metadata_subsorting_order_tag2 sam_v1_6_file_level_metadata_subsorting_order_value2 = sam_v1_6_file_level_metadata_subsorting_order_tag1 == sam_v1_6_file_level_metadata_subsorting_order_tag2 && sam_v1_6_file_level_metadata_subsorting_order_value1 == sam_v1_6_file_level_metadata_subsorting_order_value2
+  SAM_V1_6_File_Level_Metadata_SubSorting_Order sam_v1_6_file_level_metadata_subsorting_order_value1 == SAM_V1_6_File_Level_Metadata_SubSorting_Order sam_v1_6_file_level_metadata_subsorting_order_value2 = sam_v1_6_file_level_metadata_subsorting_order_value1 == sam_v1_6_file_level_metadata_subsorting_order_value2
 
 instance Show SAM_V1_6_File_Level_Metadata_SubSorting_Order where
-  show (SAM_V1_6_File_Level_Metadata_SubSorting_Order tag value) =
+  show (SAM_V1_6_File_Level_Metadata_SubSorting_Order value) =
     "SAM_V1_6_File_Level_Metadata_SubSorting_Order { " ++
-    "tag = "                                           ++
-    (show tag)                                         ++
-    " , value = "                                      ++
+    "value = "                                         ++
     (show value)                                       ++
     " }"

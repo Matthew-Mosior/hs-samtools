@@ -48,8 +48,6 @@ import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
 import           Data.Attoparsec.ByteString.Lazy   as DABL
-import qualified Data.ByteString                   as DB   (unpack)
-import           Data.Sequence                     as DTeq
 import           Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the DT tag of the @RG tag section of the SAM v1.6 file format.
@@ -57,14 +55,13 @@ import           Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_SAM_V1_6_Read_Group_DT :: Parser SAM_V1_6_Read_Group_Run_Date 
 parse_SAM_V1_6_SAM_V1_6_Read_Group_DT = do
-  rgheaderrundatetag <- do rgheaderrundatetagp <- DABL.takeTill (== 58)
-                           -- Parse DT tag of the header section.
-                           case (rgheaderrundatetagp =~ [re|[D][T]|]) of
-                             False -> fail $ show SAM_V1_6_Error_Read_Group_Date_Run_Produced_Incorrect_Format
-                             True  -> -- DT tag is in the accepted format. 
-                                      return rgheaderrundatetagp
+  _ <- do rgheaderrundatetagp <- DABL.takeTill (== 58)
+          -- Parse DT tag of the header section.
+          case (rgheaderrundatetagp =~ [re|[D][T]|]) of
+            False -> fail $ show SAM_V1_6_Error_Read_Group_Date_Run_Produced_Incorrect_Format
+            True  -> -- DT tag is in the accepted format. 
+                     return rgheaderrundatetagp
   _ <- word8 58
   rgheaderrundatevalue <- DABL.takeTill (== 09)
-  return SAM_V1_6_Read_Group_Run_Date { sam_v1_6_read_group_run_date_tag   = DTeq.fromList $ DB.unpack rgheaderrundatetag
-                                      , sam_v1_6_read_group_run_date_value = rgheaderrundatevalue
+  return SAM_V1_6_Read_Group_Run_Date { sam_v1_6_read_group_run_date_value = rgheaderrundatevalue
                                       }

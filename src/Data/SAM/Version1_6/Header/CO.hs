@@ -33,8 +33,8 @@ import Generics.Deriving.Base
 -- | Custom SAM (version 1.6) @"SAM_V1_6_One_Line_Comment"@ data type.
 --
 -- See section 1.3 of the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
-data SAM_V1_6_One_Line_Comment = SAM_V1_6_One_Line_Comment { sam_v1_6_one_line_comment_value :: ByteString
-                                                           }
+newtype SAM_V1_6_One_Line_Comment = SAM_V1_6_One_Line_Comment { sam_v1_6_one_line_comment_value :: ByteString
+                                                              }
   deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_One_Line_Comment where
@@ -42,6 +42,6 @@ instance Eq SAM_V1_6_One_Line_Comment where
 
 instance Show SAM_V1_6_One_Line_Comment where
   show (SAM_V1_6_One_Line_Comment value) = "SAM_V1_6_One_Line_Comment { " ++
-                                               "value = "                     ++
-                                               (show value)                   ++
-                                               " }"
+                                           "value = "                     ++
+                                           (show value)                   ++
+                                           " }"

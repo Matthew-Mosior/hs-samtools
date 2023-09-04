@@ -48,8 +48,6 @@ import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
 import           Data.Attoparsec.ByteString.Lazy   as DABL
-import qualified Data.ByteString                   as DB   (unpack)
-import           Data.Sequence                     as DSeq
 import           Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the PP tag of the @PG tag section of the SAM v1.6 file format.
@@ -57,14 +55,13 @@ import           Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_SAM_V1_6_Program_PP :: Parser SAM_V1_6_Program_Previous_PG_ID
 parse_SAM_V1_6_SAM_V1_6_Program_PP = do
-  pgheaderpreviouspgidtag <- do pgheaderpreviouspgidtagp <- DABL.takeTill (== 58)
-                                -- Parse PP tag of the header section.
-                                case (pgheaderpreviouspgidtagp =~ [re|[P][P]|]) of
-                                  False -> fail $ show SAM_V1_6_Error_Program_Previous_PG_ID_Incorrect_Format 
-                                  True  -> -- PP tag is in the accepted format. 
-                                           return pgheaderpreviouspgidtagp
+  _ <- do pgheaderpreviouspgidtagp <- DABL.takeTill (== 58)
+          -- Parse PP tag of the header section.
+          case (pgheaderpreviouspgidtagp =~ [re|[P][P]|]) of
+            False -> fail $ show SAM_V1_6_Error_Program_Previous_PG_ID_Incorrect_Format 
+            True  -> -- PP tag is in the accepted format. 
+                     return pgheaderpreviouspgidtagp
   _ <- word8 58
   pgheaderpreviouspgidvalue <- DABL.takeTill (== 09)
-  return SAM_V1_6_Program_Previous_PG_ID { sam_v1_6_program_previous_pg_id_tag   = DSeq.fromList $ DB.unpack pgheaderpreviouspgidtag
-                                         , sam_v1_6_program_previous_pg_id_value = pgheaderpreviouspgidvalue
+  return SAM_V1_6_Program_Previous_PG_ID { sam_v1_6_program_previous_pg_id_value = pgheaderpreviouspgidvalue
                                          }

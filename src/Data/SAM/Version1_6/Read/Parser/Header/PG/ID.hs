@@ -48,8 +48,6 @@ import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
 import           Data.Attoparsec.ByteString.Lazy   as DABL
-import qualified Data.ByteString                   as DB   (unpack)
-import           Data.Sequence                     as DSeq
 import           Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the ID tag of the @PG tag section of the SAM v1.6 file format.
@@ -57,14 +55,13 @@ import           Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_SAM_V1_6_Program_ID :: Parser SAM_V1_6_Program_Record_Identifier
 parse_SAM_V1_6_SAM_V1_6_Program_ID = do
-  pgheaderidentifiertag <- do pgheaderidentifiertagp <- DABL.takeTill (== 58)
-                              -- Parse ID tag of the header section.
-                              case (pgheaderidentifiertagp =~ [re|[I][D]|]) of
-                                False -> fail $ show SAM_V1_6_Error_Program_Identifier_Incorrect_Format 
-                                True  -> -- ID tag is in the accepted format. 
-                                         return pgheaderidentifiertagp
+  _ <- do pgheaderidentifiertagp <- DABL.takeTill (== 58)
+          -- Parse ID tag of the header section.
+          case (pgheaderidentifiertagp =~ [re|[I][D]|]) of
+            False -> fail $ show SAM_V1_6_Error_Program_Identifier_Incorrect_Format 
+            True  -> -- ID tag is in the accepted format. 
+                     return pgheaderidentifiertagp
   _ <- word8 58
   pgheaderidentifiervalue <- DABL.takeTill (== 09)
-  return SAM_V1_6_Program_Record_Identifier { sam_v1_6_program_record_identifier_tag   = DSeq.fromList $ DB.unpack pgheaderidentifiertag
-                                            , sam_v1_6_program_record_identifier_value = pgheaderidentifiervalue
+  return SAM_V1_6_Program_Record_Identifier { sam_v1_6_program_record_identifier_value = pgheaderidentifiervalue
                                             }

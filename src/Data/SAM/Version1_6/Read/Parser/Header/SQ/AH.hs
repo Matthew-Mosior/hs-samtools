@@ -48,8 +48,6 @@ import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
 import           Data.Attoparsec.ByteString.Lazy   as DABL
-import qualified Data.ByteString                   as DB   (unpack)
-import           Data.Sequence                     as DSeq
 import           Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the AH tag of the @SQ tag section of the SAM v1.6 file format.
@@ -57,14 +55,13 @@ import           Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_SAM_V1_6_Reference_Sequence_Dictionary_AH :: Parser SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus
 parse_SAM_V1_6_SAM_V1_6_Reference_Sequence_Dictionary_AH = do
-  sqheaderalternativelocustag <- do sqheaderalternativelocustagp <- DABL.takeTill (== 58)
-                                    -- Parse AH tag of the header section.
-                                    case (sqheaderalternativelocustagp =~ [re|[A][H]|]) of
-                                      False -> fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Alternative_Locus_Incorrect_Format
-                                      True  -> -- AH tag is in the accepted format.
-                                               return sqheaderalternativelocustagp
+  _ <- do sqheaderalternativelocustagp <- DABL.takeTill (== 58)
+          -- Parse AH tag of the header section.
+          case (sqheaderalternativelocustagp =~ [re|[A][H]|]) of
+            False -> fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Alternative_Locus_Incorrect_Format
+            True  -> -- AH tag is in the accepted format.
+                     return sqheaderalternativelocustagp
   _ <- word8 58
   sqheaderalternativelocusvalue <- DABL.takeTill (== 09) 
-  return SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus { sam_v1_6_reference_sequence_dictionary_alternative_locus_tag   = DSeq.fromList $ DB.unpack sqheaderalternativelocustag
-                                                                  , sam_v1_6_reference_sequence_dictionary_alternative_locus_value = sqheaderalternativelocusvalue
+  return SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus { sam_v1_6_reference_sequence_dictionary_alternative_locus_value = sqheaderalternativelocusvalue
                                                                   }

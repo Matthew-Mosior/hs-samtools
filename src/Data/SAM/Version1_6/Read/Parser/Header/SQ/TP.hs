@@ -48,8 +48,6 @@ import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
 import           Data.Attoparsec.ByteString.Lazy   as DABL
-import qualified Data.ByteString                   as DB   (unpack)
-import           Data.Sequence                     as DSeq
 import           Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the TP tag of the @SQ tag section of the SAM v1.6 file format.
@@ -57,12 +55,12 @@ import           Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_SAM_V1_6_Reference_Sequence_Dictionary_TP :: Parser SAM_V1_6_Reference_Sequence_Dictionary_Molecule_Topology
 parse_SAM_V1_6_SAM_V1_6_Reference_Sequence_Dictionary_TP = do
-  sqheadermoleculetopologytag <- do sqheadermoleculetopologytagp <- DABL.takeTill (== 58)
-                                    -- Parse TP tag of the header section.
-                                    case (sqheadermoleculetopologytagp =~ [re|[T][P]|]) of
-                                      False -> fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Molecule_Topology_Incorrect_Format
-                                      True  -> -- TP tag is in the accepted format. 
-                                               return sqheadermoleculetopologytagp
+  _ <- do sqheadermoleculetopologytagp <- DABL.takeTill (== 58)
+          -- Parse TP tag of the header section.
+          case (sqheadermoleculetopologytagp =~ [re|[T][P]|]) of
+            False -> fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Molecule_Topology_Incorrect_Format
+            True  -> -- TP tag is in the accepted format. 
+                     return sqheadermoleculetopologytagp
   _ <- word8 58
   sqheadermoleculetopologyvalue <- do sqheadermoleculetopologyvaluep <- DABL.takeTill (== 09)
                                       -- Parse TP value of the header section.
@@ -70,6 +68,5 @@ parse_SAM_V1_6_SAM_V1_6_Reference_Sequence_Dictionary_TP = do
                                         False -> fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Molecule_Topology_Invalid_Value
                                         True  -> -- TP value is in the accepted format.
                                                  return sqheadermoleculetopologyvaluep  
-  return SAM_V1_6_Reference_Sequence_Dictionary_Molecule_Topology { sam_v1_6_reference_sequence_dictionary_molecule_topology_tag   = DSeq.fromList $ DB.unpack sqheadermoleculetopologytag
-                                                                  , sam_v1_6_reference_sequence_dictionary_molecule_topology_value = sqheadermoleculetopologyvalue
+  return SAM_V1_6_Reference_Sequence_Dictionary_Molecule_Topology { sam_v1_6_reference_sequence_dictionary_molecule_topology_value = sqheadermoleculetopologyvalue
                                                                   }
