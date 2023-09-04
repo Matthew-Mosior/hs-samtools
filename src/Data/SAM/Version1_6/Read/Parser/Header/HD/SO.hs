@@ -48,8 +48,6 @@ import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
 import           Data.Attoparsec.ByteString.Lazy   as DABL
-import qualified Data.ByteString                   as DB   (unpack)
-import           Data.Sequence                     as DSeq
 import           Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the SO tag of the @HD tag section of the SAM v1.6 file format.
@@ -57,12 +55,12 @@ import           Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_File_Level_Metadata_SO :: Parser SAM_V1_6_File_Level_Metadata_Sorting_Order
 parse_SAM_V1_6_File_Level_Metadata_SO = do
-  hdheadersortingordertag <- do hdheadersortingordertagp <- DABL.takeTill (== 58)
-                                -- Parse SO tag of the header section.
-                                case (hdheadersortingordertagp =~ [re|[S][O]|]) of
-                                  False -> fail $ show SAM_V1_6_Error_File_Level_Metadata_Sorting_Order_Tag_Incorrect_Format
-                                  True  -> -- SO tag is in the accepted format.
-                                           return hdheadersortingordertagp
+  _ <- do hdheadersortingordertagp <- DABL.takeTill (== 58)
+          -- Parse SO tag of the header section.
+          case (hdheadersortingordertagp =~ [re|[S][O]|]) of
+            False -> fail $ show SAM_V1_6_Error_File_Level_Metadata_Sorting_Order_Tag_Incorrect_Format
+            True  -> -- SO tag is in the accepted format.
+                     return hdheadersortingordertagp
   _ <- word8 58
   hdheadersortingordervalue <- do hdheadersortingordervaluep <- DABL.takeTill (== 09)
                                   -- Parse SO value of the header section.
@@ -70,6 +68,5 @@ parse_SAM_V1_6_File_Level_Metadata_SO = do
                                     False -> fail $ show SAM_V1_6_Error_File_Level_Metadata_Sorting_Order_Invalid_Value
                                     True  -> -- SO value is in the accepted format.
                                              return hdheadersortingordervaluep  
-  return SAM_V1_6_File_Level_Metadata_Sorting_Order { sam_v1_6_file_level_metadata_sorting_order_tag   = DSeq.fromList $ DB.unpack hdheadersortingordertag
-                                                    , sam_v1_6_file_level_metadata_sorting_order_value = hdheadersortingordervalue
+  return SAM_V1_6_File_Level_Metadata_Sorting_Order { sam_v1_6_file_level_metadata_sorting_order_value = hdheadersortingordervalue
                                                     }

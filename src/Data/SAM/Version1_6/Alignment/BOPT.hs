@@ -269,10 +269,10 @@ instance Show SAM_V1_6_Alignment_BOPT_Float where
                                       value
        ) =
     "SAM_V1_6_Alignment_BOPT_Float { " ++
-    "tag  = "                           ++
-    (show tag)                          ++
-    " , type = "                        ++
-    (show bopttype)                     ++
-    " , value = "                       ++
-    (show value)                        ++
+    "tag  = "                          ++
+    (show tag)                         ++
+    " , type = "                       ++
+    (show bopttype)                    ++
+    " , value = "                      ++
+    (show value)                       ++
     " }"

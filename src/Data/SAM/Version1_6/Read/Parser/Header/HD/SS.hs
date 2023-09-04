@@ -48,8 +48,6 @@ import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
 import           Data.Attoparsec.ByteString.Lazy   as DABL
-import qualified Data.ByteString                   as DB   (unpack)
-import           Data.Sequence                     as DSeq
 import           Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the SS tag of the @HD tag section of the SAM v1.6 file format.
@@ -57,12 +55,12 @@ import           Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_File_Level_Metadata_SS :: Parser SAM_V1_6_File_Level_Metadata_SubSorting_Order
 parse_SAM_V1_6_File_Level_Metadata_SS = do
-  hdheadersubsortingordertag <- do hdheadersubsortingordertagp <- DABL.takeTill (== 58)
-                                   -- Parse SS tag of the header section.
-                                   case (hdheadersubsortingordertagp =~ [re|[S][S]|]) of
-                                     False -> fail $ show SAM_V1_6_Error_File_Level_Metadata_Subsorting_Order_Tag_Incorrect_Format
-                                     True  -> -- SS tag is in the accepted format.
-                                              return hdheadersubsortingordertagp
+  _ <- do hdheadersubsortingordertagp <- DABL.takeTill (== 58)
+          -- Parse SS tag of the header section.
+          case (hdheadersubsortingordertagp =~ [re|[S][S]|]) of
+            False -> fail $ show SAM_V1_6_Error_File_Level_Metadata_Subsorting_Order_Tag_Incorrect_Format
+            True  -> -- SS tag is in the accepted format.
+                     return hdheadersubsortingordertagp
   _ <- word8 58
   hdheadersubsortingordervalue <- do hdheadersubsortingordervaluep <- DABL.takeTill (== 09)
                                      -- Parse SS value of the header section.
@@ -70,6 +68,5 @@ parse_SAM_V1_6_File_Level_Metadata_SS = do
                                        False -> fail $ show SAM_V1_6_Error_File_Level_Metadata_Subsorting_Order_Incorrect_Format 
                                        True  -> -- SS value is in the accepted format.
                                                 return hdheadersubsortingordervaluep 
-  return SAM_V1_6_File_Level_Metadata_SubSorting_Order { sam_v1_6_file_level_metadata_subsorting_order_tag   = DSeq.fromList $ DB.unpack hdheadersubsortingordertag
-                                                       , sam_v1_6_file_level_metadata_subsorting_order_value = hdheadersubsortingordervalue
+  return SAM_V1_6_File_Level_Metadata_SubSorting_Order { sam_v1_6_file_level_metadata_subsorting_order_value = hdheadersubsortingordervalue
                                                        }

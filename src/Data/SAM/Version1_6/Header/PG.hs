@@ -35,8 +35,6 @@ module Data.SAM.Version1_6.Header.PG ( -- * SAM version 1.6 program data type
 
 import Data.ByteString
 import Data.Data
-import Data.Sequence
-import Data.Word
 import Generics.Deriving.Base
 
 -- | Custom SAM (version 1.6) @"SAM_V1_6_Program"@ data type.
@@ -69,109 +67,91 @@ instance Show SAM_V1_6_Program where
     " }"
 
 -- | ID tag for @"SAM_V1_6_Program"@.
-data SAM_V1_6_Program_Record_Identifier = SAM_V1_6_Program_Record_Identifier { sam_v1_6_program_record_identifier_tag   :: Seq Word8
-                                                                             , sam_v1_6_program_record_identifier_value :: ByteString
-                                                                             }
+newtype SAM_V1_6_Program_Record_Identifier = SAM_V1_6_Program_Record_Identifier { sam_v1_6_program_record_identifier_value :: ByteString
+                                                                                }
   deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_Program_Record_Identifier where
-  SAM_V1_6_Program_Record_Identifier sam_v1_6_program_record_identifier_tag1 sam_v1_6_program_record_identifier_value1 == SAM_V1_6_Program_Record_Identifier sam_v1_6_program_record_identifier_tag2 sam_v1_6_program_record_identifier_value2 = sam_v1_6_program_record_identifier_tag1 == sam_v1_6_program_record_identifier_tag2 && sam_v1_6_program_record_identifier_value1 == sam_v1_6_program_record_identifier_value2
+  SAM_V1_6_Program_Record_Identifier sam_v1_6_program_record_identifier_value1 == SAM_V1_6_Program_Record_Identifier sam_v1_6_program_record_identifier_value2 = sam_v1_6_program_record_identifier_value1 == sam_v1_6_program_record_identifier_value2
 
 instance Show SAM_V1_6_Program_Record_Identifier where
-  show (SAM_V1_6_Program_Record_Identifier tag value) =
+  show (SAM_V1_6_Program_Record_Identifier value) =
     "SAM_V1_6_Program_Record_Identifier { " ++
-    "tag = "                                ++
-    (show tag)                              ++
-    " , value = "                           ++
+    "value = "                              ++
     (show value)                            ++
     " }"
 
 -- | PN tag for @"SAM_V1_6_Program"@.
-data SAM_V1_6_Program_Name = SAM_V1_6_Program_Name { sam_v1_6_program_name_tag   :: Seq Word8
-                                                   , sam_v1_6_program_name_value :: ByteString
-                                                   }
+newtype SAM_V1_6_Program_Name = SAM_V1_6_Program_Name { sam_v1_6_program_name_value :: ByteString
+                                                      }
   deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_Program_Name where
-  SAM_V1_6_Program_Name sam_v1_6_program_name_tag1 sam_v1_6_program_name_value1 == SAM_V1_6_Program_Name sam_v1_6_program_name_tag2 sam_v1_6_program_name_value2 = sam_v1_6_program_name_tag1 == sam_v1_6_program_name_tag2 && sam_v1_6_program_name_value1 == sam_v1_6_program_name_value2
+  SAM_V1_6_Program_Name sam_v1_6_program_name_value1 == SAM_V1_6_Program_Name sam_v1_6_program_name_value2 = sam_v1_6_program_name_value1 == sam_v1_6_program_name_value2
 
 instance Show SAM_V1_6_Program_Name where
-  show (SAM_V1_6_Program_Name tag value) =
+  show (SAM_V1_6_Program_Name value) =
     "SAM_V1_6_Program_Name { " ++
-    "tag = "                   ++
-    (show tag)                 ++
-    " , value = "              ++
+    "value = "                 ++
     (show value)               ++
     " }"
 
 -- | CL tag for @"SAM_V1_6_Program"@.
-data SAM_V1_6_Program_Command_Line = SAM_V1_6_Program_Command_Line { sam_v1_6_program_command_line_tag   :: Seq Word8
-                                                                   , sam_v1_6_program_command_line_value :: ByteString
-                                                                   }
+newtype SAM_V1_6_Program_Command_Line = SAM_V1_6_Program_Command_Line { sam_v1_6_program_command_line_value :: ByteString
+                                                                      }
   deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_Program_Command_Line where
-  SAM_V1_6_Program_Command_Line sam_v1_6_program_command_line_tag1 sam_v1_6_program_command_line_value1 == SAM_V1_6_Program_Command_Line sam_v1_6_program_command_line_tag2 sam_v1_6_program_command_line_value2 = sam_v1_6_program_command_line_tag1 == sam_v1_6_program_command_line_tag2 && sam_v1_6_program_command_line_value1 == sam_v1_6_program_command_line_value2
+  SAM_V1_6_Program_Command_Line sam_v1_6_program_command_line_value1 == SAM_V1_6_Program_Command_Line sam_v1_6_program_command_line_value2 = sam_v1_6_program_command_line_value1 == sam_v1_6_program_command_line_value2
 
 instance Show SAM_V1_6_Program_Command_Line where
-  show (SAM_V1_6_Program_Command_Line tag value) =
+  show (SAM_V1_6_Program_Command_Line value) =
     "SAM_V1_6_Program_Command_Line { " ++
-    "tag = "                           ++
-    (show tag)                         ++
-    " , value = "                      ++
+    "value = "                         ++
     (show value)                       ++
     " }"
 
 -- | PP tag for @"SAM_V1_6_Program"@.
-data SAM_V1_6_Program_Previous_PG_ID = SAM_V1_6_Program_Previous_PG_ID { sam_v1_6_program_previous_pg_id_tag   :: Seq Word8
-                                                                       , sam_v1_6_program_previous_pg_id_value :: ByteString
-                                                                       }
+newtype SAM_V1_6_Program_Previous_PG_ID = SAM_V1_6_Program_Previous_PG_ID { sam_v1_6_program_previous_pg_id_value :: ByteString
+                                                                          }
   deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_Program_Previous_PG_ID where
-  SAM_V1_6_Program_Previous_PG_ID sam_v1_6_program_previous_pg_id_tag1 sam_v1_6_program_previous_pg_id_value1 == SAM_V1_6_Program_Previous_PG_ID sam_v1_6_program_previous_pg_id_tag2 sam_v1_6_program_previous_pg_id_value2 = sam_v1_6_program_previous_pg_id_tag1 == sam_v1_6_program_previous_pg_id_tag2 && sam_v1_6_program_previous_pg_id_value1 == sam_v1_6_program_previous_pg_id_value2
+  SAM_V1_6_Program_Previous_PG_ID sam_v1_6_program_previous_pg_id_value1 == SAM_V1_6_Program_Previous_PG_ID sam_v1_6_program_previous_pg_id_value2 = sam_v1_6_program_previous_pg_id_value1 == sam_v1_6_program_previous_pg_id_value2
 
 instance Show SAM_V1_6_Program_Previous_PG_ID where
-  show (SAM_V1_6_Program_Previous_PG_ID tag value) =
+  show (SAM_V1_6_Program_Previous_PG_ID value) =
     "SAM_V1_6_Program_Previous_PG_ID { " ++
-    "tag = "                             ++
-    (show tag)                           ++
-    " , value = "                        ++
+    "value = "                           ++
     (show value)                         ++
     " }"
 
 -- | DS tag for @"SAM_V1_6_Program"@.
-data SAM_V1_6_Program_Description = SAM_V1_6_Program_Description { sam_v1_6_program_description_tag   :: Seq Word8
-                                                                 , sam_v1_6_program_description_value :: ByteString
-                                                                 }
+newtype SAM_V1_6_Program_Description = SAM_V1_6_Program_Description { sam_v1_6_program_description_value :: ByteString
+                                                                    }
   deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_Program_Description where
-  SAM_V1_6_Program_Description sam_v1_6_program_description_tag1 sam_v1_6_program_description_value1 == SAM_V1_6_Program_Description sam_v1_6_program_description_tag2 sam_v1_6_program_description_value2 = sam_v1_6_program_description_tag1 == sam_v1_6_program_description_tag2 && sam_v1_6_program_description_value1 == sam_v1_6_program_description_value2
+  SAM_V1_6_Program_Description sam_v1_6_program_description_value1 == SAM_V1_6_Program_Description sam_v1_6_program_description_value2 = sam_v1_6_program_description_value1 == sam_v1_6_program_description_value2
 
 instance Show SAM_V1_6_Program_Description where
-  show (SAM_V1_6_Program_Description tag value) =
+  show (SAM_V1_6_Program_Description value) =
     "SAM_V1_6_Program_Description { " ++
-    "tag = "                          ++
-    (show tag)                        ++
-    " , value = "                     ++
+    "value = "                        ++
     (show value)                      ++
     " }"
 
 -- | VN tag for @"SAM_V1_6_Program"@.
-data SAM_V1_6_Program_Version = SAM_V1_6_Program_Version { sam_v1_6_program_version_tag   :: Seq Word8
-                                                         , sam_v1_6_program_version_value :: ByteString
-                                                         }
+newtype SAM_V1_6_Program_Version = SAM_V1_6_Program_Version { sam_v1_6_program_version_value :: ByteString
+                                                            }
   deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_Program_Version where
-  SAM_V1_6_Program_Version sam_v1_6_program_version_tag1 sam_v1_6_program_version_value1 == SAM_V1_6_Program_Version sam_v1_6_program_version_tag2 sam_v1_6_program_version_value2 = sam_v1_6_program_version_tag1 == sam_v1_6_program_version_tag2 && sam_v1_6_program_version_value1 == sam_v1_6_program_version_value2
+  SAM_V1_6_Program_Version sam_v1_6_program_version_value1 == SAM_V1_6_Program_Version sam_v1_6_program_version_value2 = sam_v1_6_program_version_value1 == sam_v1_6_program_version_value2
 
 instance Show SAM_V1_6_Program_Version where
-  show (SAM_V1_6_Program_Version tag value) =
+  show (SAM_V1_6_Program_Version value) =
     "SAM_V1_6_Program_Version { " ++
-    "tag = "                      ++
-    (show tag)                    ++
-    " , value = "                 ++
+    "value = "                    ++
     (show value)                  ++
     " }"

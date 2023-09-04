@@ -48,8 +48,6 @@ import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
 import           Data.Attoparsec.ByteString.Lazy   as DABL
-import qualified Data.ByteString                   as DB   (unpack)
-import           Data.Sequence                     as DSeq
 import           Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the DS tag of the @PG tag section of the SAM v1.6 file format.
@@ -57,14 +55,13 @@ import           Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_SAM_V1_6_Program_DS :: Parser SAM_V1_6_Program_Description
 parse_SAM_V1_6_SAM_V1_6_Program_DS = do
-  pgheaderdescriptiontag <- do pgheaderdescriptiontagp <- DABL.takeTill (== 58)
-                               -- Parse DS tag of the header section.
-                               case (pgheaderdescriptiontagp =~ [re|[D][S]|]) of
-                                 False -> fail $ show SAM_V1_6_Error_Program_Description_Incorrect_Format 
-                                 True  -> -- DS tag is in the accepted format. 
-                                          return pgheaderdescriptiontagp
+  _ <- do pgheaderdescriptiontagp <- DABL.takeTill (== 58)
+          -- Parse DS tag of the header section.
+          case (pgheaderdescriptiontagp =~ [re|[D][S]|]) of
+            False -> fail $ show SAM_V1_6_Error_Program_Description_Incorrect_Format 
+            True  -> -- DS tag is in the accepted format. 
+                     return pgheaderdescriptiontagp
   _ <- word8 58
   pgheaderdescriptionvalue <- DABL.takeTill (== 09)
-  return SAM_V1_6_Program_Description { sam_v1_6_program_description_tag   = DSeq.fromList $ DB.unpack pgheaderdescriptiontag
-                                      , sam_v1_6_program_description_value = pgheaderdescriptionvalue
+  return SAM_V1_6_Program_Description { sam_v1_6_program_description_value = pgheaderdescriptionvalue
                                       }

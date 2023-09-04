@@ -64,3 +64,11 @@
 ## 0.5.0.3 -- 2023-09-01
 
 * Added homepage and bug-reports fields to cabal file.
+
+## 0.5.0.4 -- 2023-09-01
+
+* Added small initial test suite.
+
+## 0.6.0.0 -- 2023-09-04
+
+* Removed tag section of headers and changed those affected from data to newtypes.

@@ -48,8 +48,6 @@ import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
 import           Data.Attoparsec.ByteString.Lazy   as DABL
-import qualified Data.ByteString                   as DB   (unpack)
-import           Data.Sequence                     as DSeq
 import           Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the SM tag of the @RG tag section of the SAM v1.6 file format.
@@ -57,14 +55,13 @@ import           Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_SAM_V1_6_Read_Group_SM :: Parser SAM_V1_6_Read_Group_Sample 
 parse_SAM_V1_6_SAM_V1_6_Read_Group_SM = do
-  rgheadersampletag <- do rgheadersampletagp <- DABL.takeTill (== 58)
-                          -- Parse SM tag of the header section.
-                          case (rgheadersampletagp =~ [re|[S][M]|]) of
-                            False -> fail $ show SAM_V1_6_Error_Read_Group_Sample_Incorrect_Format
-                            True  -> -- SM tag is in the accepted format. 
-                                     return rgheadersampletagp
+  _ <- do rgheadersampletagp <- DABL.takeTill (== 58)
+          -- Parse SM tag of the header section.
+          case (rgheadersampletagp =~ [re|[S][M]|]) of
+            False -> fail $ show SAM_V1_6_Error_Read_Group_Sample_Incorrect_Format
+            True  -> -- SM tag is in the accepted format. 
+                     return rgheadersampletagp
   _ <- word8 58
   rgheadersamplevalue <- DABL.takeTill (== 09)
-  return SAM_V1_6_Read_Group_Sample { sam_v1_6_read_group_sample_tag   = DSeq.fromList $ DB.unpack rgheadersampletag
-                                    , sam_v1_6_read_group_sample_value = rgheadersamplevalue
+  return SAM_V1_6_Read_Group_Sample { sam_v1_6_read_group_sample_value = rgheadersamplevalue
                                     }

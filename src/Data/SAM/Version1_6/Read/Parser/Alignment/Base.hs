@@ -141,7 +141,7 @@ parse_SAM_V1_6_Alignment = do
   _ <- word8 09
   qual <- do qualp <- DABL.takeTill (== 09)
              -- Parse QUAL field of the alignment section.
-             case (qualp =~ [re|[!-~]+|]) of
+             case (qualp =~ [re|[!-~?]+|\*|]) of
                False -> fail $ show SAM_V1_6_Error_Alignment_QUAL_Incorrect_Format
                True  -> -- QUAL is in the accepted format.
                         return qualp

@@ -48,8 +48,6 @@ import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
 import           Data.Attoparsec.ByteString.Lazy   as DABL
-import qualified Data.ByteString                   as DB   (unpack)
-import           Data.Sequence                     as DSeq
 import           Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the GO tag of the @HD tag section of the SAM v1.6 file format.
@@ -57,12 +55,12 @@ import           Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_File_Level_Metadata_GO :: Parser SAM_V1_6_File_Level_Metadata_Alignment_Grouping
 parse_SAM_V1_6_File_Level_Metadata_GO = do
-  hdheaderalignmentgroupingtag <- do hdheaderalignmentgroupingtagp <- DABL.takeTill (== 58)
-                                     -- Parse GO tag of the header section.
-                                     case (hdheaderalignmentgroupingtagp =~ [re|[G][O]|]) of
-                                       False -> fail $ show SAM_V1_6_Error_File_Level_Metadata_Grouping_Of_Alignments_Tag_Incorrect_Format
-                                       True  -> -- GO tag is in the accepted format.
-                                                return hdheaderalignmentgroupingtagp
+  _ <- do hdheaderalignmentgroupingtagp <- DABL.takeTill (== 58)
+          -- Parse GO tag of the header section.
+          case (hdheaderalignmentgroupingtagp =~ [re|[G][O]|]) of
+            False -> fail $ show SAM_V1_6_Error_File_Level_Metadata_Grouping_Of_Alignments_Tag_Incorrect_Format
+            True  -> -- GO tag is in the accepted format.
+                     return hdheaderalignmentgroupingtagp
   _ <- word8 58
   hdheaderalignmentgroupingvalue <- do hdheaderalignmentgroupingvaluep <- DABL.takeTill (== 09)
                                        -- Parse GO value of the header section.
@@ -70,6 +68,5 @@ parse_SAM_V1_6_File_Level_Metadata_GO = do
                                          False -> fail $ show SAM_V1_6_Error_File_Level_Metadata_Grouping_Of_Alignments_Invalid_Value
                                          True  -> -- GO value is in the accepted format.
                                                   return hdheaderalignmentgroupingvaluep
-  return SAM_V1_6_File_Level_Metadata_Alignment_Grouping { sam_v1_6_file_level_metadata_alignment_grouping_tag   = DSeq.fromList $ DB.unpack hdheaderalignmentgroupingtag
-                                                         , sam_v1_6_file_level_metadata_alignment_grouping_value = hdheaderalignmentgroupingvalue
+  return SAM_V1_6_File_Level_Metadata_Alignment_Grouping { sam_v1_6_file_level_metadata_alignment_grouping_value = hdheaderalignmentgroupingvalue
                                                          }

@@ -39,8 +39,6 @@ module Data.SAM.Version1_6.Header.SQ ( -- * SAM version 1.6 Reference sequence d
 
 import Data.ByteString
 import Data.Data
-import Data.Sequence
-import Data.Word
 import Generics.Deriving.Base
 
 -- | Custom SAM (version 1.6) @"SAM_V1_6_Reference_Sequence_Dictionary"@ data type.
@@ -95,177 +93,151 @@ instance Show SAM_V1_6_Reference_Sequence_Dictionary where
     " }"
 
 -- | SN tag for @"SAM_V1_6_Reference_Sequence_Dictionary"@.
-data SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Name = SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Name { sam_v1_6_reference_sequence_dictionary_reference_sequence_name_tag   :: Seq Word8
-                                                                                                                                     , sam_v1_6_reference_sequence_dictionary_reference_sequence_name_value :: ByteString 
-                         }
+newtype SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Name = SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Name { sam_v1_6_reference_sequence_dictionary_reference_sequence_name_value :: ByteString 
+                                                                                                                                        }
   deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Name where
-  SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Name sam_v1_6_reference_sequence_dictionary_reference_sequence_name_tag1 sam_v1_6_reference_sequence_dictionary_reference_sequence_name_value1 == SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Name sam_v1_6_reference_sequence_dictionary_reference_sequence_name_tag2 sam_v1_6_reference_sequence_dictionary_reference_sequence_name_value2 = sam_v1_6_reference_sequence_dictionary_reference_sequence_name_tag1   == sam_v1_6_reference_sequence_dictionary_reference_sequence_name_tag2 && sam_v1_6_reference_sequence_dictionary_reference_sequence_name_value1 == sam_v1_6_reference_sequence_dictionary_reference_sequence_name_value2  
+  SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Name sam_v1_6_reference_sequence_dictionary_reference_sequence_name_value1 == SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Name sam_v1_6_reference_sequence_dictionary_reference_sequence_name_value2 = sam_v1_6_reference_sequence_dictionary_reference_sequence_name_value1 == sam_v1_6_reference_sequence_dictionary_reference_sequence_name_value2  
 
 instance Show SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Name where
-  show (SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Name tag value) =
+  show (SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Name value) =
     "SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Name { " ++
-    "tag = "                                                            ++
-    (show tag)                                                          ++
-    " , value = "                                                       ++
+    "value = "                                                          ++
     (show value)                                                        ++
     " }"
 
 -- | LN tag for @"SAM_V1_6_Reference_Sequence_Dictionary"@.
-data SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Length = SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Length { sam_v1_6_reference_sequence_dictionary_reference_sequence_length_tag   :: Seq Word8
-                                                                                                                                         , sam_v1_6_reference_sequence_dictionary_reference_sequence_length_value :: ByteString
-                             }
+newtype SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Length = SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Length { sam_v1_6_reference_sequence_dictionary_reference_sequence_length_value :: ByteString
+                                                                                                                                            }
   deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Length where
-  SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Length sam_v1_6_reference_sequence_dictionary_reference_sequence_length_tag1 sam_v1_6_reference_sequence_dictionary_reference_sequence_length_value1 == SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Length sam_v1_6_reference_sequence_dictionary_reference_sequence_length_tag2 sam_v1_6_reference_sequence_dictionary_reference_sequence_length_value2 = sam_v1_6_reference_sequence_dictionary_reference_sequence_length_tag1 == sam_v1_6_reference_sequence_dictionary_reference_sequence_length_tag2 && sam_v1_6_reference_sequence_dictionary_reference_sequence_length_value1 == sam_v1_6_reference_sequence_dictionary_reference_sequence_length_value2
+  SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Length sam_v1_6_reference_sequence_dictionary_reference_sequence_length_value1 == SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Length sam_v1_6_reference_sequence_dictionary_reference_sequence_length_value2 = sam_v1_6_reference_sequence_dictionary_reference_sequence_length_value1 == sam_v1_6_reference_sequence_dictionary_reference_sequence_length_value2
 
 instance Show SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Length where
-  show (SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Length tag value) =
+  show (SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Length value) =
     "SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Length { " ++
-    "tag = "                                                              ++
-    (show tag)                                                            ++
-    " , value = "                                                         ++
+    "value = "                                                            ++
     (show value)                                                          ++
     " }"
 
 -- | AH tag for @"SAM_V1_6_Reference_Sequence_Dictionary"@.
-data SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus = SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus { sam_v1_6_reference_sequence_dictionary_alternative_locus_tag   :: Seq Word8
-                                                                                                                         , sam_v1_6_reference_sequence_dictionary_alternative_locus_value :: ByteString
-             }
+newtype SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus = SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus { sam_v1_6_reference_sequence_dictionary_alternative_locus_value :: ByteString
+                                                                                                                            }
   deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus where
-  SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus sam_v1_6_reference_sequence_dictionary_alternative_locus_tag1 sam_v1_6_reference_sequence_dictionary_alternative_locus_value1 == SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus sam_v1_6_reference_sequence_dictionary_alternative_locus_tag2 sam_v1_6_reference_sequence_dictionary_alternative_locus_value2 = sam_v1_6_reference_sequence_dictionary_alternative_locus_tag1 == sam_v1_6_reference_sequence_dictionary_alternative_locus_tag2 && sam_v1_6_reference_sequence_dictionary_alternative_locus_value1 == sam_v1_6_reference_sequence_dictionary_alternative_locus_value2
+  SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus sam_v1_6_reference_sequence_dictionary_alternative_locus_value1 == SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus sam_v1_6_reference_sequence_dictionary_alternative_locus_value2 = sam_v1_6_reference_sequence_dictionary_alternative_locus_value1 == sam_v1_6_reference_sequence_dictionary_alternative_locus_value2
 
 instance Show SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus where
-  show (SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus tag value) =
+  show (SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus value) =
     "SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus { " ++
-    "tag = "                                                      ++
-    (show tag)                                                    ++
-    " , value = "                                                 ++
+    "value = "                                                    ++
     (show value)                                                  ++
     " }"
 
 -- | AN tag for @"SAM_V1_6_Reference_Sequence_Dictionary"@.
-data SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names = SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names { sam_v1_6_reference_sequence_dictionary_alternative_reference_sequence_names_tag   :: Seq Word8
-                                                                                                                                                               , sam_v1_6_reference_sequence_dictionary_alternative_reference_sequence_names_value :: ByteString
-                                                                                                                                                               }
+newtype SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names = SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names { sam_v1_6_reference_sequence_dictionary_alternative_reference_sequence_names_value :: ByteString
+                                                                                                                                                                  }
   deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names where
-  SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names sam_v1_6_reference_sequence_dictionary_alternative_reference_sequence_names_tag1 sam_v1_6_reference_sequence_dictionary_alternative_reference_sequence_names_value1 == SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names sam_v1_6_reference_sequence_dictionary_alternative_reference_sequence_names_tag2 sam_v1_6_reference_sequence_dictionary_alternative_reference_sequence_names_value2 = sam_v1_6_reference_sequence_dictionary_alternative_reference_sequence_names_tag1 == sam_v1_6_reference_sequence_dictionary_alternative_reference_sequence_names_tag2 && sam_v1_6_reference_sequence_dictionary_alternative_reference_sequence_names_value1 == sam_v1_6_reference_sequence_dictionary_alternative_reference_sequence_names_value2
+  SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names sam_v1_6_reference_sequence_dictionary_alternative_reference_sequence_names_value1 == SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names sam_v1_6_reference_sequence_dictionary_alternative_reference_sequence_names_value2 = sam_v1_6_reference_sequence_dictionary_alternative_reference_sequence_names_value1 == sam_v1_6_reference_sequence_dictionary_alternative_reference_sequence_names_value2
 
 instance Show SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names where
-  show (SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names tag value) = "SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names { " ++
-                                                                                                 "tag = "                                                                         ++
-                                                                                                 (show tag)                                                                       ++
-                                                                                                 " , value = "                                                                    ++
-                                                                                                 (show value)                                                                     ++
-                                                                                                 " }"
+  show (SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names value) =
+    "SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names { " ++
+    "value = "                                                                       ++
+    (show value)                                                                     ++
+    " }"
 
 -- | AS tag for @"SAM_V1_6_Reference_Sequence_Dictionary"@.
-data SAM_V1_6_Reference_Sequence_Dictionary_Genome_Assembly_Identifier = SAM_V1_6_Reference_Sequence_Dictionary_Genome_Assembly_Identifier { sam_v1_6_reference_sequence_dictionary_genome_assembly_identifier_tag   :: Seq Word8
-                                                                                                                                           , sam_v1_6_reference_sequence_dictionary_genome_assembly_identifier_value :: ByteString
-                                                                                                                                           }
+newtype SAM_V1_6_Reference_Sequence_Dictionary_Genome_Assembly_Identifier = SAM_V1_6_Reference_Sequence_Dictionary_Genome_Assembly_Identifier { sam_v1_6_reference_sequence_dictionary_genome_assembly_identifier_value :: ByteString
+                                                                                                                                              }
   deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_Reference_Sequence_Dictionary_Genome_Assembly_Identifier where
-  SAM_V1_6_Reference_Sequence_Dictionary_Genome_Assembly_Identifier sam_v1_6_reference_sequence_dictionary_genome_assembly_identifier_tag1 sam_v1_6_reference_sequence_dictionary_genome_assembly_identifier_value1 == SAM_V1_6_Reference_Sequence_Dictionary_Genome_Assembly_Identifier sam_v1_6_reference_sequence_dictionary_genome_assembly_identifier_tag2 sam_v1_6_reference_sequence_dictionary_genome_assembly_identifier_value2 = sam_v1_6_reference_sequence_dictionary_genome_assembly_identifier_tag1 == sam_v1_6_reference_sequence_dictionary_genome_assembly_identifier_tag2 && sam_v1_6_reference_sequence_dictionary_genome_assembly_identifier_value1 == sam_v1_6_reference_sequence_dictionary_genome_assembly_identifier_value2
+  SAM_V1_6_Reference_Sequence_Dictionary_Genome_Assembly_Identifier sam_v1_6_reference_sequence_dictionary_genome_assembly_identifier_value1 == SAM_V1_6_Reference_Sequence_Dictionary_Genome_Assembly_Identifier sam_v1_6_reference_sequence_dictionary_genome_assembly_identifier_value2 = sam_v1_6_reference_sequence_dictionary_genome_assembly_identifier_value1 == sam_v1_6_reference_sequence_dictionary_genome_assembly_identifier_value2
 
 instance Show SAM_V1_6_Reference_Sequence_Dictionary_Genome_Assembly_Identifier where
-  show (SAM_V1_6_Reference_Sequence_Dictionary_Genome_Assembly_Identifier tag value) = "SAM_V1_6_Reference_Sequence_Dictionary_Genome_Assembly_Identifier { " ++
-                                                                                       "tag = "                                                               ++
-                                                                                       (show tag)                                                             ++
-                                                                                       " , value = "                                                          ++
-                                                                                       (show value)                                                           ++
-                                                                                       " }"
+  show (SAM_V1_6_Reference_Sequence_Dictionary_Genome_Assembly_Identifier value) =
+    "SAM_V1_6_Reference_Sequence_Dictionary_Genome_Assembly_Identifier { " ++
+    "value = "                                                             ++
+    (show value)                                                           ++
+    " }"
 
 -- | DS tag for @"SAM_V1_6_Reference_Sequence_Dictionary"@.
-data SAM_V1_6_Reference_Sequence_Dictionary_Description = SAM_V1_6_Reference_Sequence_Dictionary_Description { sam_v1_6_reference_sequence_dictionary_description_tag   :: Seq Word8
-                                                                                                             , sam_v1_6_reference_sequence_dictionary_description_value :: ByteString
-                                                                                                             }
+newtype SAM_V1_6_Reference_Sequence_Dictionary_Description = SAM_V1_6_Reference_Sequence_Dictionary_Description { sam_v1_6_reference_sequence_dictionary_description_value :: ByteString
+                                                                                                                }
   deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_Reference_Sequence_Dictionary_Description where
-  SAM_V1_6_Reference_Sequence_Dictionary_Description sam_v1_6_reference_sequence_dictionary_description_tag1 sam_v1_6_reference_sequence_dictionary_description_value1 == SAM_V1_6_Reference_Sequence_Dictionary_Description sam_v1_6_reference_sequence_dictionary_description_tag2 sam_v1_6_reference_sequence_dictionary_description_value2 = sam_v1_6_reference_sequence_dictionary_description_tag1 == sam_v1_6_reference_sequence_dictionary_description_tag2 && sam_v1_6_reference_sequence_dictionary_description_value1 == sam_v1_6_reference_sequence_dictionary_description_value2
+  SAM_V1_6_Reference_Sequence_Dictionary_Description sam_v1_6_reference_sequence_dictionary_description_value1 == SAM_V1_6_Reference_Sequence_Dictionary_Description sam_v1_6_reference_sequence_dictionary_description_value2 = sam_v1_6_reference_sequence_dictionary_description_value1 == sam_v1_6_reference_sequence_dictionary_description_value2
 
 instance Show SAM_V1_6_Reference_Sequence_Dictionary_Description where
-  show (SAM_V1_6_Reference_Sequence_Dictionary_Description tag value) = "SAM_V1_6_Reference_Sequence_Dictionary_Description { " ++
-                                                                        "tag = "                                                ++
-                                                                        (show tag)                                              ++
-                                                                        " , value = "                                           ++
-                                                                        (show value)                                            ++
-                                                                        " }"
+  show (SAM_V1_6_Reference_Sequence_Dictionary_Description value) =
+    "SAM_V1_6_Reference_Sequence_Dictionary_Description { " ++
+    "value = "                                              ++
+    (show value)                                            ++
+    " }"
 
 -- | M5 tag for @"SAM_V1_6_Reference_Sequence_Dictionary"@.
-data SAM_V1_6_Reference_Sequence_Dictionary_MD5_Checksum = SAM_V1_6_Reference_Sequence_Dictionary_MD5_Checksum { sam_v1_6_reference_sequence_dictionary_md5_checksum_tag   :: Seq Word8
-                                                                                                               , sam_v1_6_reference_sequence_dictionary_md5_checksum_value :: ByteString
-                                                                                                               }
+newtype SAM_V1_6_Reference_Sequence_Dictionary_MD5_Checksum = SAM_V1_6_Reference_Sequence_Dictionary_MD5_Checksum { sam_v1_6_reference_sequence_dictionary_md5_checksum_value :: ByteString
+                                                                                                                  }
   deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_Reference_Sequence_Dictionary_MD5_Checksum where
-  SAM_V1_6_Reference_Sequence_Dictionary_MD5_Checksum sam_v1_6_reference_sequence_dictionary_md5_checksum_tag1 sam_v1_6_reference_sequence_dictionary_md5_checksum_value1 == SAM_V1_6_Reference_Sequence_Dictionary_MD5_Checksum sam_v1_6_reference_sequence_dictionary_md5_checksum_tag2 sam_v1_6_reference_sequence_dictionary_md5_checksum_value2 = sam_v1_6_reference_sequence_dictionary_md5_checksum_tag1 == sam_v1_6_reference_sequence_dictionary_md5_checksum_tag2 && sam_v1_6_reference_sequence_dictionary_md5_checksum_value1 == sam_v1_6_reference_sequence_dictionary_md5_checksum_value2
+  SAM_V1_6_Reference_Sequence_Dictionary_MD5_Checksum sam_v1_6_reference_sequence_dictionary_md5_checksum_value1 == SAM_V1_6_Reference_Sequence_Dictionary_MD5_Checksum sam_v1_6_reference_sequence_dictionary_md5_checksum_value2 = sam_v1_6_reference_sequence_dictionary_md5_checksum_value1 == sam_v1_6_reference_sequence_dictionary_md5_checksum_value2
 
 instance Show SAM_V1_6_Reference_Sequence_Dictionary_MD5_Checksum where
-  show (SAM_V1_6_Reference_Sequence_Dictionary_MD5_Checksum tag value) = "SAM_V1_6_Reference_Sequence_Dictionary_MD5_Checksum { " ++
-                                                                         "tag = "                                                 ++
-                                                                         (show tag)                                               ++
-                                                                         " , value = "                                            ++
-                                                                         (show value)                                             ++
-                                                                         " }"
+  show (SAM_V1_6_Reference_Sequence_Dictionary_MD5_Checksum value) =
+    "SAM_V1_6_Reference_Sequence_Dictionary_MD5_Checksum { " ++
+    "value = "                                               ++
+    (show value)                                             ++
+    " }"
 
 -- | SP tag for @"SAM_V1_6_Reference_Sequence_Dictionary"@.
-data SAM_V1_6_Reference_Sequence_Dictionary_Species = SAM_V1_6_Reference_Sequence_Dictionary_Species { sam_v1_6_reference_sequence_dictionary_species_tag   :: Seq Word8
-                                                                                                     , sam_v1_6_reference_sequence_dictionary_species_value :: ByteString
-                                                                                                     }
+newtype SAM_V1_6_Reference_Sequence_Dictionary_Species = SAM_V1_6_Reference_Sequence_Dictionary_Species { sam_v1_6_reference_sequence_dictionary_species_value :: ByteString
+                                                                                                        }
   deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_Reference_Sequence_Dictionary_Species where
-  SAM_V1_6_Reference_Sequence_Dictionary_Species sam_v1_6_reference_sequence_dictionary_species_tag1 sam_v1_6_reference_sequence_dictionary_species_value1 == SAM_V1_6_Reference_Sequence_Dictionary_Species sam_v1_6_reference_sequence_dictionary_species_tag2 sam_v1_6_reference_sequence_dictionary_species_value2 = sam_v1_6_reference_sequence_dictionary_species_tag1 == sam_v1_6_reference_sequence_dictionary_species_tag2 && sam_v1_6_reference_sequence_dictionary_species_value1 == sam_v1_6_reference_sequence_dictionary_species_value2
+  SAM_V1_6_Reference_Sequence_Dictionary_Species sam_v1_6_reference_sequence_dictionary_species_value1 == SAM_V1_6_Reference_Sequence_Dictionary_Species sam_v1_6_reference_sequence_dictionary_species_value2 = sam_v1_6_reference_sequence_dictionary_species_value1 == sam_v1_6_reference_sequence_dictionary_species_value2
 
 instance Show SAM_V1_6_Reference_Sequence_Dictionary_Species where
-  show (SAM_V1_6_Reference_Sequence_Dictionary_Species tag value) =
+  show (SAM_V1_6_Reference_Sequence_Dictionary_Species value) =
     "SAM_V1_6_Reference_Sequence_Dictionary_Species { " ++
-    "tag = "                                            ++
-    (show tag)                                          ++
-    " , value = "                                       ++
+    "value = "                                          ++
     (show value)                                        ++
     " }"
 
 -- | TP tag for @"SAM_V1_6_Reference_Sequence_Dictionary"@.
-data SAM_V1_6_Reference_Sequence_Dictionary_Molecule_Topology = SAM_V1_6_Reference_Sequence_Dictionary_Molecule_Topology { sam_v1_6_reference_sequence_dictionary_molecule_topology_tag   :: Seq Word8
-                                                                                                                         , sam_v1_6_reference_sequence_dictionary_molecule_topology_value :: ByteString
-                                                                                                                         }
+newtype SAM_V1_6_Reference_Sequence_Dictionary_Molecule_Topology = SAM_V1_6_Reference_Sequence_Dictionary_Molecule_Topology { sam_v1_6_reference_sequence_dictionary_molecule_topology_value :: ByteString
+                                                                                                                            }
   deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_Reference_Sequence_Dictionary_Molecule_Topology where
-  SAM_V1_6_Reference_Sequence_Dictionary_Molecule_Topology sam_v1_6_reference_sequence_dictionary_molecule_topology_tag1 sam_v1_6_reference_sequence_dictionary_molecule_topology_value1 == SAM_V1_6_Reference_Sequence_Dictionary_Molecule_Topology sam_v1_6_reference_sequence_dictionary_molecule_topology_tag2 sam_v1_6_reference_sequence_dictionary_molecule_topology_value2 = sam_v1_6_reference_sequence_dictionary_molecule_topology_tag1 == sam_v1_6_reference_sequence_dictionary_molecule_topology_tag2 && sam_v1_6_reference_sequence_dictionary_molecule_topology_value1 == sam_v1_6_reference_sequence_dictionary_molecule_topology_value2
+  SAM_V1_6_Reference_Sequence_Dictionary_Molecule_Topology sam_v1_6_reference_sequence_dictionary_molecule_topology_value1 == SAM_V1_6_Reference_Sequence_Dictionary_Molecule_Topology sam_v1_6_reference_sequence_dictionary_molecule_topology_value2 = sam_v1_6_reference_sequence_dictionary_molecule_topology_value1 == sam_v1_6_reference_sequence_dictionary_molecule_topology_value2
 
 instance Show SAM_V1_6_Reference_Sequence_Dictionary_Molecule_Topology where
-  show (SAM_V1_6_Reference_Sequence_Dictionary_Molecule_Topology tag value) =
+  show (SAM_V1_6_Reference_Sequence_Dictionary_Molecule_Topology value) =
     "SAM_V1_6_Reference_Sequence_Dictionary_Molecule_Topology { " ++
-    "tag = "                                                      ++
-    (show tag)                                                    ++
-    " , value = "                                                 ++
+    "value = "                                                    ++
     (show value)                                                  ++
     " }"
 
 -- | UR tag for @"SAM_V1_6_Reference_Sequence_Dictionary"@.
-data SAM_V1_6_Reference_Sequence_Dictionary_URI = SAM_V1_6_Reference_Sequence_Dictionary_URI { sam_v1_6_reference_sequence_dictionary_uri_tag   :: Seq Word8
-                                                                                             , sam_v1_6_reference_sequence_dictionary_uri_value :: ByteString
-                                                                                             }
+newtype SAM_V1_6_Reference_Sequence_Dictionary_URI = SAM_V1_6_Reference_Sequence_Dictionary_URI { sam_v1_6_reference_sequence_dictionary_uri_value :: ByteString
+                                                                                                }
   deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_Reference_Sequence_Dictionary_URI where
-  SAM_V1_6_Reference_Sequence_Dictionary_URI sam_v1_6_reference_sequence_dictionary_uri_tag1 sam_v1_6_reference_sequence_dictionary_uri_value1 == SAM_V1_6_Reference_Sequence_Dictionary_URI sam_v1_6_reference_sequence_dictionary_uri_tag2 sam_v1_6_reference_sequence_dictionary_uri_value2 = sam_v1_6_reference_sequence_dictionary_uri_tag1 == sam_v1_6_reference_sequence_dictionary_uri_tag2 && sam_v1_6_reference_sequence_dictionary_uri_value1 == sam_v1_6_reference_sequence_dictionary_uri_value2
+  SAM_V1_6_Reference_Sequence_Dictionary_URI sam_v1_6_reference_sequence_dictionary_uri_value1 == SAM_V1_6_Reference_Sequence_Dictionary_URI sam_v1_6_reference_sequence_dictionary_uri_value2 = sam_v1_6_reference_sequence_dictionary_uri_value1 == sam_v1_6_reference_sequence_dictionary_uri_value2
 
 instance Show SAM_V1_6_Reference_Sequence_Dictionary_URI where
-  show (SAM_V1_6_Reference_Sequence_Dictionary_URI tag value) =
+  show (SAM_V1_6_Reference_Sequence_Dictionary_URI value) =
     "SAM_V1_6_Reference_Sequence_Dictionary_URI { " ++
-    "tag = "                                        ++
-    (show tag)                                      ++
-    " , value = "                                   ++
+    "value = "                                      ++
     (show value)                                    ++
     " }"

@@ -20,7 +20,7 @@ name:               hs-samtools
 -- PVP summary:     +-+------- breaking API changes
 --                  | | +----- non-breaking API additions
 --                  | | | +--- code changes with no API change
-version:            0.5.0.3
+version:            0.6.0.0
 
 -- A short (one-line) description of the package.
 synopsis: Read and write SAM, BAM, and CRAM files.
@@ -176,4 +176,5 @@ test-suite hs-samtools-test
     -- Test dependencies.
     build-depends:
         base ^>=4.17.1.0,
+        hspec == 2.11.4,
         hs-samtools

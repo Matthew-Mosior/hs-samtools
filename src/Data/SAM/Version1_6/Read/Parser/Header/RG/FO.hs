@@ -48,8 +48,6 @@ import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
 import           Data.Attoparsec.ByteString.Lazy   as DABL
-import qualified Data.ByteString                   as DB   (unpack)
-import           Data.Sequence                     as DSeq
 import           Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the FO tag of the @RG tag section of the SAM v1.6 file format.
@@ -57,12 +55,12 @@ import           Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_SAM_V1_6_Read_Group_FO :: Parser SAM_V1_6_Read_Group_Flow_Order 
 parse_SAM_V1_6_SAM_V1_6_Read_Group_FO = do
-  rgheaderflowordertag <- do rgheaderflowordertagp <- DABL.takeTill (== 58)
-                             -- Parse FO tag of the header section.
-                             case (rgheaderflowordertagp =~ [re|[F][O]|]) of
-                               False -> fail $ show SAM_V1_6_Error_Read_Group_Flow_Order_Incorrect_Format
-                               True  -> -- FO tag is in the accepted format. 
-                                        return rgheaderflowordertagp
+  _ <- do rgheaderflowordertagp <- DABL.takeTill (== 58)
+          -- Parse FO tag of the header section.
+          case (rgheaderflowordertagp =~ [re|[F][O]|]) of
+            False -> fail $ show SAM_V1_6_Error_Read_Group_Flow_Order_Incorrect_Format
+            True  -> -- FO tag is in the accepted format. 
+                     return rgheaderflowordertagp
   _ <- word8 58
   rgheaderflowordervalue <- do rgheaderflowordervaluep <- DABL.takeTill (== 09)
                                -- Parse FO value of the header section.
@@ -70,6 +68,5 @@ parse_SAM_V1_6_SAM_V1_6_Read_Group_FO = do
                                  False -> fail $ show SAM_V1_6_Error_Read_Group_Flow_Order_Incorrect_Format
                                  True  -> -- FO value is in the accepted format.
                                           return rgheaderflowordervaluep
-  return SAM_V1_6_Read_Group_Flow_Order { sam_v1_6_read_group_flow_order_tag   = DSeq.fromList $ DB.unpack rgheaderflowordertag
-                                        , sam_v1_6_read_group_flow_order_value = rgheaderflowordervalue
+  return SAM_V1_6_Read_Group_Flow_Order { sam_v1_6_read_group_flow_order_value = rgheaderflowordervalue
                                         }

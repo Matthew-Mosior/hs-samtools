@@ -48,8 +48,6 @@ import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
 import           Data.Attoparsec.ByteString.Lazy   as DABL
-import qualified Data.ByteString                   as DB   (unpack)
-import           Data.Sequence                     as DSeq
 import           Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the KS tag of the @RG tag section of the SAM v1.6 file format.
@@ -57,14 +55,13 @@ import           Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_SAM_V1_6_Read_Group_KS :: Parser SAM_V1_6_Read_Group_Key_Sequence 
 parse_SAM_V1_6_SAM_V1_6_Read_Group_KS = do
-  rgheaderkeysequencetag <- do rgheaderkeysequencetagp <- DABL.takeTill (== 58)
-                               -- Parse KS tag of the header section.
-                               case (rgheaderkeysequencetagp =~ [re|[K][S]|]) of
-                                 False -> fail $ show SAM_V1_6_Error_Read_Group_Key_Sequence_Incorrect_Format
-                                 True  -> -- KS tag is in the accepted format. 
-                                          return rgheaderkeysequencetagp
+  _ <- do rgheaderkeysequencetagp <- DABL.takeTill (== 58)
+          -- Parse KS tag of the header section.
+          case (rgheaderkeysequencetagp =~ [re|[K][S]|]) of
+            False -> fail $ show SAM_V1_6_Error_Read_Group_Key_Sequence_Incorrect_Format
+            True  -> -- KS tag is in the accepted format. 
+                     return rgheaderkeysequencetagp
   _ <- word8 58
   rgheaderkeysequencevalue <- DABL.takeTill (== 09)
-  return SAM_V1_6_Read_Group_Key_Sequence { sam_v1_6_read_group_key_sequence_tag   = DSeq.fromList $ DB.unpack rgheaderkeysequencetag
-                                          , sam_v1_6_read_group_key_sequence_value = rgheaderkeysequencevalue
+  return SAM_V1_6_Read_Group_Key_Sequence { sam_v1_6_read_group_key_sequence_value = rgheaderkeysequencevalue
                                           }

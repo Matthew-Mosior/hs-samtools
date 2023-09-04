@@ -48,8 +48,6 @@ import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
 import           Data.Attoparsec.ByteString.Lazy   as DABL
-import qualified Data.ByteString                   as DB   (unpack)
-import           Data.Sequence                     as DSeq
 import           Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the VN tag of the @PG tag section of the SAM v1.6 file format.
@@ -57,14 +55,13 @@ import           Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_SAM_V1_6_Program_VN :: Parser SAM_V1_6_Program_Version
 parse_SAM_V1_6_SAM_V1_6_Program_VN = do
-  pgheaderversiontag <- do pgheaderversiontagp <- DABL.takeTill (== 58)
-                           -- Parse VN tag of the header section.
-                           case (pgheaderversiontagp =~ [re|[V][N]|]) of
-                             False -> fail $ show SAM_V1_6_Error_Program_Version_Incorrect_Format 
-                             True  -> -- VN tag is in the accepted format. 
-                                      return pgheaderversiontagp
+  _ <- do pgheaderversiontagp <- DABL.takeTill (== 58)
+          -- Parse VN tag of the header section.
+          case (pgheaderversiontagp =~ [re|[V][N]|]) of
+            False -> fail $ show SAM_V1_6_Error_Program_Version_Incorrect_Format 
+            True  -> -- VN tag is in the accepted format. 
+                     return pgheaderversiontagp
   _ <- word8 58
   pgheaderversionvalue <- DABL.takeTill (== 09)
-  return SAM_V1_6_Program_Version { sam_v1_6_program_version_tag   = DSeq.fromList $ DB.unpack pgheaderversiontag
-                                  , sam_v1_6_program_version_value = pgheaderversionvalue
+  return SAM_V1_6_Program_Version { sam_v1_6_program_version_value = pgheaderversionvalue
                                   }

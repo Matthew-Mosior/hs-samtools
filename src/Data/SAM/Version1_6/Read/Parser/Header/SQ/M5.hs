@@ -48,8 +48,6 @@ import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
 import           Data.Attoparsec.ByteString.Lazy   as DABL
-import qualified Data.ByteString                   as DB   (unpack)
-import           Data.Sequence                     as DSeq
 import           Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the M5 tag of the @SQ tag section of the SAM v1.6 file format.
@@ -57,14 +55,13 @@ import           Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_SAM_V1_6_Reference_Sequence_Dictionary_M5 :: Parser SAM_V1_6_Reference_Sequence_Dictionary_MD5_Checksum
 parse_SAM_V1_6_SAM_V1_6_Reference_Sequence_Dictionary_M5 = do
-  sqheadermd5checksumtag <- do sqheadermd5checksumtagp <- DABL.takeTill (== 58)
-                               -- Parse M5 tag of the header section.
-                               case (sqheadermd5checksumtagp =~ [re|[M][5]|]) of
-                                 False -> fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_MD5_Checksum_Incorrect_Format 
-                                 True  -> -- M5 tag is in the accepted format.
-                                          return sqheadermd5checksumtagp
+  _ <- do sqheadermd5checksumtagp <- DABL.takeTill (== 58)
+          -- Parse M5 tag of the header section.
+          case (sqheadermd5checksumtagp =~ [re|[M][5]|]) of
+            False -> fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_MD5_Checksum_Incorrect_Format 
+            True  -> -- M5 tag is in the accepted format.
+                     return sqheadermd5checksumtagp
   _ <- word8 58
   sqheadermd5checksumvalue <- DABL.takeTill (== 09)
-  return SAM_V1_6_Reference_Sequence_Dictionary_MD5_Checksum { sam_v1_6_reference_sequence_dictionary_md5_checksum_tag   = DSeq.fromList $ DB.unpack sqheadermd5checksumtag
-                                                             , sam_v1_6_reference_sequence_dictionary_md5_checksum_value = sqheadermd5checksumvalue
+  return SAM_V1_6_Reference_Sequence_Dictionary_MD5_Checksum { sam_v1_6_reference_sequence_dictionary_md5_checksum_value = sqheadermd5checksumvalue
                                                              }

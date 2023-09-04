@@ -48,8 +48,6 @@ import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
 import           Data.Attoparsec.ByteString.Lazy   as DABL
-import qualified Data.ByteString                   as DB   (unpack)
-import           Data.Sequence                     as DSeq
 import           Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the SP tag of the @SQ tag section of the SAM v1.6 file format.
@@ -57,14 +55,13 @@ import           Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_SAM_V1_6_Reference_Sequence_Dictionary_SP :: Parser SAM_V1_6_Reference_Sequence_Dictionary_Species
 parse_SAM_V1_6_SAM_V1_6_Reference_Sequence_Dictionary_SP = do
-  sqheaderspeciestag <- do sqheaderspeciestagp <- DABL.takeTill (== 58)
-                           -- Parse SP tag of the header section.
-                           case (sqheaderspeciestagp =~ [re|[S][P]|]) of
-                             False -> fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Species_Incorrect_Format
-                             True  -> -- SP tag is in the accepted format.
-                                      return sqheaderspeciestagp
+  _ <- do sqheaderspeciestagp <- DABL.takeTill (== 58)
+          -- Parse SP tag of the header section.
+          case (sqheaderspeciestagp =~ [re|[S][P]|]) of
+            False -> fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Species_Incorrect_Format
+            True  -> -- SP tag is in the accepted format.
+                     return sqheaderspeciestagp
   _ <- word8 58
   sqheaderspeciesvalue <- DABL.takeTill (== 09)
-  return SAM_V1_6_Reference_Sequence_Dictionary_Species { sam_v1_6_reference_sequence_dictionary_species_tag   = DSeq.fromList $ DB.unpack sqheaderspeciestag
-                                                        , sam_v1_6_reference_sequence_dictionary_species_value = sqheaderspeciesvalue
+  return SAM_V1_6_Reference_Sequence_Dictionary_Species { sam_v1_6_reference_sequence_dictionary_species_value = sqheaderspeciesvalue
                                                         }
