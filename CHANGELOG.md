@@ -72,3 +72,7 @@
 ## 0.6.0.0 -- 2023-09-04
 
 * Removed tag section of headers and changed those affected from data to newtypes.
+
+## 0.6.0.1 -- 2023-09-04
+
+* Fixed documentation for readSAM_V1_6.
