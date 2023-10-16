@@ -9,7 +9,6 @@
 {-# LANGUAGE PackageImports              #-}
 {-# LANGUAGE RecordWildCards             #-}
 {-# LANGUAGE ScopedTypeVariables         #-}
-{-# LANGUAGE TemplateHaskell             #-}
 {-# LANGUAGE TypeFamilies                #-}
 {-# LANGUAGE QuasiQuotes                 #-}
 {-# OPTIONS_GHC -fno-warn-name-shadowing #-}
@@ -54,13 +53,10 @@ import Data.SAM.Version1_6.Read.Parser.Header.PG.PP
 import Data.SAM.Version1_6.Read.Parser.Header.PG.DS
 import Data.SAM.Version1_6.Read.Parser.Header.PG.VN
 
+import Control.Applicative.Permutations           (intercalateEffect,toPermutation,toPermutationWithDefault)
+import Data.Attoparsec.ByteString.Char8  as DABC8 (endOfLine)
 import Data.Attoparsec.ByteString.Lazy   as DABL
 import Text.Regex.PCRE.Heavy
-
--- | Make a parser optional, return Nothing if there is no match.
-maybeOption :: Parser a
-            -> Parser (Maybe a)
-maybeOption p = option Nothing (Just <$> p)
 
 -- | @"SAM_V1_6_Program"@ parser.
 --
@@ -74,26 +70,22 @@ parse_SAM_V1_6_Program = do
                   case (pgheaderp =~ [re|[@][P][G]|]) of
                     False -> fail $ show SAM_V1_6_Error_Program_Tag_Incorrect_Format 
                     True  -> -- @PG tag is in the accepted format.
-                             return pgheaderp
+                             return ()
   _         <- word8 09
-  -- This parser assumes that the ID tag always appears first, followed by
-  -- the PN, CL, PP,
-  -- DS and VN tags if they exist, in that order.
-  id <- parse_SAM_V1_6_SAM_V1_6_Program_ID
-  _  <- word8 09
-  pn <- maybeOption parse_SAM_V1_6_SAM_V1_6_Program_PN
-  _  <- word8 09
-  cl <- maybeOption parse_SAM_V1_6_SAM_V1_6_Program_CL
-  _  <- word8 09
-  pp <- maybeOption parse_SAM_V1_6_SAM_V1_6_Program_PP
-  _  <- word8 09
-  ds <- maybeOption parse_SAM_V1_6_SAM_V1_6_Program_DS
-  _  <- word8 09
-  vn <- maybeOption parse_SAM_V1_6_SAM_V1_6_Program_VN
-  return SAM_V1_6_Program { sam_v1_6_program_record_identifier = id
-                          , sam_v1_6_program_name              = pn
-                          , sam_v1_6_program_command_line      = cl
-                          , sam_v1_6_program_previous_pg_id    = pp
-                          , sam_v1_6_program_description       = ds
-                          , sam_v1_6_program_version           = vn
-                          }
+  -- This parser assumes that the
+  -- ID, PN, CL, PP, DS, and VN tags can appear in any order.
+  pg <- intercalateEffect (word8 09) $
+          SAM_V1_6_Program
+            <$> toPermutation parse_SAM_V1_6_Program_ID
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_Program_PN)
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_Program_CL)
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_Program_PP)
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_Program_DS)
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_Program_VN)
+  _ <- endOfLine
+  return pg

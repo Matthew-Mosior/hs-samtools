@@ -9,7 +9,6 @@
 {-# LANGUAGE PackageImports        #-}
 {-# LANGUAGE RecordWildCards       #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE QuasiQuotes           #-}
 
@@ -41,27 +40,28 @@
 -- This library enables the decoding/encoding of SAM, BAM and CRAM file formats.
 
 module Data.SAM.Version1_6.Read.Parser.Header.RG.DT ( -- * SAM_V1_6 parser - header section (Read group) - DT tag
-                                                      parse_SAM_V1_6_SAM_V1_6_Read_Group_DT
+                                                      parse_SAM_V1_6_Read_Group_DT
                                                     ) where
 
 import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
-import           Data.Attoparsec.ByteString.Lazy   as DABL
-import           Text.Regex.PCRE.Heavy
+import Data.Attoparsec.ByteString.Char8 (isEndOfLine)
+import Data.Attoparsec.ByteString.Lazy   as DABL
+import Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the DT tag of the @RG tag section of the SAM v1.6 file format.
 --
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
-parse_SAM_V1_6_SAM_V1_6_Read_Group_DT :: Parser SAM_V1_6_Read_Group_Run_Date 
-parse_SAM_V1_6_SAM_V1_6_Read_Group_DT = do
+parse_SAM_V1_6_Read_Group_DT :: Parser SAM_V1_6_Read_Group_Run_Date 
+parse_SAM_V1_6_Read_Group_DT = do
   _ <- do rgheaderrundatetagp <- DABL.takeTill (== 58)
           -- Parse DT tag of the header section.
           case (rgheaderrundatetagp =~ [re|[D][T]|]) of
             False -> fail $ show SAM_V1_6_Error_Read_Group_Date_Run_Produced_Incorrect_Format
             True  -> -- DT tag is in the accepted format. 
-                     return rgheaderrundatetagp
+                     return ()
   _ <- word8 58
-  rgheaderrundatevalue <- DABL.takeTill (== 09)
+  rgheaderrundatevalue <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
   return SAM_V1_6_Read_Group_Run_Date { sam_v1_6_read_group_run_date_value = rgheaderrundatevalue
                                       }

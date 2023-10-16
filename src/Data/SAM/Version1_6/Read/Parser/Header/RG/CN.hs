@@ -9,7 +9,6 @@
 {-# LANGUAGE PackageImports        #-}
 {-# LANGUAGE RecordWildCards       #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE QuasiQuotes           #-}
 
@@ -41,27 +40,28 @@
 -- This library enables the decoding/encoding of SAM, BAM and CRAM file formats.
 
 module Data.SAM.Version1_6.Read.Parser.Header.RG.CN ( -- * SAM_V1_6 parser - header section (Read group) - CN tag
-                                                      parse_SAM_V1_6_SAM_V1_6_Read_Group_CN
+                                                      parse_SAM_V1_6_Read_Group_CN
                                                     ) where
 
 import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
-import           Data.Attoparsec.ByteString.Lazy   as DABL
-import           Text.Regex.PCRE.Heavy
+import Data.Attoparsec.ByteString.Char8 (isEndOfLine)
+import Data.Attoparsec.ByteString.Lazy as DABL
+import Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the CN tag of the @RG tag section of the SAM v1.6 file format.
 --
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
-parse_SAM_V1_6_SAM_V1_6_Read_Group_CN :: Parser SAM_V1_6_Read_Group_Sequencing_Center 
-parse_SAM_V1_6_SAM_V1_6_Read_Group_CN = do
+parse_SAM_V1_6_Read_Group_CN :: Parser SAM_V1_6_Read_Group_Sequencing_Center 
+parse_SAM_V1_6_Read_Group_CN = do
   _ <- do rgheadersequencingcentertagp <- DABL.takeTill (== 58)
           -- Parse CN tag of the header section.
           case (rgheadersequencingcentertagp =~ [re|[C][N]|]) of
             False -> fail $ show SAM_V1_6_Error_Read_Group_Sequencing_Center_Incorrect_Format 
             True  -> -- CN tag is in the accepted format. 
-                     return rgheadersequencingcentertagp
+                     return ()
   _ <- word8 58
-  rgheadersequencingcentervalue <- DABL.takeTill (== 09)
+  rgheadersequencingcentervalue <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
   return SAM_V1_6_Read_Group_Sequencing_Center { sam_v1_6_read_group_sequencing_center_value = rgheadersequencingcentervalue
                                                }

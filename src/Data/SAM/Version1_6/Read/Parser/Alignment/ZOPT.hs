@@ -9,7 +9,6 @@
 {-# LANGUAGE PackageImports        #-}
 {-# LANGUAGE RecordWildCards       #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
 {-# Language QuasiQuotes           #-}
 
@@ -46,6 +45,7 @@ module Data.SAM.Version1_6.Read.Parser.Alignment.ZOPT ( -- * SAM_V1_6 parser - a
 
 import Data.SAM.Version1_6.Read.Error
 
+import           Data.Attoparsec.ByteString.Char8  as DABC8 (isEndOfLine)
 import           Data.Attoparsec.ByteString.Lazy   as DABL
 import qualified Data.ByteString                   as DB
 import           Text.Regex.PCRE.Heavy
@@ -57,19 +57,19 @@ parse_SAM_V1_6_Alignment_ZOPT :: Parser DB.ByteString
 parse_SAM_V1_6_Alignment_ZOPT = do
   _ <- do alignmentzoptfieldtagp <- DABL.takeTill (== 58)
           -- Parse ZOPT tag of the alignment section.
-          case (alignmentzoptfieldtagp =~ [re|/[A-Za-z][A-Za-z0-9]/|]) of
+          case (alignmentzoptfieldtagp =~ [re|[A-Za-z][A-Za-z0-9]|]) of
             False -> fail $ show SAM_V1_6_Error_Alignment_ZOPT_Tag_Incorrect_Format
             True  -> -- ZOPT tag is in the accepted format. 
-                     return alignmentzoptfieldtagp
+                     return ()
   _ <- word8 58
   _ <- do alignmentzoptfieldtypep <- DABL.takeTill (== 58)
           -- Parse ZOPT type of the alignment section.
           case (alignmentzoptfieldtypep =~ [re|[Z]|]) of
             False -> fail $ show SAM_V1_6_Error_Alignment_ZOPT_Type_Incorrect_Format
             True  -> -- ZOPT type is in the accepted format.
-                     return alignmentzoptfieldtypep
+                     return ()
   _ <- word8 58
-  alignmentzoptfieldvalue <- do alignmentzoptfieldvaluep <- DABL.takeTill (== 09)
+  alignmentzoptfieldvalue <- do alignmentzoptfieldvaluep <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
                                 -- Parse ZOPT value of the alignment section.
                                 case (alignmentzoptfieldvaluep =~ [re|[ !-~]*|]) of
                                   False -> fail $ show SAM_V1_6_Error_Alignment_ZOPT_Value_Incorrect_Format

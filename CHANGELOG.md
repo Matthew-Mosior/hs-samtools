@@ -76,3 +76,9 @@
 ## 0.6.0.1 -- 2023-09-04
 
 * Fixed documentation for readSAM_V1_6.
+
+## 0.7.0.0 -- 2023-10-16
+
+* Fixed broken parsing of SAM_V1_6(..).
+* Strengthened parsing of SAM_V1_6(..) by accurately emulating the sam v1.6 specification through use of permutable parsers.
+* Added initial test suite.

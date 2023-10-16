@@ -9,7 +9,6 @@
 {-# LANGUAGE PackageImports        #-}
 {-# LANGUAGE RecordWildCards       #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE QuasiQuotes           #-}
 
@@ -57,13 +56,10 @@ import Data.SAM.Version1_6.Read.Parser.Header.SQ.SP
 import Data.SAM.Version1_6.Read.Parser.Header.SQ.TP
 import Data.SAM.Version1_6.Read.Parser.Header.SQ.UR
 
+import Control.Applicative.Permutations           (intercalateEffect,toPermutation,toPermutationWithDefault)
+import Data.Attoparsec.ByteString.Char8  as DABC8 (endOfLine)
 import Data.Attoparsec.ByteString.Lazy   as DABL
 import Text.Regex.PCRE.Heavy
-
--- | Make a parser optional, return Nothing if there is no match.
-maybeOption :: Parser a
-            -> Parser (Maybe a)
-maybeOption p = option Nothing (Just <$> p)
 
 -- | @"SAM_V1_6_Reference_Sequence_Dictionary"@ parser.
 --
@@ -77,38 +73,30 @@ parse_SAM_V1_6_Reference_Sequence_Dictionary = do
                   case (sqheaderp =~ [re|[@][S][Q]|]) of
                     False -> fail $ show SAM_V1_6_Error_File_Level_Metadata_Tag_Incorrect_Format
                     True  -> -- @SQ tag is in the accepted format.
-                             return sqheaderp
+                             return ()
   _         <- word8 09
-  -- This parser assumes that the SN tag always appears first, followed by
-  -- the LN tag, followed by the AH, AN, AS, DS, M5,
-  -- SP, TP and UR tags if they exist, in that order.
-  sn <- parse_SAM_V1_6_SAM_V1_6_Reference_Sequence_Dictionary_SN
-  _  <- word8 09
-  ln <- parse_SAM_V1_6_SAM_V1_6_Reference_Sequence_Dictionary_LN
-  _  <- word8 09
-  ah <- maybeOption parse_SAM_V1_6_SAM_V1_6_Reference_Sequence_Dictionary_AH
-  _  <- word8 09
-  an <- maybeOption parse_SAM_V1_6_SAM_V1_6_Reference_Sequence_Dictionary_AN
-  _  <- word8 09
-  as <- maybeOption parse_SAM_V1_6_SAM_V1_6_Reference_Sequence_Dictionary_AS
-  _  <- word8 09
-  ds <- maybeOption parse_SAM_V1_6_SAM_V1_6_Reference_Sequence_Dictionary_DS
-  _  <- word8 09
-  m5 <- maybeOption parse_SAM_V1_6_SAM_V1_6_Reference_Sequence_Dictionary_M5
-  _  <- word8 09
-  sp <- maybeOption parse_SAM_V1_6_SAM_V1_6_Reference_Sequence_Dictionary_SP
-  _  <- word8 09
-  tp <- maybeOption parse_SAM_V1_6_SAM_V1_6_Reference_Sequence_Dictionary_TP
-  _  <- word8 09
-  ur <- maybeOption parse_SAM_V1_6_SAM_V1_6_Reference_Sequence_Dictionary_UR 
-  return SAM_V1_6_Reference_Sequence_Dictionary { sam_v1_6_reference_sequence_dictionary_reference_sequence_name                        = sn  
-                                                , sam_v1_6_reference_sequence_dictionary_reference_sequence_length                      = ln
-                                                , sam_v1_6_reference_sequence_dictionary_reference_alternative_locus                    = ah
-                                                , sam_v1_6_reference_sequence_dictionary_reference_alternative_reference_sequence_names = an
-                                                , sam_v1_6_reference_sequence_dictionary_genome_assembly_identifier                     = as
-                                                , sam_v1_6_reference_sequence_dictionary_description                                    = ds
-                                                , sam_v1_6_reference_sequence_dictionary_md5_checksum                                   = m5
-                                                , sam_v1_6_reference_sequence_dictionary_species                                        = sp
-                                                , sam_v1_6_reference_sequence_dictionary_molecule_topology                              = tp
-                                                , sam_v1_6_reference_sequence_dictionary_uri                                            = ur
-                                                } 
+  -- This parser assumes that the
+  -- SN, LN, AH, AN, AS, DS, M5,
+  -- SP, TP and UR tags can appear in any order.
+  sq <- intercalateEffect (word8 09) $
+          SAM_V1_6_Reference_Sequence_Dictionary
+            <$> toPermutation parse_SAM_V1_6_Reference_Sequence_Dictionary_SN
+            <*> toPermutation parse_SAM_V1_6_Reference_Sequence_Dictionary_LN
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_Reference_Sequence_Dictionary_AH)
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_Reference_Sequence_Dictionary_AN)
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_Reference_Sequence_Dictionary_AS)
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_Reference_Sequence_Dictionary_DS)
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_Reference_Sequence_Dictionary_M5)
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_Reference_Sequence_Dictionary_SP) 
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_Reference_Sequence_Dictionary_TP)
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_Reference_Sequence_Dictionary_UR)
+  _ <- endOfLine
+  return sq

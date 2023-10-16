@@ -9,7 +9,6 @@
 {-# LANGUAGE PackageImports        #-}
 {-# LANGUAGE RecordWildCards       #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
 {-# Language QuasiQuotes           #-}
 
@@ -46,6 +45,7 @@ module Data.SAM.Version1_6.Read.Parser.Alignment.AOPT ( -- * SAM_V1_6 parser - a
 
 import Data.SAM.Version1_6.Read.Error
 
+import           Data.Attoparsec.ByteString.Char8  as DABC8 (isEndOfLine)
 import           Data.Attoparsec.ByteString.Lazy   as DABL
 import qualified Data.ByteString                   as DB
 import           Text.Regex.PCRE.Heavy
@@ -57,19 +57,19 @@ parse_SAM_V1_6_Alignment_AOPT :: Parser DB.ByteString
 parse_SAM_V1_6_Alignment_AOPT = do
   _ <- do alignmentaoptfieldtagp <- DABL.takeTill (== 58)
           -- Parse AOPT tag of the alignment section.
-          case (alignmentaoptfieldtagp =~ [re|/[A-Za-z][A-Za-z0-9]/|]) of
+          case (alignmentaoptfieldtagp =~ [re|[A-Za-z][A-Za-z0-9]|]) of
             False -> fail $ show SAM_V1_6_Error_Alignment_AOPT_Tag_Incorrect_Format
             True  -> -- AOPT tag is in the accepted format. 
-                     return alignmentaoptfieldtagp
+                     return ()
   _ <- word8 58
   _ <- do alignmentaoptfieldtypep <- DABL.takeTill (== 58)
           -- Parse AOPT type of the alignment section.
           case (alignmentaoptfieldtypep =~ [re|[A]|]) of
             False -> fail $ show SAM_V1_6_Error_Alignment_AOPT_Type_Incorrect_Format
             True  -> -- AOPT type is in the accepted format.
-                     return alignmentaoptfieldtypep
+                     return ()
   _ <- word8 58
-  alignmentaoptfieldvalue <- do alignmentaoptfieldvaluep <- DABL.takeTill (== 09)
+  alignmentaoptfieldvalue <- do alignmentaoptfieldvaluep <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
                                 -- Parse AOPT value of the alignment section.
                                 case (alignmentaoptfieldvaluep =~ [re|[!-~]|]) of
                                   False -> fail $ show SAM_V1_6_Error_Alignment_AOPT_Value_Incorrect_Format

@@ -9,7 +9,6 @@
 {-# LANGUAGE PackageImports        #-}
 {-# LANGUAGE RecordWildCards       #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE QuasiQuotes           #-}
 
@@ -51,13 +50,10 @@ import Data.SAM.Version1_6.Read.Parser.Header.HD.SO
 import Data.SAM.Version1_6.Read.Parser.Header.HD.GO
 import Data.SAM.Version1_6.Read.Parser.Header.HD.SS
 
+import Control.Applicative.Permutations           (intercalateEffect,toPermutation,toPermutationWithDefault)
+import Data.Attoparsec.ByteString.Char8  as DABC8 (endOfLine)
 import Data.Attoparsec.ByteString.Lazy   as DABL
 import Text.Regex.PCRE.Heavy
-
--- | Make a parser optional, return Nothing if there is no match.
-maybeOption :: Parser a
-            -> Parser (Maybe a)
-maybeOption p = option Nothing (Just <$> p)
 
 -- | @"SAM_V1_6_File_Level_Metadata"@ parser.
 --
@@ -71,19 +67,18 @@ parse_SAM_V1_6_File_Level_Metadata = do
                   case (hdheaderp =~ [re|[@][H][D]|]) of
                     False -> fail $ show SAM_V1_6_Error_File_Level_Metadata_Tag_Incorrect_Format
                     True  -> -- @HD tag is in the accepted format.
-                             return hdheaderp
+                             return () 
   _         <- word8 09
-  -- This parser assumes that the VN tag always appears first, followed by
-  -- SO, GO and SS tags, if they exist, in that order.
-  vn <- parse_SAM_V1_6_File_Level_Metadata_VN
-  _  <- word8 09
-  so <- maybeOption parse_SAM_V1_6_File_Level_Metadata_SO
-  _  <- word8 09
-  go <- maybeOption parse_SAM_V1_6_File_Level_Metadata_GO
-  _  <- word8 09
-  ss <- maybeOption parse_SAM_V1_6_File_Level_Metadata_SS
-  return SAM_V1_6_File_Level_Metadata { sam_v1_6_file_level_metadata_format_version     = vn
-                                      , sam_v1_6_file_level_metadata_sorting_order      = so
-                                      , sam_v1_6_file_level_metadata_alignment_grouping = go
-                                      , sam_v1_6_file_level_metadata_subsorting_order   = ss
-                                      }
+  -- This parser assumes that the
+  -- VN, SO, GO and SS tags can appear in any order.
+  hd <- intercalateEffect (word8 09) $
+          SAM_V1_6_File_Level_Metadata
+            <$> toPermutation parse_SAM_V1_6_File_Level_Metadata_VN
+            <*> toPermutationWithDefault Nothing 
+                                         (Just <$> parse_SAM_V1_6_File_Level_Metadata_SO)
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_File_Level_Metadata_GO)
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_File_Level_Metadata_SS)
+  _ <- endOfLine
+  return hd 

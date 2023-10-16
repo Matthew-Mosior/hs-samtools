@@ -9,7 +9,6 @@
 {-# LANGUAGE PackageImports        #-}
 {-# LANGUAGE RecordWildCards       #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE QuasiQuotes           #-}
 
@@ -41,27 +40,28 @@
 -- This library enables the decoding/encoding of SAM, BAM and CRAM file formats.
 
 module Data.SAM.Version1_6.Read.Parser.Header.RG.PU ( -- * SAM_V1_6 parser - header section (Read group) - PU tag
-                                                      parse_SAM_V1_6_SAM_V1_6_Read_Group_PU
+                                                      parse_SAM_V1_6_Read_Group_PU
                                                     ) where
 
 import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
-import           Data.Attoparsec.ByteString.Lazy   as DABL
-import           Text.Regex.PCRE.Heavy
+import Data.Attoparsec.ByteString.Char8 (isEndOfLine)
+import Data.Attoparsec.ByteString.Lazy as DABL
+import Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the PU tag of the @RG tag section of the SAM v1.6 file format.
 --
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
-parse_SAM_V1_6_SAM_V1_6_Read_Group_PU :: Parser SAM_V1_6_Read_Group_Platform_Unit 
-parse_SAM_V1_6_SAM_V1_6_Read_Group_PU = do
+parse_SAM_V1_6_Read_Group_PU :: Parser SAM_V1_6_Read_Group_Platform_Unit 
+parse_SAM_V1_6_Read_Group_PU = do
   _ <- do rgheaderplatformunittagp <- DABL.takeTill (== 58)
           -- Parse PU tag of the header section.
           case (rgheaderplatformunittagp =~ [re|[P][U]|]) of
             False -> fail $ show SAM_V1_6_Error_Read_Group_Platform_Unit_Incorrect_Format 
             True  -> -- PU tag is in the accepted format. 
-                     return rgheaderplatformunittagp
+                     return ()
   _ <- word8 58
-  rgheaderplatformunitvalue <- DABL.takeTill (== 09)
+  rgheaderplatformunitvalue <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
   return SAM_V1_6_Read_Group_Platform_Unit { sam_v1_6_read_group_platform_unit_value = rgheaderplatformunitvalue
                                            }

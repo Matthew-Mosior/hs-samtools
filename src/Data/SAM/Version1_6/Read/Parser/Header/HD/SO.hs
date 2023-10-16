@@ -47,8 +47,9 @@ module Data.SAM.Version1_6.Read.Parser.Header.HD.SO ( -- * SAM_V1_6 parser - hea
 import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
-import           Data.Attoparsec.ByteString.Lazy   as DABL
-import           Text.Regex.PCRE.Heavy
+import Data.Attoparsec.ByteString.Char8 (isEndOfLine)
+import Data.Attoparsec.ByteString.Lazy   as DABL
+import Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the SO tag of the @HD tag section of the SAM v1.6 file format.
 --
@@ -60,9 +61,9 @@ parse_SAM_V1_6_File_Level_Metadata_SO = do
           case (hdheadersortingordertagp =~ [re|[S][O]|]) of
             False -> fail $ show SAM_V1_6_Error_File_Level_Metadata_Sorting_Order_Tag_Incorrect_Format
             True  -> -- SO tag is in the accepted format.
-                     return hdheadersortingordertagp
+                     return ()
   _ <- word8 58
-  hdheadersortingordervalue <- do hdheadersortingordervaluep <- DABL.takeTill (== 09)
+  hdheadersortingordervalue <- do hdheadersortingordervaluep <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
                                   -- Parse SO value of the header section.
                                   case (hdheadersortingordervaluep =~ [re|[u][n][k][n][o][w][n]|[u][n][s][o][r][t][e][d]|[q][u][e][r][y][n][a][m][e]|[c][o][o][r][d][i][n][a][t][e]|]) of
                                     False -> fail $ show SAM_V1_6_Error_File_Level_Metadata_Sorting_Order_Invalid_Value

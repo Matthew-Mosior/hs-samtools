@@ -111,6 +111,57 @@ data SAM_V1_6_Alignment = SAM_V1_6_Alignment { sam_v1_6_alignment_qname :: ByteS
                                              }
   deriving (Generic,Typeable)
 
+instance Eq SAM_V1_6_Alignment where
+  SAM_V1_6_Alignment sam_v1_6_alignment_qname1
+                     sam_v1_6_alignment_flag1
+                     sam_v1_6_alignment_rname1
+                     sam_v1_6_alignment_pos1
+                     sam_v1_6_alignment_mapq1
+                     sam_v1_6_alignment_cigar1
+                     sam_v1_6_alignment_rnext1
+                     sam_v1_6_alignment_pnext1
+                     sam_v1_6_alignment_tlen1
+                     sam_v1_6_alignment_seq1
+                     sam_v1_6_alignment_qual1
+                     sam_v1_6_alignment_aopt1
+                     sam_v1_6_alignment_iopt1
+                     sam_v1_6_alignment_fopt1
+                     sam_v1_6_alignment_zopt1
+                     sam_v1_6_alignment_hopt1
+                     sam_v1_6_alignment_bopt1 == SAM_V1_6_Alignment sam_v1_6_alignment_qname2
+                                                                    sam_v1_6_alignment_flag2
+                                                                    sam_v1_6_alignment_rname2
+                                                                    sam_v1_6_alignment_pos2
+                                                                    sam_v1_6_alignment_mapq2
+                                                                    sam_v1_6_alignment_cigar2
+                                                                    sam_v1_6_alignment_rnext2
+                                                                    sam_v1_6_alignment_pnext2
+                                                                    sam_v1_6_alignment_tlen2
+                                                                    sam_v1_6_alignment_seq2
+                                                                    sam_v1_6_alignment_qual2
+                                                                    sam_v1_6_alignment_aopt2
+                                                                    sam_v1_6_alignment_iopt2
+                                                                    sam_v1_6_alignment_fopt2
+                                                                    sam_v1_6_alignment_zopt2
+                                                                    sam_v1_6_alignment_hopt2
+                                                                    sam_v1_6_alignment_bopt2 = sam_v1_6_alignment_qname1 == sam_v1_6_alignment_qname2 &&  
+                                                                                               sam_v1_6_alignment_flag1  == sam_v1_6_alignment_flag2  &&
+                                                                                               sam_v1_6_alignment_rname1 == sam_v1_6_alignment_rname2 &&
+                                                                                               sam_v1_6_alignment_pos1   == sam_v1_6_alignment_pos2   &&
+                                                                                               sam_v1_6_alignment_mapq1  == sam_v1_6_alignment_mapq2  &&
+                                                                                               sam_v1_6_alignment_cigar1 == sam_v1_6_alignment_cigar2 &&
+                                                                                               sam_v1_6_alignment_rnext1 == sam_v1_6_alignment_rnext2 &&
+                                                                                               sam_v1_6_alignment_pnext1 == sam_v1_6_alignment_pnext2 &&
+                                                                                               sam_v1_6_alignment_tlen1  == sam_v1_6_alignment_tlen2  &&
+                                                                                               sam_v1_6_alignment_seq1   == sam_v1_6_alignment_seq2   &&
+                                                                                               sam_v1_6_alignment_qual1  == sam_v1_6_alignment_qual2  &&
+                                                                                               sam_v1_6_alignment_aopt1  == sam_v1_6_alignment_aopt2  &&
+                                                                                               sam_v1_6_alignment_iopt1  == sam_v1_6_alignment_iopt2  &&
+                                                                                               sam_v1_6_alignment_fopt1  == sam_v1_6_alignment_fopt2  &&
+                                                                                               sam_v1_6_alignment_zopt1  == sam_v1_6_alignment_zopt2  &&
+                                                                                               sam_v1_6_alignment_hopt1  == sam_v1_6_alignment_hopt2  &&
+                                                                                               sam_v1_6_alignment_bopt1  == sam_v1_6_alignment_bopt2
+
 instance Show SAM_V1_6_Alignment where
   show (SAM_V1_6_Alignment qname flag rname pos mapq cigar rnext pnext tlen seq qual aopt iopt fopt zopt hopt bopt) =
     "SAM_V1_6_Alignment { " ++

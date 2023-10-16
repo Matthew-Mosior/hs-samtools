@@ -9,7 +9,6 @@
 {-# LANGUAGE PackageImports        #-}
 {-# LANGUAGE RecordWildCards       #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE QuasiQuotes           #-}
 
@@ -41,30 +40,31 @@
 -- This library enables the decoding/encoding of SAM, BAM and CRAM file formats.
 
 module Data.SAM.Version1_6.Read.Parser.Header.RG.FO ( -- * SAM_V1_6 parser - header section (Read group) - FO tag
-                                                      parse_SAM_V1_6_SAM_V1_6_Read_Group_FO
+                                                      parse_SAM_V1_6_Read_Group_FO
                                                     ) where
 
 import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
-import           Data.Attoparsec.ByteString.Lazy   as DABL
-import           Text.Regex.PCRE.Heavy
+import Data.Attoparsec.ByteString.Char8 (isEndOfLine)
+import Data.Attoparsec.ByteString.Lazy as DABL
+import Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the FO tag of the @RG tag section of the SAM v1.6 file format.
 --
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
-parse_SAM_V1_6_SAM_V1_6_Read_Group_FO :: Parser SAM_V1_6_Read_Group_Flow_Order 
-parse_SAM_V1_6_SAM_V1_6_Read_Group_FO = do
+parse_SAM_V1_6_Read_Group_FO :: Parser SAM_V1_6_Read_Group_Flow_Order 
+parse_SAM_V1_6_Read_Group_FO = do
   _ <- do rgheaderflowordertagp <- DABL.takeTill (== 58)
           -- Parse FO tag of the header section.
           case (rgheaderflowordertagp =~ [re|[F][O]|]) of
             False -> fail $ show SAM_V1_6_Error_Read_Group_Flow_Order_Incorrect_Format
             True  -> -- FO tag is in the accepted format. 
-                     return rgheaderflowordertagp
+                     return ()
   _ <- word8 58
-  rgheaderflowordervalue <- do rgheaderflowordervaluep <- DABL.takeTill (== 09)
+  rgheaderflowordervalue <- do rgheaderflowordervaluep <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
                                -- Parse FO value of the header section.
-                               case (rgheaderflowordervaluep =~ [re|/\*|[ACMGRSVTWYHKDBN]+/|]) of
+                               case (rgheaderflowordervaluep =~ [re|\*|[ACMGRSVTWYHKDBN]+|]) of
                                  False -> fail $ show SAM_V1_6_Error_Read_Group_Flow_Order_Incorrect_Format
                                  True  -> -- FO value is in the accepted format.
                                           return rgheaderflowordervaluep

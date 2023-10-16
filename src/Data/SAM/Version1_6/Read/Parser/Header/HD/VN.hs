@@ -47,8 +47,9 @@ module Data.SAM.Version1_6.Read.Parser.Header.HD.VN ( -- * SAM_V1_6 parser - hea
 import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
-import           Data.Attoparsec.ByteString.Lazy   as DABL
-import           Text.Regex.PCRE.Heavy
+import Data.Attoparsec.ByteString.Char8 (isEndOfLine)
+import Data.Attoparsec.ByteString.Lazy   as DABL
+import Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the VN tag of the @HD tag section of the SAM v1.6 file format.
 --
@@ -60,11 +61,11 @@ parse_SAM_V1_6_File_Level_Metadata_VN = do
           case (hdheaderversiontagp =~ [re|[V][N]|]) of
             False -> fail $ show SAM_V1_6_Error_File_Level_Metadata_Format_Version_Tag_Incorrect_Format
             True  -> -- VN tag is in the accepted format. 
-                     return hdheaderversiontagp
+                     return ()
   _ <- word8 58
-  hdheaderversionvalue <- do hdheaderversionvaluep <- DABL.takeTill (== 09)
+  hdheaderversionvalue <- do hdheaderversionvaluep <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
                              -- Parse VN value of the header section.
-                             case (hdheaderversionvaluep =~ [re|/^[0-9]+\.[0-9]+$/.|]) of
+                             case (hdheaderversionvaluep =~ [re|^[0-9]+\.[0-9]+$|]) of
                                False -> fail $ show SAM_V1_6_Error_File_Level_Metadata_Format_Version_Value_Incorrect_Format
                                True  -> -- VN value is in the accepted format.
                                         return hdheaderversionvaluep  

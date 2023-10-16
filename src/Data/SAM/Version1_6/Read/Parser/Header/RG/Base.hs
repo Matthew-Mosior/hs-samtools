@@ -9,7 +9,6 @@
 {-# LANGUAGE PackageImports              #-}
 {-# LANGUAGE RecordWildCards             #-}
 {-# LANGUAGE ScopedTypeVariables         #-}
-{-# LANGUAGE TemplateHaskell             #-}
 {-# LANGUAGE TypeFamilies                #-}
 {-# LANGUAGE QuasiQuotes                 #-}
 {-# OPTIONS_GHC -fno-warn-name-shadowing #-}
@@ -62,13 +61,10 @@ import Data.SAM.Version1_6.Read.Parser.Header.RG.PM
 import Data.SAM.Version1_6.Read.Parser.Header.RG.PU
 import Data.SAM.Version1_6.Read.Parser.Header.RG.SM
 
+import Control.Applicative.Permutations           (intercalateEffect,toPermutation,toPermutationWithDefault)
+import Data.Attoparsec.ByteString.Char8  as DABC8 (endOfLine)
 import Data.Attoparsec.ByteString.Lazy   as DABL
 import Text.Regex.PCRE.Heavy
-
--- | Make a parser optional, return Nothing if there is no match.
-maybeOption :: Parser a
-            -> Parser (Maybe a)
-maybeOption p = option Nothing (Just <$> p)
 
 -- | @"SAM_V1_6_Read_Group"@ parser.
 --
@@ -82,50 +78,39 @@ parse_SAM_V1_6_Read_Group = do
                   case (rgheaderp =~ [re|[@][R][G]|]) of
                     False -> fail $ show SAM_V1_6_Error_Read_Group_Tag_Incorrect_Format
                     True  -> -- @RG tag is in the accepted format.
-                             return rgheaderp
+                             return ()
   _         <- word8 09
-  -- This parser assumes that the ID tag always appears first, followed by
-  -- the BC, CN, DS, DT, FO, KS, LB, PG, PI, PL,
-  -- PM, PU and SM tags if they exist, in that order.
-  id <- parse_SAM_V1_6_SAM_V1_6_Read_Group_ID
-  _  <- word8 09
-  bc <- maybeOption parse_SAM_V1_6_SAM_V1_6_Read_Group_BC
-  _  <- word8 09
-  cn <- maybeOption parse_SAM_V1_6_SAM_V1_6_Read_Group_CN
-  _  <- word8 09
-  ds <- maybeOption parse_SAM_V1_6_SAM_V1_6_Read_Group_DS
-  _  <- word8 09
-  dt <- maybeOption parse_SAM_V1_6_SAM_V1_6_Read_Group_DT
-  _  <- word8 09
-  fo <- maybeOption parse_SAM_V1_6_SAM_V1_6_Read_Group_FO
-  _  <- word8 09
-  ks <- maybeOption parse_SAM_V1_6_SAM_V1_6_Read_Group_KS
-  _  <- word8 09
-  lb <- maybeOption parse_SAM_V1_6_SAM_V1_6_Read_Group_LB
-  _  <- word8 09
-  pg <- maybeOption parse_SAM_V1_6_SAM_V1_6_Read_Group_PG
-  _  <- word8 09
-  pi <- maybeOption parse_SAM_V1_6_SAM_V1_6_Read_Group_PI
-  _  <- word8 09
-  pl <- maybeOption parse_SAM_V1_6_SAM_V1_6_Read_Group_PL
-  _  <- word8 09
-  pm <- maybeOption parse_SAM_V1_6_SAM_V1_6_Read_Group_PM
-  _  <- word8 09
-  pu <- maybeOption parse_SAM_V1_6_SAM_V1_6_Read_Group_PU
-  _  <- word8 09
-  sm <- maybeOption parse_SAM_V1_6_SAM_V1_6_Read_Group_SM
-  return SAM_V1_6_Read_Group { sam_v1_6_read_group_identifer                    = id
-                             , sam_v1_6_read_group_barcode_sequence             = bc
-                             , sam_v1_6_read_group_sequencing_center            = cn
-                             , sam_v1_6_read_group_description                  = ds
-                             , sam_v1_6_read_group_run_date                     = dt
-                             , sam_v1_6_read_group_flow_order                   = fo
-                             , sam_v1_6_read_group_key_sequence                 = ks
-                             , sam_v1_6_read_group_library                      = lb
-                             , sam_v1_6_read_group_programs                     = pg
-                             , sam_v1_6_read_group_predicted_median_insert_size = pi
-                             , sam_v1_6_read_group_platform                     = pl
-                             , sam_v1_6_read_group_platform_model               = pm
-                             , sam_v1_6_read_group_platform_unit                = pu
-                             , sam_v1_6_read_group_sample                       = sm
-                             }
+  -- This parser assumes that the
+  -- ID, BC, CN, DS, DT, FO, KS, LB, PG, PI, PL,
+  -- PM, PU and SM tags can appear in any order.
+  rg <- intercalateEffect (word8 09) $
+          SAM_V1_6_Read_Group
+            <$> toPermutation parse_SAM_V1_6_Read_Group_ID
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_Read_Group_BC)
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_Read_Group_CN)
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_Read_Group_DS)
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_Read_Group_DT)
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_Read_Group_FO)
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_Read_Group_KS)
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_Read_Group_LB)
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_Read_Group_PG)
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_Read_Group_PI)
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_Read_Group_PL)
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_Read_Group_PM)
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_Read_Group_PU)
+            <*> toPermutationWithDefault Nothing
+                                         (Just <$> parse_SAM_V1_6_Read_Group_SM)
+  _ <- endOfLine
+  return rg 

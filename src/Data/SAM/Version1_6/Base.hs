@@ -57,6 +57,24 @@ data SAM_V1_6 = SAM_V1_6 { sam_v1_6_file_level_metadata           :: Maybe SAM_V
                          }
   deriving (Generic,Typeable)
 
+instance Eq SAM_V1_6 where
+  SAM_V1_6 sam_v1_6_file_level_metadata1
+           sam_v1_6_reference_sequence_dictionary1
+           sam_v1_6_read_group1
+           sam_v1_6_program1
+           sam_v1_6_one_line_comment1
+           sam_v1_6_alignment1 == SAM_V1_6 sam_v1_6_file_level_metadata2
+                                           sam_v1_6_reference_sequence_dictionary2
+                                           sam_v1_6_read_group2
+                                           sam_v1_6_program2
+                                           sam_v1_6_one_line_comment2
+                                           sam_v1_6_alignment2 = sam_v1_6_file_level_metadata1           == sam_v1_6_file_level_metadata2           &&
+                                                                 sam_v1_6_reference_sequence_dictionary1 == sam_v1_6_reference_sequence_dictionary2 &&
+                                                                 sam_v1_6_read_group1                    == sam_v1_6_read_group2                    &&
+                                                                 sam_v1_6_program1                       == sam_v1_6_program2                       &&
+                                                                 sam_v1_6_one_line_comment1              == sam_v1_6_one_line_comment2              &&
+                                                                 sam_v1_6_alignment1                     == sam_v1_6_alignment2
+
 instance Show SAM_V1_6 where
   show (SAM_V1_6 file_level_metadata
                  reference_sequence_dictionary

@@ -47,8 +47,9 @@ module Data.SAM.Version1_6.Read.Parser.Header.HD.SS ( -- * SAM_V1_6 parser - hea
 import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
-import           Data.Attoparsec.ByteString.Lazy   as DABL
-import           Text.Regex.PCRE.Heavy
+import Data.Attoparsec.ByteString.Char8 (isEndOfLine)
+import Data.Attoparsec.ByteString.Lazy   as DABL
+import Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the SS tag of the @HD tag section of the SAM v1.6 file format.
 --
@@ -60,9 +61,9 @@ parse_SAM_V1_6_File_Level_Metadata_SS = do
           case (hdheadersubsortingordertagp =~ [re|[S][S]|]) of
             False -> fail $ show SAM_V1_6_Error_File_Level_Metadata_Subsorting_Order_Tag_Incorrect_Format
             True  -> -- SS tag is in the accepted format.
-                     return hdheadersubsortingordertagp
+                     return ()
   _ <- word8 58
-  hdheadersubsortingordervalue <- do hdheadersubsortingordervaluep <- DABL.takeTill (== 09)
+  hdheadersubsortingordervalue <- do hdheadersubsortingordervaluep <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
                                      -- Parse SS value of the header section.
                                      case (hdheadersubsortingordervaluep =~ [re|(coordinate|queryname|unsorted)(:[A-Za-z0-9_-]+)+|]) of
                                        False -> fail $ show SAM_V1_6_Error_File_Level_Metadata_Subsorting_Order_Incorrect_Format 
