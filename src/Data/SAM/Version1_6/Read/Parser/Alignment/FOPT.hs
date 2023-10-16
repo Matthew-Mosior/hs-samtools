@@ -9,7 +9,6 @@
 {-# LANGUAGE PackageImports        #-}
 {-# LANGUAGE RecordWildCards       #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
 {-# Language QuasiQuotes           #-}
 
@@ -46,6 +45,7 @@ module Data.SAM.Version1_6.Read.Parser.Alignment.FOPT ( -- * SAM_V1_6 parser - a
 
 import Data.SAM.Version1_6.Read.Error
 
+import           Data.Attoparsec.ByteString.Char8  as DABC8 (isEndOfLine)
 import           Data.Attoparsec.ByteString.Lazy   as DABL
 import qualified Data.ByteString.Char8             as DBC8
 import           Text.Regex.PCRE.Heavy
@@ -57,19 +57,19 @@ parse_SAM_V1_6_Alignment_FOPT :: Parser Float
 parse_SAM_V1_6_Alignment_FOPT = do
   _ <- do alignmentfoptfieldtagp <- DABL.takeTill (== 58)
           -- Parse FOPT tag of the alignment section.
-          case (alignmentfoptfieldtagp =~ [re|/[A-Za-z][A-Za-z0-9]/|]) of
+          case (alignmentfoptfieldtagp =~ [re|[A-Za-z][A-Za-z0-9]|]) of
             False -> fail $ show SAM_V1_6_Error_Alignment_FOPT_Tag_Incorrect_Format
             True  -> -- FOPT tag is in the accepted format. 
-                     return alignmentfoptfieldtagp
+                     return ()
   _ <- word8 58
   _ <- do alignmentfoptfieldtypep <- DABL.takeTill (== 58)
           -- Parse FOPT type of the alignment section.
           case (alignmentfoptfieldtypep =~ [re|[f]|]) of
             False -> fail $ show SAM_V1_6_Error_Alignment_FOPT_Type_Incorrect_Format
             True  -> -- FOPT type is in the accepted format.
-                     return alignmentfoptfieldtypep
+                     return ()
   _ <- word8 58
-  alignmentfoptfieldvalue <- do alignmentfoptfieldvaluep <- DABL.takeTill (== 09)
+  alignmentfoptfieldvalue <- do alignmentfoptfieldvaluep <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
                                 -- Parse FOPT value of the alignment section.
                                 case (alignmentfoptfieldvaluep =~ [re|[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?|]) of
                                   False -> fail $ show SAM_V1_6_Error_Alignment_FOPT_Value_Incorrect_Format

@@ -69,6 +69,27 @@ data SAM_V1_6_Alignment_BOPT = SAM_V1_6_Alignment_BOPT { sam_v1_6_alignment_bopt
                                                        }
   deriving (Generic,Typeable)
 
+instance Eq SAM_V1_6_Alignment_BOPT where
+  SAM_V1_6_Alignment_BOPT sam_v1_6_alignment_bopt_int81
+                          sam_v1_6_alignment_bopt_word81
+                          sam_v1_6_alignment_bopt_int161
+                          sam_v1_6_alignment_bopt_word161
+                          sam_v1_6_alignment_bopt_int321
+                          sam_v1_6_alignment_bopt_word321
+                          sam_v1_6_alignment_bopt_float1 == SAM_V1_6_Alignment_BOPT sam_v1_6_alignment_bopt_int82
+                                                                                    sam_v1_6_alignment_bopt_word82
+                                                                                    sam_v1_6_alignment_bopt_int162
+                                                                                    sam_v1_6_alignment_bopt_word162
+                                                                                    sam_v1_6_alignment_bopt_int322
+                                                                                    sam_v1_6_alignment_bopt_word322
+                                                                                    sam_v1_6_alignment_bopt_float2 = sam_v1_6_alignment_bopt_int81   == sam_v1_6_alignment_bopt_int82   &&
+                                                                                                                     sam_v1_6_alignment_bopt_word81  == sam_v1_6_alignment_bopt_word82  &&
+                                                                                                                     sam_v1_6_alignment_bopt_int161  == sam_v1_6_alignment_bopt_int162  &&
+                                                                                                                     sam_v1_6_alignment_bopt_word161 == sam_v1_6_alignment_bopt_word162 &&
+                                                                                                                     sam_v1_6_alignment_bopt_int321  == sam_v1_6_alignment_bopt_int322  &&
+                                                                                                                     sam_v1_6_alignment_bopt_word321 == sam_v1_6_alignment_bopt_word322 &&
+                                                                                                                     sam_v1_6_alignment_bopt_float1  == sam_v1_6_alignment_bopt_float2
+
 instance Show SAM_V1_6_Alignment_BOPT where
   show (SAM_V1_6_Alignment_BOPT int8
                                 word8

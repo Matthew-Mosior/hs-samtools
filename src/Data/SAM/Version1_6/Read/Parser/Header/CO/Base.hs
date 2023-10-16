@@ -9,7 +9,6 @@
 {-# LANGUAGE PackageImports              #-}
 {-# LANGUAGE RecordWildCards             #-}
 {-# LANGUAGE ScopedTypeVariables         #-}
-{-# LANGUAGE TemplateHaskell             #-}
 {-# LANGUAGE TypeFamilies                #-}
 {-# LANGUAGE QuasiQuotes                 #-}
 {-# OPTIONS_GHC -fno-warn-name-shadowing #-}
@@ -48,7 +47,7 @@ module Data.SAM.Version1_6.Read.Parser.Header.CO.Base ( -- * SAM_V1_6 parser - h
 import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
-import Data.Attoparsec.ByteString.Char8  as DABC8
+import Data.Attoparsec.ByteString.Char8  as DABC8 (endOfLine,isEndOfLine)
 import Data.Attoparsec.ByteString.Lazy   as DABL
 import Text.Regex.PCRE.Heavy
 
@@ -64,8 +63,9 @@ parse_SAM_V1_6_One_Line_Comment = do
                   case (coheaderp =~ [re|[@][C][O]|]) of
                     False -> fail $ show SAM_V1_6_Error_One_Line_Comment_Tag_Incorrect_Format
                     True  -> -- @CO tag is in the accepted format.
-                             return coheaderp
+                             return ()
   _         <- word8 09
-  value     <- DABL.takeTill (\x -> x == 13 || x == 10)
+  value     <- DABL.takeTill isEndOfLine
+  _         <- endOfLine
   return SAM_V1_6_One_Line_Comment { sam_v1_6_one_line_comment_value = value
                                    }

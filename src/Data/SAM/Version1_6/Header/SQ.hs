@@ -57,6 +57,36 @@ data SAM_V1_6_Reference_Sequence_Dictionary = SAM_V1_6_Reference_Sequence_Dictio
                                                                                      }
   deriving (Generic,Typeable)
 
+instance Eq SAM_V1_6_Reference_Sequence_Dictionary where
+  SAM_V1_6_Reference_Sequence_Dictionary sam_v1_6_reference_sequence_dictionary_reference_sequence_name1
+                                         sam_v1_6_reference_sequence_dictionary_reference_sequence_length1
+                                         sam_v1_6_reference_sequence_dictionary_reference_alternative_locus1
+                                         sam_v1_6_reference_sequence_dictionary_reference_alternative_reference_sequence_names1
+                                         sam_v1_6_reference_sequence_dictionary_genome_assembly_identifier1
+                                         sam_v1_6_reference_sequence_dictionary_description1
+                                         sam_v1_6_reference_sequence_dictionary_md5_checksum1
+                                         sam_v1_6_reference_sequence_dictionary_species1
+                                         sam_v1_6_reference_sequence_dictionary_molecule_topology1
+                                         sam_v1_6_reference_sequence_dictionary_uri1 == SAM_V1_6_Reference_Sequence_Dictionary sam_v1_6_reference_sequence_dictionary_reference_sequence_name2
+                                                                                                                               sam_v1_6_reference_sequence_dictionary_reference_sequence_length2
+                                                                                                                               sam_v1_6_reference_sequence_dictionary_reference_alternative_locus2
+                                                                                                                               sam_v1_6_reference_sequence_dictionary_reference_alternative_reference_sequence_names2
+                                                                                                                               sam_v1_6_reference_sequence_dictionary_genome_assembly_identifier2
+                                                                                                                               sam_v1_6_reference_sequence_dictionary_description2
+                                                                                                                               sam_v1_6_reference_sequence_dictionary_md5_checksum2
+                                                                                                                               sam_v1_6_reference_sequence_dictionary_species2
+                                                                                                                               sam_v1_6_reference_sequence_dictionary_molecule_topology2
+                                                                                                                               sam_v1_6_reference_sequence_dictionary_uri2 = sam_v1_6_reference_sequence_dictionary_reference_sequence_name1                        == sam_v1_6_reference_sequence_dictionary_reference_sequence_name2                        &&
+                                                                                                                                                                             sam_v1_6_reference_sequence_dictionary_reference_sequence_length1                      == sam_v1_6_reference_sequence_dictionary_reference_sequence_length2                      &&
+                                                                                                                                                                             sam_v1_6_reference_sequence_dictionary_reference_alternative_locus1                    == sam_v1_6_reference_sequence_dictionary_reference_alternative_locus2                    &&
+                                                                                                                                                                             sam_v1_6_reference_sequence_dictionary_reference_alternative_reference_sequence_names1 == sam_v1_6_reference_sequence_dictionary_reference_alternative_reference_sequence_names2 &&
+                                                                                                                                                                             sam_v1_6_reference_sequence_dictionary_genome_assembly_identifier1                     == sam_v1_6_reference_sequence_dictionary_genome_assembly_identifier2                     &&
+                                                                                                                                                                             sam_v1_6_reference_sequence_dictionary_description1                                    == sam_v1_6_reference_sequence_dictionary_description2                                    &&
+                                                                                                                                                                             sam_v1_6_reference_sequence_dictionary_md5_checksum1                                   == sam_v1_6_reference_sequence_dictionary_md5_checksum2                                   &&
+                                                                                                                                                                             sam_v1_6_reference_sequence_dictionary_species1                                        == sam_v1_6_reference_sequence_dictionary_species2                                        &&
+                                                                                                                                                                             sam_v1_6_reference_sequence_dictionary_molecule_topology1                              == sam_v1_6_reference_sequence_dictionary_molecule_topology2                              &&
+                                                                                                                                                                             sam_v1_6_reference_sequence_dictionary_uri1                                            == sam_v1_6_reference_sequence_dictionary_uri2
+
 instance Show SAM_V1_6_Reference_Sequence_Dictionary where
   show (SAM_V1_6_Reference_Sequence_Dictionary reference_sequence_name
                                                reference_sequence_length

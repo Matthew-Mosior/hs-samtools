@@ -9,7 +9,6 @@
 {-# LANGUAGE PackageImports        #-}
 {-# LANGUAGE RecordWildCards       #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE QuasiQuotes           #-}
 
@@ -41,27 +40,28 @@
 -- This library enables the decoding/encoding of SAM, BAM and CRAM file formats.
 
 module Data.SAM.Version1_6.Read.Parser.Header.PG.PN ( -- * SAM_V1_6 parser - header section (Program) - PN tag
-                                                      parse_SAM_V1_6_SAM_V1_6_Program_PN
+                                                      parse_SAM_V1_6_Program_PN
                                                     ) where
 
 import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
-import           Data.Attoparsec.ByteString.Lazy   as DABL
-import           Text.Regex.PCRE.Heavy
+import Data.Attoparsec.ByteString.Char8 (isEndOfLine)
+import Data.Attoparsec.ByteString.Lazy   as DABL
+import Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the PN tag of the @PG tag section of the SAM v1.6 file format.
 --
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
-parse_SAM_V1_6_SAM_V1_6_Program_PN :: Parser SAM_V1_6_Program_Name
-parse_SAM_V1_6_SAM_V1_6_Program_PN = do
+parse_SAM_V1_6_Program_PN :: Parser SAM_V1_6_Program_Name
+parse_SAM_V1_6_Program_PN = do
   _ <- do pgheadernametagp <- DABL.takeTill (== 58)
           -- Parse PN tag of the header section.
           case (pgheadernametagp =~ [re|[P][N]|]) of
             False -> fail $ show SAM_V1_6_Error_Program_Name_Incorrect_Format 
             True  -> -- PN tag is in the accepted format. 
-                     return pgheadernametagp
+                     return ()
   _ <- word8 58
-  pgheadernamevalue <- DABL.takeTill (== 09)
+  pgheadernamevalue <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
   return SAM_V1_6_Program_Name { sam_v1_6_program_name_value = pgheadernamevalue
                                }

@@ -1,16 +1,7 @@
-{-# LANGUAGE DeriveDataTypeable    #-}
-{-# LANGUAGE DeriveGeneric         #-}
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE OverloadedLists       #-}
-{-# LANGUAGE OverloadedStrings     #-}
-{-# LANGUAGE MultiWayIf            #-}
-{-# LANGUAGE PackageImports        #-}
-{-# LANGUAGE RecordWildCards       #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
-{-# Language QuasiQuotes           #-}
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Read.Base
@@ -35,12 +26,13 @@ import Data.SAM.Version1_6.Read.Parser.Header.PG.Base
 import Data.SAM.Version1_6.Read.Parser.Header.CO.Base
 import Data.SAM.Version1_6.Read.Parser.Alignment.Base
 
-import Data.Attoparsec.ByteString.Char8  as DABC8
+import Control.Applicative.Permutations                          (intercalateEffect,toPermutationWithDefault)
+import Data.Attoparsec.ByteString.Char8  as DABC8                (endOfLine)
 import Data.Attoparsec.ByteString.Lazy   as DABL
 import Data.ByteString.Lazy              as DBL
 import Data.Sequence                     as DSeq
 import qualified Streamly.Data.Stream    as S
-import Streamly.External.ByteString.Lazy as StreamlyLByteString (fromChunksIO)
+import Streamly.External.ByteString.Lazy as StreamlyLByteString  (fromChunksIO)
 import Streamly.Internal.FileSystem.File as StreamlyInternalFile (chunkReader)
 
 -- | Make a parser optional, return Nothing if there is no match.
@@ -51,36 +43,68 @@ maybeOption p = option Nothing (Just <$> p)
 -- | Define the @"SAM_V1_6"@ parser.
 parse_SAM_V1_6 :: Parser SAM_V1_6
 parse_SAM_V1_6 = do
-  filelevelmetadata           <- maybeOption $ parse_SAM_V1_6_File_Level_Metadata <* endOfLine
-  _                           <- word8 10
-  referencesequencedictionary <- maybeOption $ DABL.many' $ parse_SAM_V1_6_Reference_Sequence_Dictionary <* endOfLine
-  _                           <- word8 10
-  readgroup                   <- maybeOption $ DABL.many' $ parse_SAM_V1_6_Read_Group <* endOfLine
-  _                           <- word8 10
-  program                     <- maybeOption $ parse_SAM_V1_6_Program <* endOfLine
-  _                           <- word8 10
-  onelinecomment              <- maybeOption $ DABL.many' $ parse_SAM_V1_6_One_Line_Comment <* endOfLine 
-  _                           <- word8 10
-  alignment                   <- DABL.many' $ parse_SAM_V1_6_Alignment <* endOfLine
-  return SAM_V1_6 { sam_v1_6_file_level_metadata           = filelevelmetadata
-                  , sam_v1_6_reference_sequence_dictionary = case referencesequencedictionary of
-                                                               Nothing                           -> Nothing
-                                                               Just referencesequencedictionaryf -> Just $ DSeq.fromList referencesequencedictionaryf
-                  , sam_v1_6_read_group                    = case readgroup of
-                                                               Nothing         -> Nothing
-                                                               Just readgroupf -> Just $ DSeq.fromList readgroupf
-                  , sam_v1_6_program                       = program
-                  , sam_v1_6_one_line_comment              = case onelinecomment of
-                                                               Nothing              -> Nothing
-                                                               Just onelinecommentf -> Just $ DSeq.fromList onelinecommentf
-                  , sam_v1_6_alignment                     = DSeq.fromList alignment
-                  } 
+  filelevelmetadata <- maybeOption parse_SAM_V1_6_File_Level_Metadata
+  case filelevelmetadata of
+    Nothing  -> do samwoalignment <- intercalateEffect endOfLine $
+                                       (,,,)
+                                         <$> toPermutationWithDefault Nothing
+                                                                      (Just <$> DABL.many1' parse_SAM_V1_6_Reference_Sequence_Dictionary)
+                                         <*> toPermutationWithDefault Nothing
+                                                                      (Just <$> DABL.many1' parse_SAM_V1_6_Read_Group)
+                                         <*> toPermutationWithDefault Nothing
+                                                                      (Just <$> parse_SAM_V1_6_Program)
+                                         <*> toPermutationWithDefault Nothing
+                                                                      (Just <$> DABL.many1' parse_SAM_V1_6_One_Line_Comment)
+                   alignment <- DABL.many1' parse_SAM_V1_6_Alignment
+                   return SAM_V1_6 { sam_v1_6_file_level_metadata           = Nothing
+                                   , sam_v1_6_reference_sequence_dictionary = (\(a,_,_,_) -> case a of
+                                                                                               Nothing      -> Nothing
+                                                                                               Just finala  -> Just $ DSeq.fromList finala
+                                                                              ) samwoalignment
+                                   , sam_v1_6_read_group                    = (\(_,b,_,_) -> case b of
+                                                                                               Nothing      -> Nothing
+                                                                                               Just finalb  -> Just $ DSeq.fromList finalb
+                                                                              ) samwoalignment
+                                   , sam_v1_6_program                       = (\(_,_,c,_) -> c) samwoalignment
+                                   , sam_v1_6_one_line_comment              = (\(_,_,_,d) -> case d of
+                                                                                               Nothing      -> Nothing
+                                                                                               Just finald  -> Just $ DSeq.fromList finald
+                                                                              ) samwoalignment
+                                   , sam_v1_6_alignment                     = DSeq.fromList alignment
+                                   }
+    Just flm -> do samwoalignment <- intercalateEffect endOfLine $
+                                       (,,,)
+                                         <$> toPermutationWithDefault Nothing
+                                                                      (Just <$> DABL.many1' parse_SAM_V1_6_Reference_Sequence_Dictionary)
+                                         <*> toPermutationWithDefault Nothing
+                                                                      (Just <$> DABL.many1' parse_SAM_V1_6_Read_Group)
+                                         <*> toPermutationWithDefault Nothing
+                                                                      (Just <$> parse_SAM_V1_6_Program)
+                                         <*> toPermutationWithDefault Nothing
+                                                                      (Just <$> DABL.many1' parse_SAM_V1_6_One_Line_Comment)
+                   alignment <- DABL.many1' parse_SAM_V1_6_Alignment
+                   return SAM_V1_6 { sam_v1_6_file_level_metadata           = Just flm
+                                   , sam_v1_6_reference_sequence_dictionary = (\(a,_,_,_) -> case a of
+                                                                                               Nothing      -> Nothing
+                                                                                               Just finala  -> Just $ DSeq.fromList finala
+                                                                              ) samwoalignment
+                                   , sam_v1_6_read_group                    = (\(_,b,_,_) -> case b of
+                                                                                               Nothing      -> Nothing
+                                                                                               Just finalb  -> Just $ DSeq.fromList finalb
+                                                                              ) samwoalignment
+                                   , sam_v1_6_program                       = (\(_,_,c,_) -> c) samwoalignment
+                                   , sam_v1_6_one_line_comment              = (\(_,_,_,d) -> case d of
+                                                                                               Nothing      -> Nothing
+                                                                                               Just finald  -> Just $ DSeq.fromList finald
+                                                                              ) samwoalignment
+                                   , sam_v1_6_alignment                     = DSeq.fromList alignment
+                                   }
 
 -- | Run the @"SAM_V1_6"@ parser.
 readSAM_V1_6_LBS :: DBL.ByteString
                  -> IO SAM_V1_6
 readSAM_V1_6_LBS lbs =
-  case (DABL.parseOnly parse_SAM_V1_6 lbs) of
+  case (DABL.parseOnly parse_SAM_V1_6 lbs) of 
     Left  samparseerror -> error samparseerror
     Right sam           -> return sam
 

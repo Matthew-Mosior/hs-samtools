@@ -47,8 +47,9 @@ module Data.SAM.Version1_6.Read.Parser.Header.HD.GO ( -- * SAM_V1_6 parser - hea
 import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
-import           Data.Attoparsec.ByteString.Lazy   as DABL
-import           Text.Regex.PCRE.Heavy
+import Data.Attoparsec.ByteString.Char8 (isEndOfLine)
+import Data.Attoparsec.ByteString.Lazy   as DABL
+import Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the GO tag of the @HD tag section of the SAM v1.6 file format.
 --
@@ -60,9 +61,9 @@ parse_SAM_V1_6_File_Level_Metadata_GO = do
           case (hdheaderalignmentgroupingtagp =~ [re|[G][O]|]) of
             False -> fail $ show SAM_V1_6_Error_File_Level_Metadata_Grouping_Of_Alignments_Tag_Incorrect_Format
             True  -> -- GO tag is in the accepted format.
-                     return hdheaderalignmentgroupingtagp
+                     return ()
   _ <- word8 58
-  hdheaderalignmentgroupingvalue <- do hdheaderalignmentgroupingvaluep <- DABL.takeTill (== 09)
+  hdheaderalignmentgroupingvalue <- do hdheaderalignmentgroupingvaluep <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
                                        -- Parse GO value of the header section.
                                        case (hdheaderalignmentgroupingvaluep =~ [re|[n][o][n][e]|[q][u][e][r][y]|[r][e][f][e][r][e][n][c][e]|]) of
                                          False -> fail $ show SAM_V1_6_Error_File_Level_Metadata_Grouping_Of_Alignments_Invalid_Value

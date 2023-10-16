@@ -9,7 +9,6 @@
 {-# LANGUAGE PackageImports        #-}
 {-# LANGUAGE RecordWildCards       #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
 {-# Language QuasiQuotes           #-}
 
@@ -46,6 +45,7 @@ module Data.SAM.Version1_6.Read.Parser.Alignment.HOPT ( -- * SAM_V1_6 parser - a
 
 import Data.SAM.Version1_6.Read.Error
 
+import           Data.Attoparsec.ByteString.Char8  as DABC8 (isEndOfLine)
 import           Data.Attoparsec.ByteString.Lazy   as DABL
 import qualified Data.ByteString                   as DB
 import           Data.Sequence                     as DSeq
@@ -59,19 +59,19 @@ parse_SAM_V1_6_Alignment_HOPT :: Parser (Seq Word8)
 parse_SAM_V1_6_Alignment_HOPT = do
   _ <- do alignmenthoptfieldtagp <- DABL.takeTill (== 58)
           -- Parse HOPT tag of the alignment section.
-          case (alignmenthoptfieldtagp =~ [re|/[A-Za-z][A-Za-z0-9]/|]) of
+          case (alignmenthoptfieldtagp =~ [re|[A-Za-z][A-Za-z0-9]|]) of
             False -> fail $ show SAM_V1_6_Error_Alignment_HOPT_Tag_Incorrect_Format
             True  -> -- HOPT tag is in the accepted format. 
-                     return alignmenthoptfieldtagp
+                     return ()
   _ <- word8 58
   _ <- do alignmenthoptfieldtypep <- DABL.takeTill (== 58)
           -- Parse HOPT type of the alignment section.
           case (alignmenthoptfieldtypep =~ [re|[H]|]) of
             False -> fail $ show SAM_V1_6_Error_Alignment_HOPT_Type_Incorrect_Format
             True  -> -- HOPT type is in the accepted format.
-                     return alignmenthoptfieldtypep
+                     return ()
   _ <- word8 58
-  alignmenthoptfieldvalue <- do alignmenthoptfieldvaluep <- DABL.takeTill (== 09)
+  alignmenthoptfieldvalue <- do alignmenthoptfieldvaluep <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
                                 -- Parse HOPT value of the alignment section.
                                 case (alignmenthoptfieldvaluep =~ [re|([0-9A-F][0-9A-F])*|]) of
                                   False -> fail $ show SAM_V1_6_Error_Alignment_HOPT_Value_Incorrect_Format

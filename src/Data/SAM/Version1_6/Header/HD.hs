@@ -45,6 +45,18 @@ data SAM_V1_6_File_Level_Metadata = SAM_V1_6_File_Level_Metadata { sam_v1_6_file
                                                                  }
    deriving (Generic,Typeable)
 
+instance Eq SAM_V1_6_File_Level_Metadata where
+  SAM_V1_6_File_Level_Metadata sam_v1_6_file_level_metadata_format_version1
+                               sam_v1_6_file_level_metadata_sorting_order1
+                               sam_v1_6_file_level_metadata_alignment_grouping1
+                               sam_v1_6_file_level_metadata_subsorting_order1 == SAM_V1_6_File_Level_Metadata sam_v1_6_file_level_metadata_format_version2
+                                                                                                              sam_v1_6_file_level_metadata_sorting_order2
+                                                                                                              sam_v1_6_file_level_metadata_alignment_grouping2
+                                                                                                              sam_v1_6_file_level_metadata_subsorting_order2 = sam_v1_6_file_level_metadata_format_version1     == sam_v1_6_file_level_metadata_format_version2     &&
+                                                                                                                                                               sam_v1_6_file_level_metadata_sorting_order1      == sam_v1_6_file_level_metadata_sorting_order2      &&
+                                                                                                                                                               sam_v1_6_file_level_metadata_alignment_grouping1 == sam_v1_6_file_level_metadata_alignment_grouping2 &&
+                                                                                                                                                               sam_v1_6_file_level_metadata_subsorting_order1   == sam_v1_6_file_level_metadata_subsorting_order2
+
 instance Show SAM_V1_6_File_Level_Metadata where
   show (SAM_V1_6_File_Level_Metadata version sorting_order alignment_grouping subsorting_order) =
     "SAM_V1_6_File_Level_Metadata { " ++

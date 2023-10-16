@@ -9,7 +9,6 @@
 {-# LANGUAGE PackageImports        #-}
 {-# LANGUAGE RecordWildCards       #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE QuasiQuotes           #-}
 
@@ -41,28 +40,29 @@
 -- This library enables the decoding/encoding of SAM, BAM and CRAM file formats.
 
 module Data.SAM.Version1_6.Read.Parser.Header.SQ.LN ( -- * SAM_V1_6 parser - header section (Reference sequence dictionary) - LN tag
-                                                      parse_SAM_V1_6_SAM_V1_6_Reference_Sequence_Dictionary_LN
+                                                      parse_SAM_V1_6_Reference_Sequence_Dictionary_LN
                                                     ) where
 
 import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
-import           Data.Attoparsec.ByteString.Lazy   as DABL
-import           Text.Regex.PCRE.Heavy
+import Data.Attoparsec.ByteString.Char8 (isEndOfLine)
+import Data.Attoparsec.ByteString.Lazy   as DABL
+import Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the LN tag of the @SQ tag section of the SAM v1.6 file format.
 --
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
-parse_SAM_V1_6_SAM_V1_6_Reference_Sequence_Dictionary_LN :: Parser SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Length
-parse_SAM_V1_6_SAM_V1_6_Reference_Sequence_Dictionary_LN = do
+parse_SAM_V1_6_Reference_Sequence_Dictionary_LN :: Parser SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Length
+parse_SAM_V1_6_Reference_Sequence_Dictionary_LN = do
   _ <- do sqheadersequencelengthtagp <- DABL.takeTill (== 58)
           -- Parse LN tag of the header section.
           case (sqheadersequencelengthtagp =~ [re|[L][N]|]) of
             False -> fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Reference_Sequence_Length_Incorrect_Format
             True  -> -- LN tag is in the accepted format.
-                     return sqheadersequencelengthtagp
+                     return ()
   _ <- word8 58
-  sqheadersequencelengthvalue <- do sqheadersequencelengthvaluep <- DABL.takeTill (== 09)
+  sqheadersequencelengthvalue <- do sqheadersequencelengthvaluep <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
                                     -- Parse LN value of the header section.
                                     case (sqheadersequencelengthvaluep =~ [re|[0-9]*|]) of -- Make this regex actually check the range of [1,2^31 - 1]?
                                       False -> fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Reference_Sequence_Length_Invalid_Value

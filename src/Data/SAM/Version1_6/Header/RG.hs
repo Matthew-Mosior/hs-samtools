@@ -64,6 +64,48 @@ data SAM_V1_6_Read_Group = SAM_V1_6_Read_Group { sam_v1_6_read_group_identifer  
                                                , sam_v1_6_read_group_sample                       :: Maybe SAM_V1_6_Read_Group_Sample
                                                }
 
+instance Eq SAM_V1_6_Read_Group where
+  SAM_V1_6_Read_Group sam_v1_6_read_group_identifier1
+                      sam_v1_6_read_group_barcode_sequence1
+                      sam_v1_6_read_group_sequencing_center1
+                      sam_v1_6_read_group_description1
+                      sam_v1_6_read_group_run_date1
+                      sam_v1_6_read_group_flow_order1
+                      sam_v1_6_read_group_key_sequence1
+                      sam_v1_6_read_group_library1
+                      sam_v1_6_read_group_programs1
+                      sam_v1_6_read_group_predicted_median_insert_size1
+                      sam_v1_6_read_group_platform1
+                      sam_v1_6_read_group_platform_model1
+                      sam_v1_6_read_group_platform_unit1
+                      sam_v1_6_read_group_sample1 == SAM_V1_6_Read_Group sam_v1_6_read_group_identifier2
+                                                                         sam_v1_6_read_group_barcode_sequence2
+                                                                         sam_v1_6_read_group_sequencing_center2
+                                                                         sam_v1_6_read_group_description2
+                                                                         sam_v1_6_read_group_run_date2
+                                                                         sam_v1_6_read_group_flow_order2
+                                                                         sam_v1_6_read_group_key_sequence2
+                                                                         sam_v1_6_read_group_library2
+                                                                         sam_v1_6_read_group_programs2
+                                                                         sam_v1_6_read_group_predicted_median_insert_size2
+                                                                         sam_v1_6_read_group_platform2
+                                                                         sam_v1_6_read_group_platform_model2
+                                                                         sam_v1_6_read_group_platform_unit2
+                                                                         sam_v1_6_read_group_sample2 = sam_v1_6_read_group_identifier1                    == sam_v1_6_read_group_identifier2                    &&
+                                                                                                       sam_v1_6_read_group_barcode_sequence1             == sam_v1_6_read_group_barcode_sequence2             &&
+                                                                                                       sam_v1_6_read_group_sequencing_center1            == sam_v1_6_read_group_sequencing_center2            &&
+                                                                                                       sam_v1_6_read_group_description1                  == sam_v1_6_read_group_description2                  &&
+                                                                                                       sam_v1_6_read_group_run_date1                     == sam_v1_6_read_group_run_date2                     &&
+                                                                                                       sam_v1_6_read_group_flow_order1                   == sam_v1_6_read_group_flow_order2                   &&
+                                                                                                       sam_v1_6_read_group_key_sequence1                 == sam_v1_6_read_group_key_sequence2                 &&
+                                                                                                       sam_v1_6_read_group_library1                      == sam_v1_6_read_group_library2                      &&
+                                                                                                       sam_v1_6_read_group_programs1                     == sam_v1_6_read_group_programs2                     &&
+                                                                                                       sam_v1_6_read_group_predicted_median_insert_size1 == sam_v1_6_read_group_predicted_median_insert_size2 &&
+                                                                                                       sam_v1_6_read_group_platform1                     == sam_v1_6_read_group_platform2                     &&
+                                                                                                       sam_v1_6_read_group_platform_model1               == sam_v1_6_read_group_platform_model2               &&
+                                                                                                       sam_v1_6_read_group_platform_unit1                == sam_v1_6_read_group_platform_unit2                &&
+                                                                                                       sam_v1_6_read_group_sample1                       == sam_v1_6_read_group_sample2
+
 instance Show SAM_V1_6_Read_Group where
   show (SAM_V1_6_Read_Group group_identifier
                             barcode_sequence

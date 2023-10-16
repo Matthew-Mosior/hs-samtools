@@ -49,6 +49,24 @@ data SAM_V1_6_Program = SAM_V1_6_Program { sam_v1_6_program_record_identifier ::
                                          }
   deriving (Generic,Typeable)
 
+instance Eq SAM_V1_6_Program where
+  SAM_V1_6_Program sam_v1_6_program_record_identifier1
+                   sam_v1_6_program_name1
+                   sam_v1_6_program_command_line1
+                   sam_v1_6_program_previous_pg_id1
+                   sam_v1_6_program_description1
+                   sam_v1_6_program_version1 == SAM_V1_6_Program sam_v1_6_program_record_identifier2
+                                                                 sam_v1_6_program_name2
+                                                                 sam_v1_6_program_command_line2
+                                                                 sam_v1_6_program_previous_pg_id2
+                                                                 sam_v1_6_program_description2
+                                                                 sam_v1_6_program_version2 = sam_v1_6_program_record_identifier1 == sam_v1_6_program_record_identifier2 &&
+                                                                                             sam_v1_6_program_name1              == sam_v1_6_program_name2              &&
+                                                                                             sam_v1_6_program_command_line1      == sam_v1_6_program_command_line2      &&
+                                                                                             sam_v1_6_program_previous_pg_id1    == sam_v1_6_program_previous_pg_id2    &&
+                                                                                             sam_v1_6_program_description1       == sam_v1_6_program_description2       &&
+                                                                                             sam_v1_6_program_version1           == sam_v1_6_program_version2
+
 instance Show SAM_V1_6_Program where
   show (SAM_V1_6_Program record_identifier name command_line previous_pg_id description version) =
     "SAM_V1_6_Program { "    ++

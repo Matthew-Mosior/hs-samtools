@@ -9,7 +9,6 @@
 {-# LANGUAGE PackageImports        #-}
 {-# LANGUAGE RecordWildCards       #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
 {-# Language QuasiQuotes           #-}
 
@@ -47,6 +46,7 @@ module Data.SAM.Version1_6.Read.Parser.Alignment.BOPT ( -- * SAM_V1_6 parser - a
 import Data.SAM.Version1_6.Alignment.BOPT
 import Data.SAM.Version1_6.Read.Error
 
+import           Data.Attoparsec.ByteString.Char8  as DABC8 (isEndOfLine)
 import           Data.Attoparsec.ByteString.Lazy   as DABL
 import qualified Data.ByteString                   as DB (head,unpack)
 import qualified Data.ByteString.Char8             as DBC8
@@ -60,7 +60,7 @@ parse_SAM_V1_6_Alignment_BOPT :: Parser SAM_V1_6_Alignment_BOPT
 parse_SAM_V1_6_Alignment_BOPT = do
   alignmentboptfieldtag <- do alignmentboptfieldtagp <- DABL.takeTill (== 58)
                               -- Parse BOPT tag of the alignment section.
-                              case (alignmentboptfieldtagp =~ [re|/[A-Za-z][A-Za-z0-9]/|]) of
+                              case (alignmentboptfieldtagp =~ [re|[A-Za-z][A-Za-z0-9]|]) of
                                 False -> fail $ show SAM_V1_6_Error_Alignment_BOPT_Tag_Incorrect_Format
                                 True  -> -- BOPT tag is in the accepted format. 
                                          return alignmentboptfieldtagp
@@ -70,7 +70,7 @@ parse_SAM_V1_6_Alignment_BOPT = do
           case (alignmentboptfieldtypep =~ [re|[B]|]) of
             False -> fail $ show SAM_V1_6_Error_Alignment_BOPT_Type_Incorrect_Format
             True  -> -- BOPT type is in the accepted format.
-                     return alignmentboptfieldtypep
+                     return ()
   _ <- word8 58
   alignmentboptfieldvaluetype <- do alignmentboptfieldvaluetypep <- DABL.take 1
                                     -- Parse BOPT value type of the alignment section.
@@ -78,9 +78,10 @@ parse_SAM_V1_6_Alignment_BOPT = do
                                       False -> fail $ show SAM_V1_6_Error_Alignment_BOPT_Value_Type_Incorrect_Format
                                       True  -> -- BOPT value type is in the accepted format.
                                                return alignmentboptfieldvaluetypep
-  alignmentboptfieldvaluedata <- do alignmentboptfieldvaluedatap <- DABL.takeTill (\x -> x == 09 || x == 0x0D || x == 0x0A)
+  _ <- word8 44
+  alignmentboptfieldvaluedata <- do alignmentboptfieldvaluedatap <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
                                     -- Parse BOPT value data of the alignment section.
-                                    case (alignmentboptfieldvaluedatap =~ [re|(,[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)*|]) of
+                                    case (alignmentboptfieldvaluedatap =~ [re|([-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)*|]) of
                                       False -> fail $ show SAM_V1_6_Error_Alignment_BOPT_Value_Data_Incorrect_Format
                                       True  -> -- BOPT value data is in the accepted format.
                                                return alignmentboptfieldvaluedatap
@@ -169,4 +170,4 @@ parse_SAM_V1_6_Alignment_BOPT = do
                                           , sam_v1_6_alignment_bopt_int32  = Nothing
                                           , sam_v1_6_alignment_bopt_word32 = Nothing
                                           , sam_v1_6_alignment_bopt_float  = Nothing
-                                          } 
+                                          }

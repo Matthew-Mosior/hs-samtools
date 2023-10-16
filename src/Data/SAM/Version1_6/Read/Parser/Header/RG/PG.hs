@@ -9,7 +9,6 @@
 {-# LANGUAGE PackageImports        #-}
 {-# LANGUAGE RecordWildCards       #-}
 {-# LANGUAGE ScopedTypeVariables   #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
 {-# LANGUAGE QuasiQuotes           #-}
 
@@ -41,27 +40,28 @@
 -- This library enables the decoding/encoding of SAM, BAM and CRAM file formats.
 
 module Data.SAM.Version1_6.Read.Parser.Header.RG.PG ( -- * SAM_V1_6 parser - header section (Read group) - PG tag
-                                                      parse_SAM_V1_6_SAM_V1_6_Read_Group_PG
+                                                      parse_SAM_V1_6_Read_Group_PG
                                                     ) where
 
 import Data.SAM.Version1_6.Header
 import Data.SAM.Version1_6.Read.Error
 
-import           Data.Attoparsec.ByteString.Lazy   as DABL
-import           Text.Regex.PCRE.Heavy
+import Data.Attoparsec.ByteString.Char8 (isEndOfLine)
+import Data.Attoparsec.ByteString.Lazy as DABL
+import Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the PG tag of the @RG tag section of the SAM v1.6 file format.
 --
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
-parse_SAM_V1_6_SAM_V1_6_Read_Group_PG :: Parser SAM_V1_6_Read_Group_Programs 
-parse_SAM_V1_6_SAM_V1_6_Read_Group_PG = do
+parse_SAM_V1_6_Read_Group_PG :: Parser SAM_V1_6_Read_Group_Programs 
+parse_SAM_V1_6_Read_Group_PG = do
   _ <- do rgheaderprogramstagp <- DABL.takeTill (== 58)
           -- Parse PG tag of the header section.
           case (rgheaderprogramstagp =~ [re|[P][G]|]) of
             False -> fail $ show SAM_V1_6_Error_Read_Group_Programs_Incorrect_Format
             True  -> -- PG tag is in the accepted format. 
-                     return rgheaderprogramstagp
+                     return ()
   _ <- word8 58
-  rgheaderprogramsvalue <- DABL.takeTill (== 09)
+  rgheaderprogramsvalue <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
   return SAM_V1_6_Read_Group_Programs { sam_v1_6_read_group_programs_value = rgheaderprogramsvalue
                                       }
