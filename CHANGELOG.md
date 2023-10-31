@@ -88,3 +88,8 @@
 * Adding functionality to write SAM_V1_6(..) to file.
 * Made show instances of many newtypes/datatypes more verbose to match fields of said newtypes/datatypes.
 * Added initial writeSAM_V1_6 test case.
+
+## 0.8.0.1 -- 2023-10-31
+
+* Fixed BOPT deconstruction in deconstructSAM_V1_6 (writeSAM_V1_6).
+* Added extra writeSAM_V1_6 test cases.
