@@ -3,13 +3,8 @@
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE OverloadedLists       #-}
 {-# LANGUAGE OverloadedStrings     #-}
-{-# LANGUAGE PackageImports        #-}
-{-# LANGUAGE RecordWildCards       #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
-{-# Language QuasiQuotes           #-}
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Header.HD
@@ -59,15 +54,15 @@ instance Eq SAM_V1_6_File_Level_Metadata where
 
 instance Show SAM_V1_6_File_Level_Metadata where
   show (SAM_V1_6_File_Level_Metadata version sorting_order alignment_grouping subsorting_order) =
-    "SAM_V1_6_File_Level_Metadata { " ++
-    "version = "                      ++
-    (show version)                    ++
-    " , sorting_order = "             ++
-    (show sorting_order)              ++
-    " , alignment_grouping = "        ++
-    (show alignment_grouping)         ++
-    " , subsorting_order = "          ++
-    (show subsorting_order)           ++
+    "SAM_V1_6_File_Level_Metadata { "                       ++
+    "sam_v1_6_file_level_metadata_format_version = "        ++
+    (show version)                                          ++
+    " , sam_v1_6_file_level_metadata_sorting_order = "      ++
+    (show sorting_order)                                    ++
+    " , sam_v1_6_file_level_metadata_alignment_grouping = " ++
+    (show alignment_grouping)                               ++
+    " , sam_v1_6_file_level_metadata_subsorting_order = "   ++
+    (show subsorting_order)                                 ++
     " }" 
 
 -- | VN tag for @"SAM_V1_6_File_Level_Metadata"@.
@@ -80,9 +75,9 @@ instance Eq SAM_V1_6_File_Level_Metadata_Format_Version where
 
 instance Show SAM_V1_6_File_Level_Metadata_Format_Version where
   show (SAM_V1_6_File_Level_Metadata_Format_Version value) =
-    "SAM_V1_6_File_Level_Metadata_Format_Version { " ++
-    "value = "                                       ++
-    (show value)                                     ++
+    "SAM_V1_6_File_Level_Metadata_Format_Version { "       ++
+    "sam_v1_6_file_level_metadata_format_version_value = " ++
+    (show value)                                           ++
     " }"
 
 -- | SO tag for @"SAM_V1_6_File_Level_Metadata"@.
@@ -95,9 +90,9 @@ instance Eq SAM_V1_6_File_Level_Metadata_Sorting_Order where
 
 instance Show SAM_V1_6_File_Level_Metadata_Sorting_Order where
   show (SAM_V1_6_File_Level_Metadata_Sorting_Order value) =
-    "SAM_V1_6_File_Level_Metadata_Sorting_Order { " ++
-    "value = "                                      ++
-    (show value)                                    ++
+    "SAM_V1_6_File_Level_Metadata_Sorting_Order { "       ++
+    "sam_v1_6_file_level_metadata_sorting_order_value = " ++
+    (show value)                                          ++
     " }"
 
 -- | GO tag for @"SAM_V1_6_File_Level_Metadata"@.
@@ -110,9 +105,9 @@ instance Eq SAM_V1_6_File_Level_Metadata_Alignment_Grouping where
 
 instance Show SAM_V1_6_File_Level_Metadata_Alignment_Grouping where
   show (SAM_V1_6_File_Level_Metadata_Alignment_Grouping value) =
-    "SAM_V1_6_File_Level_Metadata_Alignment_Grouping { " ++
-    "value = "                                           ++
-    (show value)                                         ++
+    "SAM_V1_6_File_Level_Metadata_Alignment_Grouping { "       ++
+    "sam_v1_6_file_level_metadata_alignment_grouping_value = " ++
+    (show value)                                               ++
     " }"
 
 -- | SS tag for @"SAM_V1_6_File_Level_Metadata"@.
@@ -125,7 +120,7 @@ instance Eq SAM_V1_6_File_Level_Metadata_SubSorting_Order where
 
 instance Show SAM_V1_6_File_Level_Metadata_SubSorting_Order where
   show (SAM_V1_6_File_Level_Metadata_SubSorting_Order value) =
-    "SAM_V1_6_File_Level_Metadata_SubSorting_Order { " ++
-    "value = "                                         ++
-    (show value)                                       ++
+    "SAM_V1_6_File_Level_Metadata_SubSorting_Order { "       ++
+    "sam_v1_6_file_level_metadata_subsorting_order_value = " ++
+    (show value)                                             ++
     " }"

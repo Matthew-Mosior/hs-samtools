@@ -3,13 +3,8 @@
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE OverloadedLists       #-}
 {-# LANGUAGE OverloadedStrings     #-}
-{-# LANGUAGE PackageImports        #-}
-{-# LANGUAGE RecordWildCards       #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
-{-# Language QuasiQuotes           #-}
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Alignment.BOPT
@@ -133,13 +128,13 @@ instance Show SAM_V1_6_Alignment_BOPT_Int8 where
                                      bopttype
                                      value
        ) =
-    "SAM_V1_6_Alignment_BOPT_Int8 { " ++
-    "tag  = "                         ++
-    (show tag)                        ++
-    " , type = "                      ++
-    (show bopttype)                   ++
-    " , value = "                     ++
-    (show value)                      ++
+    "SAM_V1_6_Alignment_BOPT_Int8 { "          ++
+    "sam_v1_6_alignment_bopt_int8_tag  = "     ++
+    (show tag)                                 ++
+    " , sam_v1_6_alignment_bopt_int8_type = "  ++
+    (show bopttype)                            ++
+    " , sam_v1_6_alignment_bopt_int8_value = " ++
+    (show value)                               ++
     " }"
 
 -- | c__C__sSiIf of the last optional field (type B).
@@ -159,13 +154,13 @@ instance Show SAM_V1_6_Alignment_BOPT_Word8 where
                                       bopttype
                                       value
        ) =
-    "SAM_V1_6_Alignment_BOPT_Word8 { " ++
-    "tag  = "                          ++
-    (show tag)                         ++
-    " , type = "                       ++
-    (show bopttype)                    ++
-    " , value = "                      ++
-    (show value)                       ++
+    "SAM_V1_6_Alignment_BOPT_Word8 { "          ++
+    "sam_v1_6_alignment_bopt_word8_tag  = "     ++
+    (show tag)                                  ++
+    " , sam_v1_6_alignment_bopt_word8_type = "  ++
+    (show bopttype)                             ++
+    " , sam_v1_6_alignment_bopt_word8_value = " ++
+    (show value)                                ++
     " }"
 
 -- | cC__s__SiIf of the last optional field (type B).
@@ -185,13 +180,13 @@ instance Show SAM_V1_6_Alignment_BOPT_Int16 where
                                       bopttype
                                       value
        ) =
-    "SAM_V1_6_Alignment_BOPT_Int16 { " ++
-    "tag  = "                          ++
-    (show tag)                         ++
-    " , type = "                       ++
-    (show bopttype)                    ++
-    " , value = "                      ++
-    (show value)                       ++
+    "SAM_V1_6_Alignment_BOPT_Int16 { "          ++
+    "sam_v1_6_alignment_bopt_int16_tag  = "     ++
+    (show tag)                                  ++
+    " , sam_v1_6_alignment_bopt_int16_type = "  ++
+    (show bopttype)                             ++
+    " , sam_v1_6_alignment_bopt_int16_value = " ++
+    (show value)                                ++
     " }"
 
 -- | cCs__S__iIf of the last optional field (type B).
@@ -211,13 +206,13 @@ instance Show SAM_V1_6_Alignment_BOPT_Word16 where
                                        bopttype
                                        value
        ) =
-    "SAM_V1_6_Alignment_BOPT_Word16 { " ++
-    "tag  = "                           ++
-    (show tag)                          ++
-    " , type = "                        ++
-    (show bopttype)                     ++
-    " , value = "                       ++
-    (show value)                        ++
+    "SAM_V1_6_Alignment_BOPT_Word16 { "          ++
+    "sam_v1_6_alignment_bopt_word16_tag  = "     ++
+    (show tag)                                   ++
+    " , sam_v1_6_alignment_bopt_word16_type = "  ++
+    (show bopttype)                              ++
+    " , sam_v1_6_alignment_bopt_word16_value = " ++
+    (show value)                                 ++
     " }"
 
 -- | cCsS__i__If of the last optional field (type B).
@@ -237,13 +232,13 @@ instance Show SAM_V1_6_Alignment_BOPT_Int32 where
                                       bopttype
                                       value
        ) =
-    "SAM_V1_6_Alignment_BOPT_Int32 { " ++
-    "tag  = "                          ++
-    (show tag)                         ++
-    " , type = "                       ++
-    (show bopttype)                    ++
-    " , value = "                      ++
-    (show value)                       ++
+    "SAM_V1_6_Alignment_BOPT_Int32 { "          ++
+    "sam_v1_6_alignment_bopt_int32_tag  = "     ++
+    (show tag)                                  ++
+    " , sam_v1_6_alignment_bopt_int32_type = "  ++
+    (show bopttype)                             ++
+    " , sam_v1_6_alignment_bopt_int32_value = " ++
+    (show value)                                ++
     " }"
 
 -- | cCsSi__I__f of the last optional field (type B).
@@ -263,13 +258,13 @@ instance Show SAM_V1_6_Alignment_BOPT_Word32 where
                                        bopttype
                                        value
        ) =
-    "SAM_V1_6_Alignment_BOPT_Word32 { " ++
-    "tag  = "                           ++
-    (show tag)                          ++
-    " , type = "                        ++
-    (show bopttype)                     ++
-    " , value = "                       ++
-    (show value)                        ++
+    "SAM_V1_6_Alignment_BOPT_Word32 { "          ++
+    "sam_v1_6_alignment_bopt_word32_tag  = "     ++
+    (show tag)                                   ++
+    " , sam_v1_6_alignment_bopt_word32_type = "  ++
+    (show bopttype)                              ++
+    " , sam_v1_6_alignment_bopt_word32_value = " ++
+    (show value)                                 ++
     " }"
 
 -- | cCsSiI__f__ of the last optional field (type B).
@@ -289,11 +284,11 @@ instance Show SAM_V1_6_Alignment_BOPT_Float where
                                       bopttype
                                       value
        ) =
-    "SAM_V1_6_Alignment_BOPT_Float { " ++
-    "tag  = "                          ++
-    (show tag)                         ++
-    " , type = "                       ++
-    (show bopttype)                    ++
-    " , value = "                      ++
-    (show value)                       ++
+    "SAM_V1_6_Alignment_BOPT_Float { "          ++
+    "sam_v1_6_alignment_bopt_float_tag  = "     ++
+    (show tag)                                  ++
+    " , sam_v1_6_alignment_bopt_float_type = "  ++
+    (show bopttype)                             ++
+    " , sam_v1_6_alignment_bopt_float_value = " ++
+    (show value)                                ++
     " }"

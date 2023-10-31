@@ -3,13 +3,8 @@
 {-# LANGUAGE FlexibleContexts            #-}
 {-# LANGUAGE FlexibleInstances           #-}
 {-# LANGUAGE MultiParamTypeClasses       #-}
-{-# LANGUAGE OverloadedLists             #-}
 {-# LANGUAGE OverloadedStrings           #-}
-{-# LANGUAGE PackageImports              #-}
-{-# LANGUAGE RecordWildCards             #-}
-{-# LANGUAGE TemplateHaskell             #-}
 {-# LANGUAGE TypeFamilies                #-}
-{-# Language QuasiQuotes                 #-}
 {-# OPTIONS_GHC -fno-warn-name-shadowing #-}
 
 -- |
@@ -27,12 +22,15 @@ module Data.SAM.Version1_6.Alignment.Base ( -- * SAM version 1.6 alignment manda
                                             SAM_V1_6_Alignment(..)
                                           ) where
 
+import Data.SAM.Version1_6.Alignment.AOPT
+import Data.SAM.Version1_6.Alignment.IOPT
+import Data.SAM.Version1_6.Alignment.FOPT
+import Data.SAM.Version1_6.Alignment.ZOPT
+import Data.SAM.Version1_6.Alignment.HOPT
 import Data.SAM.Version1_6.Alignment.BOPT
 
 import Data.ByteString
 import Data.Data
-import Data.Sequence
-import Data.Word
 import Generics.Deriving.Base
 
 -- | Custom SAM (version 1.6) @"SAM_V1_6_Alignment"@ data type.
@@ -102,11 +100,11 @@ data SAM_V1_6_Alignment = SAM_V1_6_Alignment { sam_v1_6_alignment_qname :: ByteS
                                                                                                          -- This field can be a ‘*’ when quality is not stored.
                                                                                                          -- If not a ‘*’, SEQ must not be a ‘*’ and the length of the quality
                                                                                                          -- string ought to equal the length of SEQ.
-                                             , sam_v1_6_alignment_aopt  :: Maybe ByteString              -- ^ A - [!-~] - Printable characters.
-                                             , sam_v1_6_alignment_iopt  :: Maybe Integer                 -- ^ i - [-+]?[0-9]+ - Signed integer.
-                                             , sam_v1_6_alignment_fopt  :: Maybe Float                   -- ^ f - [-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? - Single-precision floating number.
-                                             , sam_v1_6_alignment_zopt  :: Maybe ByteString              -- ^ Z - [ !-~]* - Printable string, including space.
-                                             , sam_v1_6_alignment_hopt  :: Maybe (Seq Word8)             -- ^ H - ([0-9A-F][0-9A-F])* - Byte array in the Hex format.
+                                             , sam_v1_6_alignment_aopt  :: Maybe SAM_V1_6_Alignment_AOPT -- ^ A - [!-~] - Printable characters.
+                                             , sam_v1_6_alignment_iopt  :: Maybe SAM_V1_6_Alignment_IOPT -- ^ i - [-+]?[0-9]+ - Signed integer.
+                                             , sam_v1_6_alignment_fopt  :: Maybe SAM_V1_6_Alignment_FOPT -- ^ f - [-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)? - Single-precision floating number.
+                                             , sam_v1_6_alignment_zopt  :: Maybe SAM_V1_6_Alignment_ZOPT -- ^ Z - [ !-~]* - Printable string, including space.
+                                             , sam_v1_6_alignment_hopt  :: Maybe SAM_V1_6_Alignment_HOPT -- ^ H - ([0-9A-F][0-9A-F])* - Byte array in the Hex format.
                                              , sam_v1_6_alignment_bopt  :: Maybe SAM_V1_6_Alignment_BOPT -- ^ B - [cCsSiIf]&#8203;(,[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?)* - Integer or numeric array.
                                              }
   deriving (Generic,Typeable)
@@ -164,39 +162,39 @@ instance Eq SAM_V1_6_Alignment where
 
 instance Show SAM_V1_6_Alignment where
   show (SAM_V1_6_Alignment qname flag rname pos mapq cigar rnext pnext tlen seq qual aopt iopt fopt zopt hopt bopt) =
-    "SAM_V1_6_Alignment { " ++
-    "qname = "              ++
-    (show qname)            ++
-    " , flag = "            ++
-    (show flag)             ++
-    " , rname = "           ++
-    (show rname)            ++
-    " , pos = "             ++
-    (show pos)              ++
-    " , mapq = "            ++
-    (show mapq)             ++
-    " , cigar = "           ++
-    (show cigar)            ++
-    " , rnext = "           ++
-    (show rnext)            ++
-    " , pnext = "           ++
-    (show pnext)            ++
-    " , tlen = "            ++
-    (show tlen)             ++
-    " , seq = "             ++
-    (show seq)              ++
-    " , qual = "            ++
-    (show qual)             ++
-    " , aopt = "            ++
-    ( show aopt)            ++
-    " , iopt = "            ++
-    (show iopt)             ++
-    " , fopt = "            ++
-    (show fopt)             ++
-    " , zopt = "            ++
-    (show zopt)             ++
-    " , hopt = "            ++
-    (show hopt)             ++
-    " , bopt = "            ++
-    (show bopt)             ++
+    "SAM_V1_6_Alignment { "          ++
+    "sam_v1_6_alignment_qname = "    ++
+    (show qname)                     ++
+    " , sam_v1_6_alignment_flag = "  ++
+    (show flag)                      ++
+    " , sam_v1_6_alignment_rname = " ++
+    (show rname)                     ++
+    " , sam_v1_6_alignment_pos = "   ++
+    (show pos)                       ++
+    " , sam_v1_6_alignment_mapq = "  ++
+    (show mapq)                      ++
+    " , sam_v1_6_alignment_cigar = " ++
+    (show cigar)                     ++
+    " , sam_v1_6_alignment_rnext = " ++
+    (show rnext)                     ++
+    " , sam_v1_6_alignment_pnext = " ++
+    (show pnext)                     ++
+    " , sam_v1_6_alignment_tlen = "  ++
+    (show tlen)                      ++
+    " , sam_v1_6_alignment_seq = "   ++
+    (show seq)                       ++
+    " , sam_v1_6_alignment_qual = "  ++
+    (show qual)                      ++
+    " , sam_v1_6_alignment_aopt = "  ++
+    ( show aopt)                     ++
+    " , sam_v1_6_alignment_iopt = "  ++
+    (show iopt)                      ++
+    " , sam_v1_6_alignment_fopt = "  ++
+    (show fopt)                      ++
+    " , sam_v1_6_alignment_zopt = "  ++
+    (show zopt)                      ++
+    " , sam_v1_6_alignment_hopt = "  ++
+    (show hopt)                      ++
+    " , sam_v1_6_alignment_bopt = "  ++
+    (show bopt)                      ++
     " }"

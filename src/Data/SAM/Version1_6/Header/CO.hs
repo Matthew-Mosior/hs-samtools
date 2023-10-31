@@ -3,13 +3,8 @@
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE OverloadedLists       #-}
 {-# LANGUAGE OverloadedStrings     #-}
-{-# LANGUAGE PackageImports        #-}
-{-# LANGUAGE RecordWildCards       #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
-{-# Language QuasiQuotes           #-}
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Header.CO
@@ -41,7 +36,7 @@ instance Eq SAM_V1_6_One_Line_Comment where
   SAM_V1_6_One_Line_Comment sam_v1_6_one_line_comment_value1 == SAM_V1_6_One_Line_Comment sam_v1_6_one_line_comment_value2 = sam_v1_6_one_line_comment_value1 == sam_v1_6_one_line_comment_value2
 
 instance Show SAM_V1_6_One_Line_Comment where
-  show (SAM_V1_6_One_Line_Comment value) = "SAM_V1_6_One_Line_Comment { " ++
-                                           "value = "                     ++
-                                           (show value)                   ++
+  show (SAM_V1_6_One_Line_Comment value) = "SAM_V1_6_One_Line_Comment { "       ++
+                                           "sam_v1_6_one_line_comment_value = " ++
+                                           (show value)                         ++
                                            " }"

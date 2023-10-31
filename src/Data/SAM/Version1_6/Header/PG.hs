@@ -3,13 +3,8 @@
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE OverloadedLists       #-}
 {-# LANGUAGE OverloadedStrings     #-}
-{-# LANGUAGE PackageImports        #-}
-{-# LANGUAGE RecordWildCards       #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
-{-# Language QuasiQuotes           #-}
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Header.PG
@@ -69,19 +64,19 @@ instance Eq SAM_V1_6_Program where
 
 instance Show SAM_V1_6_Program where
   show (SAM_V1_6_Program record_identifier name command_line previous_pg_id description version) =
-    "SAM_V1_6_Program { "    ++
-    "record_identifier = "   ++
-    (show record_identifier) ++
-    " , name = "             ++
-    (show name)              ++
-    " , command_line = "     ++
-    (show command_line)      ++
-    " , previous_pg_id = "   ++
-    (show previous_pg_id)    ++
-    " , description = "      ++
-    (show description)       ++
-    " , version = "          ++
-    (show version)           ++
+    "SAM_V1_6_Program { "                    ++
+    "rsam_v1_6_program_record_identifier = " ++
+    (show record_identifier)                 ++
+    " , sam_v1_6_program_name = "            ++
+    (show name)                              ++
+    " , sam_v1_6_program_command_line = "    ++
+    (show command_line)                      ++
+    " , sam_v1_6_program_previous_pg_id = "  ++
+    (show previous_pg_id)                    ++
+    " , sam_v1_6_program_description = "     ++
+    (show description)                       ++
+    " , sam_v1_6_program_version = "         ++
+    (show version)                           ++
     " }"
 
 -- | ID tag for @"SAM_V1_6_Program"@.
@@ -94,9 +89,9 @@ instance Eq SAM_V1_6_Program_Record_Identifier where
 
 instance Show SAM_V1_6_Program_Record_Identifier where
   show (SAM_V1_6_Program_Record_Identifier value) =
-    "SAM_V1_6_Program_Record_Identifier { " ++
-    "value = "                              ++
-    (show value)                            ++
+    "SAM_V1_6_Program_Record_Identifier { "       ++
+    "sam_v1_6_program_record_identifier_value = " ++
+    (show value)                                  ++
     " }"
 
 -- | PN tag for @"SAM_V1_6_Program"@.
@@ -109,9 +104,9 @@ instance Eq SAM_V1_6_Program_Name where
 
 instance Show SAM_V1_6_Program_Name where
   show (SAM_V1_6_Program_Name value) =
-    "SAM_V1_6_Program_Name { " ++
-    "value = "                 ++
-    (show value)               ++
+    "SAM_V1_6_Program_Name { "       ++
+    "sam_v1_6_program_name_value = " ++
+    (show value)                     ++
     " }"
 
 -- | CL tag for @"SAM_V1_6_Program"@.
@@ -124,9 +119,9 @@ instance Eq SAM_V1_6_Program_Command_Line where
 
 instance Show SAM_V1_6_Program_Command_Line where
   show (SAM_V1_6_Program_Command_Line value) =
-    "SAM_V1_6_Program_Command_Line { " ++
-    "value = "                         ++
-    (show value)                       ++
+    "SAM_V1_6_Program_Command_Line { "       ++
+    "sam_v1_6_program_command_line_value = " ++
+    (show value)                             ++
     " }"
 
 -- | PP tag for @"SAM_V1_6_Program"@.
@@ -139,9 +134,9 @@ instance Eq SAM_V1_6_Program_Previous_PG_ID where
 
 instance Show SAM_V1_6_Program_Previous_PG_ID where
   show (SAM_V1_6_Program_Previous_PG_ID value) =
-    "SAM_V1_6_Program_Previous_PG_ID { " ++
-    "value = "                           ++
-    (show value)                         ++
+    "SAM_V1_6_Program_Previous_PG_ID { "       ++
+    "sam_v1_6_program_previous_pg_id_value = " ++
+    (show value)                               ++
     " }"
 
 -- | DS tag for @"SAM_V1_6_Program"@.
@@ -154,9 +149,9 @@ instance Eq SAM_V1_6_Program_Description where
 
 instance Show SAM_V1_6_Program_Description where
   show (SAM_V1_6_Program_Description value) =
-    "SAM_V1_6_Program_Description { " ++
-    "value = "                        ++
-    (show value)                      ++
+    "SAM_V1_6_Program_Description { "       ++
+    "sam_v1_6_program_description_value = " ++
+    (show value)                            ++
     " }"
 
 -- | VN tag for @"SAM_V1_6_Program"@.
@@ -169,7 +164,7 @@ instance Eq SAM_V1_6_Program_Version where
 
 instance Show SAM_V1_6_Program_Version where
   show (SAM_V1_6_Program_Version value) =
-    "SAM_V1_6_Program_Version { " ++
-    "value = "                    ++
-    (show value)                  ++
+    "SAM_V1_6_Program_Version { "       ++
+    "sam_v1_6_program_version_value = " ++
+    (show value)                        ++
     " }"

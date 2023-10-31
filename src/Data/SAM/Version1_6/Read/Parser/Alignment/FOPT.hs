@@ -43,6 +43,7 @@ module Data.SAM.Version1_6.Read.Parser.Alignment.FOPT ( -- * SAM_V1_6 parser - a
                                                         parse_SAM_V1_6_Alignment_FOPT
                                                       ) where
 
+import Data.SAM.Version1_6.Alignment.FOPT
 import Data.SAM.Version1_6.Read.Error
 
 import           Data.Attoparsec.ByteString.Char8  as DABC8 (isEndOfLine)
@@ -53,14 +54,14 @@ import           Text.Regex.PCRE.Heavy
 -- | Defines a parser for the optional fopt field of alignment section of the SAM v1.6 file format.
 --
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
-parse_SAM_V1_6_Alignment_FOPT :: Parser Float
+parse_SAM_V1_6_Alignment_FOPT :: Parser SAM_V1_6_Alignment_FOPT
 parse_SAM_V1_6_Alignment_FOPT = do
-  _ <- do alignmentfoptfieldtagp <- DABL.takeTill (== 58)
-          -- Parse FOPT tag of the alignment section.
-          case (alignmentfoptfieldtagp =~ [re|[A-Za-z][A-Za-z0-9]|]) of
-            False -> fail $ show SAM_V1_6_Error_Alignment_FOPT_Tag_Incorrect_Format
-            True  -> -- FOPT tag is in the accepted format. 
-                     return ()
+  alignmentfoptfieldtag <- do alignmentfoptfieldtagp <- DABL.takeTill (== 58)
+                              -- Parse FOPT tag of the alignment section.
+                              case (alignmentfoptfieldtagp =~ [re|[A-Za-z][A-Za-z0-9]|]) of
+                                False -> fail $ show SAM_V1_6_Error_Alignment_FOPT_Tag_Incorrect_Format
+                                True  -> -- FOPT tag is in the accepted format. 
+                                         return alignmentfoptfieldtagp
   _ <- word8 58
   _ <- do alignmentfoptfieldtypep <- DABL.takeTill (== 58)
           -- Parse FOPT type of the alignment section.
@@ -77,4 +78,6 @@ parse_SAM_V1_6_Alignment_FOPT = do
                                            case (DBC8.readInteger alignmentfoptfieldvaluep) of
                                              Nothing                                 -> return (-1)
                                              Just (alignmentfoptfieldvalueinteger,_) -> return $ (fromInteger alignmentfoptfieldvalueinteger :: Float)
-  return alignmentfoptfieldvalue
+  return SAM_V1_6_Alignment_FOPT { sam_v1_6_alignment_fopt_tag   = alignmentfoptfieldtag
+                                 , sam_v1_6_alignment_fopt_value = alignmentfoptfieldvalue
+                                 } 

@@ -82,3 +82,9 @@
 * Fixed broken parsing of SAM_V1_6(..).
 * Strengthened parsing of SAM_V1_6(..) by accurately emulating the sam v1.6 specification through use of permutable parsers.
 * Added initial test suite.
+
+## 0.8.0.0 -- 2023-10-30
+
+* Adding functionality to write SAM_V1_6(..) to file.
+* Made show instances of many newtypes/datatypes more verbose to match fields of said newtypes/datatypes.
+* Added initial writeSAM_V1_6 test case.

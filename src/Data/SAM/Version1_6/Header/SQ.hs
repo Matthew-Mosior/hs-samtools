@@ -3,13 +3,8 @@
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE OverloadedLists       #-}
 {-# LANGUAGE OverloadedStrings     #-}
-{-# LANGUAGE PackageImports        #-}
-{-# LANGUAGE RecordWildCards       #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
-{-# Language QuasiQuotes           #-}
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Header.SQ
@@ -46,8 +41,8 @@ import Generics.Deriving.Base
 -- See section 1.3 of the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 data SAM_V1_6_Reference_Sequence_Dictionary = SAM_V1_6_Reference_Sequence_Dictionary { sam_v1_6_reference_sequence_dictionary_reference_sequence_name                        :: SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Name
                                                                                      , sam_v1_6_reference_sequence_dictionary_reference_sequence_length                      :: SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Length
-                                                                                     , sam_v1_6_reference_sequence_dictionary_reference_alternative_locus                    :: Maybe SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus
-                                                                                     , sam_v1_6_reference_sequence_dictionary_reference_alternative_reference_sequence_names :: Maybe SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names
+                                                                                     , sam_v1_6_reference_sequence_dictionary_alternative_locus                              :: Maybe SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus
+                                                                                     , sam_v1_6_reference_sequence_dictionary_alternative_reference_sequence_names           :: Maybe SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names
                                                                                      , sam_v1_6_reference_sequence_dictionary_genome_assembly_identifier                     :: Maybe SAM_V1_6_Reference_Sequence_Dictionary_Genome_Assembly_Identifier
                                                                                      , sam_v1_6_reference_sequence_dictionary_description                                    :: Maybe SAM_V1_6_Reference_Sequence_Dictionary_Description
                                                                                      , sam_v1_6_reference_sequence_dictionary_md5_checksum                                   :: Maybe SAM_V1_6_Reference_Sequence_Dictionary_MD5_Checksum
@@ -99,27 +94,27 @@ instance Show SAM_V1_6_Reference_Sequence_Dictionary where
                                                molecule_topology
                                                uri
        ) =
-    "SAM_V1_6_Reference_Sequence_Dictionary { "  ++
-    "reference_sequence_name = "                 ++
-    (show reference_sequence_name)               ++
-    " , reference_sequence_length = "            ++
-    (show reference_sequence_length)             ++
-    " , reference_alternative_locus = "          ++
-    (show reference_alternative_locus)           ++
-    " , reference_alternative_sequence_names = " ++
-    (show reference_alternative_sequence_names)  ++
-    " , genome_assembly_identifier = "           ++
-    (show genome_assembly_identifier)            ++
-    " , description = "                          ++
-    (show description)                           ++
-    " , md5_checksum = "                         ++
-    (show md5_checksum)                          ++
-    " , species = "                              ++
-    (show species)                               ++
-    " , molecule_topology = "                    ++
-    (show molecule_topology)                     ++
-    " , uri = "                                  ++
-    (show uri)                                   ++
+    "SAM_V1_6_Reference_Sequence_Dictionary { "                                         ++
+    "sam_v1_6_reference_sequence_dictionary_reference_sequence_name = "                 ++
+    (show reference_sequence_name)                                                      ++
+    " , sam_v1_6_reference_sequence_dictionary_reference_sequence_length = "            ++
+    (show reference_sequence_length)                                                    ++
+    " , sam_v1_6_reference_sequence_dictionary_alternative_locus = "                    ++
+    (show reference_alternative_locus)                                                  ++
+    " , sam_v1_6_reference_sequence_dictionary_alternative_reference_sequence_names = " ++
+    (show reference_alternative_sequence_names)                                         ++
+    " , sam_v1_6_reference_sequence_dictionary_genome_assembly_identifier = "           ++
+    (show genome_assembly_identifier)                                                   ++
+    " , sam_v1_6_reference_sequence_dictionary_description = "                          ++
+    (show description)                                                                  ++
+    " , sam_v1_6_reference_sequence_dictionary_md5_checksum = "                         ++
+    (show md5_checksum)                                                                 ++
+    " , sam_v1_6_reference_sequence_dictionary_species = "                              ++
+    (show species)                                                                      ++
+    " , sam_v1_6_reference_sequence_dictionary_molecule_topology = "                    ++
+    (show molecule_topology)                                                            ++
+    " , sam_v1_6_reference_sequence_dictionary_uri = "                                  ++
+    (show uri)                                                                          ++
     " }"
 
 -- | SN tag for @"SAM_V1_6_Reference_Sequence_Dictionary"@.
@@ -132,9 +127,9 @@ instance Eq SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Name where
 
 instance Show SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Name where
   show (SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Name value) =
-    "SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Name { " ++
-    "value = "                                                          ++
-    (show value)                                                        ++
+    "SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Name { "       ++
+    "sam_v1_6_reference_sequence_dictionary_reference_sequence_name_value = " ++
+    (show value)                                                              ++
     " }"
 
 -- | LN tag for @"SAM_V1_6_Reference_Sequence_Dictionary"@.
@@ -147,9 +142,9 @@ instance Eq SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Length whe
 
 instance Show SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Length where
   show (SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Length value) =
-    "SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Length { " ++
-    "value = "                                                            ++
-    (show value)                                                          ++
+    "SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Length { "       ++
+    "sam_v1_6_reference_sequence_dictionary_reference_sequence_length_value = " ++
+    (show value)                                                                ++
     " }"
 
 -- | AH tag for @"SAM_V1_6_Reference_Sequence_Dictionary"@.
@@ -162,9 +157,9 @@ instance Eq SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus where
 
 instance Show SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus where
   show (SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus value) =
-    "SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus { " ++
-    "value = "                                                    ++
-    (show value)                                                  ++
+    "SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Locus { "       ++
+    "sam_v1_6_reference_sequence_dictionary_alternative_locus_value = " ++
+    (show value)                                                        ++
     " }"
 
 -- | AN tag for @"SAM_V1_6_Reference_Sequence_Dictionary"@.
@@ -177,9 +172,9 @@ instance Eq SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Reference_Sequenc
 
 instance Show SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names where
   show (SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names value) =
-    "SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names { " ++
-    "value = "                                                                       ++
-    (show value)                                                                     ++
+    "SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names { "       ++
+    "sam_v1_6_reference_sequence_dictionary_alternative_reference_sequence_names_value = " ++
+    (show value)                                                                           ++
     " }"
 
 -- | AS tag for @"SAM_V1_6_Reference_Sequence_Dictionary"@.
@@ -192,9 +187,9 @@ instance Eq SAM_V1_6_Reference_Sequence_Dictionary_Genome_Assembly_Identifier wh
 
 instance Show SAM_V1_6_Reference_Sequence_Dictionary_Genome_Assembly_Identifier where
   show (SAM_V1_6_Reference_Sequence_Dictionary_Genome_Assembly_Identifier value) =
-    "SAM_V1_6_Reference_Sequence_Dictionary_Genome_Assembly_Identifier { " ++
-    "value = "                                                             ++
-    (show value)                                                           ++
+    "SAM_V1_6_Reference_Sequence_Dictionary_Genome_Assembly_Identifier { "       ++
+    "sam_v1_6_reference_sequence_dictionary_genome_assembly_identifier_value = " ++
+    (show value)                                                                 ++
     " }"
 
 -- | DS tag for @"SAM_V1_6_Reference_Sequence_Dictionary"@.
@@ -207,9 +202,9 @@ instance Eq SAM_V1_6_Reference_Sequence_Dictionary_Description where
 
 instance Show SAM_V1_6_Reference_Sequence_Dictionary_Description where
   show (SAM_V1_6_Reference_Sequence_Dictionary_Description value) =
-    "SAM_V1_6_Reference_Sequence_Dictionary_Description { " ++
-    "value = "                                              ++
-    (show value)                                            ++
+    "SAM_V1_6_Reference_Sequence_Dictionary_Description { "       ++
+    "sam_v1_6_reference_sequence_dictionary_description_value = " ++
+    (show value)                                                  ++
     " }"
 
 -- | M5 tag for @"SAM_V1_6_Reference_Sequence_Dictionary"@.
@@ -222,9 +217,9 @@ instance Eq SAM_V1_6_Reference_Sequence_Dictionary_MD5_Checksum where
 
 instance Show SAM_V1_6_Reference_Sequence_Dictionary_MD5_Checksum where
   show (SAM_V1_6_Reference_Sequence_Dictionary_MD5_Checksum value) =
-    "SAM_V1_6_Reference_Sequence_Dictionary_MD5_Checksum { " ++
-    "value = "                                               ++
-    (show value)                                             ++
+    "SAM_V1_6_Reference_Sequence_Dictionary_MD5_Checksum { "       ++
+    "sam_v1_6_reference_sequence_dictionary_md5_checksum_value = " ++
+    (show value)                                                   ++
     " }"
 
 -- | SP tag for @"SAM_V1_6_Reference_Sequence_Dictionary"@.
@@ -237,9 +232,9 @@ instance Eq SAM_V1_6_Reference_Sequence_Dictionary_Species where
 
 instance Show SAM_V1_6_Reference_Sequence_Dictionary_Species where
   show (SAM_V1_6_Reference_Sequence_Dictionary_Species value) =
-    "SAM_V1_6_Reference_Sequence_Dictionary_Species { " ++
-    "value = "                                          ++
-    (show value)                                        ++
+    "SAM_V1_6_Reference_Sequence_Dictionary_Species { "       ++
+    "sam_v1_6_reference_sequence_dictionary_species_value = " ++
+    (show value)                                              ++
     " }"
 
 -- | TP tag for @"SAM_V1_6_Reference_Sequence_Dictionary"@.
@@ -252,9 +247,9 @@ instance Eq SAM_V1_6_Reference_Sequence_Dictionary_Molecule_Topology where
 
 instance Show SAM_V1_6_Reference_Sequence_Dictionary_Molecule_Topology where
   show (SAM_V1_6_Reference_Sequence_Dictionary_Molecule_Topology value) =
-    "SAM_V1_6_Reference_Sequence_Dictionary_Molecule_Topology { " ++
-    "value = "                                                    ++
-    (show value)                                                  ++
+    "SAM_V1_6_Reference_Sequence_Dictionary_Molecule_Topology { "       ++
+    "sam_v1_6_reference_sequence_dictionary_molecule_topology_value = " ++
+    (show value)                                                        ++
     " }"
 
 -- | UR tag for @"SAM_V1_6_Reference_Sequence_Dictionary"@.
@@ -267,7 +262,7 @@ instance Eq SAM_V1_6_Reference_Sequence_Dictionary_URI where
 
 instance Show SAM_V1_6_Reference_Sequence_Dictionary_URI where
   show (SAM_V1_6_Reference_Sequence_Dictionary_URI value) =
-    "SAM_V1_6_Reference_Sequence_Dictionary_URI { " ++
-    "value = "                                      ++
-    (show value)                                    ++
+    "SAM_V1_6_Reference_Sequence_Dictionary_URI { "       ++
+    "sam_v1_6_reference_sequence_dictionary_uri_value = " ++
+    (show value)                                          ++
     " }"
