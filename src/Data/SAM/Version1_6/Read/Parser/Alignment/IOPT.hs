@@ -43,6 +43,7 @@ module Data.SAM.Version1_6.Read.Parser.Alignment.IOPT ( -- * SAM_V1_6 parser - a
                                                         parse_SAM_V1_6_Alignment_IOPT
                                                       ) where
 
+import Data.SAM.Version1_6.Alignment.IOPT
 import Data.SAM.Version1_6.Read.Error
 
 import           Data.Attoparsec.ByteString.Char8  as DABC8 (isEndOfLine)
@@ -53,14 +54,14 @@ import           Text.Regex.PCRE.Heavy
 -- | Defines a parser for the optional iopt field of alignment section of the SAM v1.6 file format.
 --
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
-parse_SAM_V1_6_Alignment_IOPT :: Parser Integer
+parse_SAM_V1_6_Alignment_IOPT :: Parser SAM_V1_6_Alignment_IOPT
 parse_SAM_V1_6_Alignment_IOPT = do
-  _ <- do alignmentioptfieldtagp <- DABL.takeTill (== 58)
-          -- Parse IOPT tag of the alignment section.
-          case (alignmentioptfieldtagp =~ [re|[A-Za-z][A-Za-z0-9]|]) of
-            False -> fail $ show SAM_V1_6_Error_Alignment_IOPT_Tag_Incorrect_Format
-            True  -> -- IOPT tag is in the accepted format. 
-                     return ()
+  alignmentioptfieldtag <- do alignmentioptfieldtagp <- DABL.takeTill (== 58)
+                              -- Parse IOPT tag of the alignment section.
+                              case (alignmentioptfieldtagp =~ [re|[A-Za-z][A-Za-z0-9]|]) of
+                                False -> fail $ show SAM_V1_6_Error_Alignment_IOPT_Tag_Incorrect_Format
+                                True  -> -- IOPT tag is in the accepted format. 
+                                         return alignmentioptfieldtagp
   _ <- word8 58
   _ <- do alignmentioptfieldtypep <- DABL.takeTill (== 58)
           -- Parse IOPT type of the alignment section.
@@ -77,4 +78,6 @@ parse_SAM_V1_6_Alignment_IOPT = do
                                            case (DBC8.readInteger alignmentioptfieldvaluep) of
                                              Nothing                                 -> return (-1)
                                              Just (alignmentioptfieldvalueinteger,_) -> return alignmentioptfieldvalueinteger
-  return alignmentioptfieldvalue
+  return SAM_V1_6_Alignment_IOPT { sam_v1_6_alignment_iopt_tag   = alignmentioptfieldtag
+                                 , sam_v1_6_alignment_iopt_value = alignmentioptfieldvalue
+                                 }

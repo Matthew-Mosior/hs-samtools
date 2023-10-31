@@ -3,13 +3,8 @@
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE OverloadedLists       #-}
 {-# LANGUAGE OverloadedStrings     #-}
-{-# LANGUAGE PackageImports        #-}
-{-# LANGUAGE RecordWildCards       #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
-{-# Language QuasiQuotes           #-}
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Base
@@ -82,17 +77,17 @@ instance Show SAM_V1_6 where
                  one_line_comment
                  alignment
        ) =
-    "SAM_V1_6 { "                         ++
-    "file_level_metadata = "              ++
-    (show file_level_metadata)            ++
-    " , reference_sequence_dictionary = " ++
-    (show reference_sequence_dictionary)  ++
-    " , read_group = "                    ++
-    (show read_group)                     ++
-    " , program = "                       ++
-    (show program)                        ++
-    " , one_line_comment = "              ++
-    (show one_line_comment)               ++
-    " , alignment = "                     ++
-    (show alignment)                      ++
+    "SAM_V1_6 { "                                  ++
+    "sam_v1_6_file_level_metadata = "              ++
+    (show file_level_metadata)                     ++
+    " , sam_v1_6_reference_sequence_dictionary = " ++
+    (show reference_sequence_dictionary)           ++
+    " , sam_v1_6_read_group = "                    ++
+    (show read_group)                              ++
+    " , sam_v1_6_program = "                       ++
+    (show program)                                 ++
+    " , sam_v1_6_one_line_comment = "              ++
+    (show one_line_comment)                        ++
+    " , sam_v1_6_alignment = "                     ++
+    (show alignment)                               ++
     " }"

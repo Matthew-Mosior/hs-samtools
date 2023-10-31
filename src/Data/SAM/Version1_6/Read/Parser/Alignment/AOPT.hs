@@ -43,24 +43,24 @@ module Data.SAM.Version1_6.Read.Parser.Alignment.AOPT ( -- * SAM_V1_6 parser - a
                                                         parse_SAM_V1_6_Alignment_AOPT
                                                       ) where
 
+import Data.SAM.Version1_6.Alignment.AOPT
 import Data.SAM.Version1_6.Read.Error
 
 import           Data.Attoparsec.ByteString.Char8  as DABC8 (isEndOfLine)
 import           Data.Attoparsec.ByteString.Lazy   as DABL
-import qualified Data.ByteString                   as DB
 import           Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the optional aopt field of alignment section of the SAM v1.6 file format.
 --
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
-parse_SAM_V1_6_Alignment_AOPT :: Parser DB.ByteString
+parse_SAM_V1_6_Alignment_AOPT :: Parser SAM_V1_6_Alignment_AOPT
 parse_SAM_V1_6_Alignment_AOPT = do
-  _ <- do alignmentaoptfieldtagp <- DABL.takeTill (== 58)
-          -- Parse AOPT tag of the alignment section.
-          case (alignmentaoptfieldtagp =~ [re|[A-Za-z][A-Za-z0-9]|]) of
-            False -> fail $ show SAM_V1_6_Error_Alignment_AOPT_Tag_Incorrect_Format
-            True  -> -- AOPT tag is in the accepted format. 
-                     return ()
+  alignmentaoptfieldtag <- do alignmentaoptfieldtagp <- DABL.takeTill (== 58)
+                              -- Parse AOPT tag of the alignment section.
+                              case (alignmentaoptfieldtagp =~ [re|[A-Za-z][A-Za-z0-9]|]) of
+                                False -> fail $ show SAM_V1_6_Error_Alignment_AOPT_Tag_Incorrect_Format
+                                True  -> -- AOPT tag is in the accepted format. 
+                                         return alignmentaoptfieldtagp
   _ <- word8 58
   _ <- do alignmentaoptfieldtypep <- DABL.takeTill (== 58)
           -- Parse AOPT type of the alignment section.
@@ -75,4 +75,6 @@ parse_SAM_V1_6_Alignment_AOPT = do
                                   False -> fail $ show SAM_V1_6_Error_Alignment_AOPT_Value_Incorrect_Format
                                   True  -> -- AOPT value is in the accepted format.
                                            return alignmentaoptfieldvaluep
-  return alignmentaoptfieldvalue
+  return SAM_V1_6_Alignment_AOPT { sam_v1_6_alignment_aopt_tag   = alignmentaoptfieldtag
+                                 , sam_v1_6_alignment_aopt_value = alignmentaoptfieldvalue
+                                 }

@@ -43,26 +43,24 @@ module Data.SAM.Version1_6.Read.Parser.Alignment.HOPT ( -- * SAM_V1_6 parser - a
                                                         parse_SAM_V1_6_Alignment_HOPT
                                                       ) where
 
+import Data.SAM.Version1_6.Alignment.HOPT
 import Data.SAM.Version1_6.Read.Error
 
 import           Data.Attoparsec.ByteString.Char8  as DABC8 (isEndOfLine)
 import           Data.Attoparsec.ByteString.Lazy   as DABL
-import qualified Data.ByteString                   as DB
-import           Data.Sequence                     as DSeq
-import           Data.Word
 import           Text.Regex.PCRE.Heavy
 
 -- | Defines a parser for the optional hopt field of alignment section of the SAM v1.6 file format.
 --
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
-parse_SAM_V1_6_Alignment_HOPT :: Parser (Seq Word8)
+parse_SAM_V1_6_Alignment_HOPT :: Parser SAM_V1_6_Alignment_HOPT
 parse_SAM_V1_6_Alignment_HOPT = do
-  _ <- do alignmenthoptfieldtagp <- DABL.takeTill (== 58)
-          -- Parse HOPT tag of the alignment section.
-          case (alignmenthoptfieldtagp =~ [re|[A-Za-z][A-Za-z0-9]|]) of
-            False -> fail $ show SAM_V1_6_Error_Alignment_HOPT_Tag_Incorrect_Format
-            True  -> -- HOPT tag is in the accepted format. 
-                     return ()
+  alignmenthoptfieldtag <- do alignmenthoptfieldtagp <- DABL.takeTill (== 58)
+                              -- Parse HOPT tag of the alignment section.
+                              case (alignmenthoptfieldtagp =~ [re|[A-Za-z][A-Za-z0-9]|]) of
+                                False -> fail $ show SAM_V1_6_Error_Alignment_HOPT_Tag_Incorrect_Format
+                                True  -> -- HOPT tag is in the accepted format. 
+                                         return alignmenthoptfieldtagp
   _ <- word8 58
   _ <- do alignmenthoptfieldtypep <- DABL.takeTill (== 58)
           -- Parse HOPT type of the alignment section.
@@ -76,5 +74,7 @@ parse_SAM_V1_6_Alignment_HOPT = do
                                 case (alignmenthoptfieldvaluep =~ [re|([0-9A-F][0-9A-F])*|]) of
                                   False -> fail $ show SAM_V1_6_Error_Alignment_HOPT_Value_Incorrect_Format
                                   True  -> -- HOPT value is in the accepted format.
-                                           return $ DSeq.fromList $ DB.unpack alignmenthoptfieldvaluep
-  return alignmenthoptfieldvalue
+                                           return alignmenthoptfieldvaluep
+  return SAM_V1_6_Alignment_HOPT { sam_v1_6_alignment_hopt_tag   = alignmenthoptfieldtag
+                                 , sam_v1_6_alignment_hopt_value = alignmenthoptfieldvalue
+                                 }

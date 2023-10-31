@@ -113,7 +113,7 @@ readSAM_V1_6_LBS lbs =
 -- The file is checked for errors as it is parsed.
 --
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
-readSAM_V1_6 :: FilePath -- ^ Path to SAM file.
+readSAM_V1_6 :: FilePath -- ^ Input path to SAM file.
              -> IO SAM_V1_6
 readSAM_V1_6 fp = do
   let lazysamfile = S.unfold StreamlyInternalFile.chunkReader fp

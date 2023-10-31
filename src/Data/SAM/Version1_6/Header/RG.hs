@@ -3,13 +3,8 @@
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE OverloadedLists       #-}
 {-# LANGUAGE OverloadedStrings     #-}
-{-# LANGUAGE PackageImports        #-}
-{-# LANGUAGE RecordWildCards       #-}
-{-# LANGUAGE TemplateHaskell       #-}
 {-# LANGUAGE TypeFamilies          #-}
-{-# Language QuasiQuotes           #-}
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Header.RG
@@ -48,7 +43,7 @@ import Generics.Deriving.Base
 -- | Custom SAM (version 1.6) @"SAM_V1_6_Read_Group"@ data type.
 --
 -- See section 1.3 of the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
-data SAM_V1_6_Read_Group = SAM_V1_6_Read_Group { sam_v1_6_read_group_identifer                    :: SAM_V1_6_Read_Group_Identifier
+data SAM_V1_6_Read_Group = SAM_V1_6_Read_Group { sam_v1_6_read_group_identifier                   :: SAM_V1_6_Read_Group_Identifier
                                                , sam_v1_6_read_group_barcode_sequence             :: Maybe SAM_V1_6_Read_Group_Barcode_Sequence
                                                , sam_v1_6_read_group_sequencing_center            :: Maybe SAM_V1_6_Read_Group_Sequencing_Center
                                                , sam_v1_6_read_group_description                  :: Maybe SAM_V1_6_Read_Group_Description
@@ -63,6 +58,7 @@ data SAM_V1_6_Read_Group = SAM_V1_6_Read_Group { sam_v1_6_read_group_identifer  
                                                , sam_v1_6_read_group_platform_unit                :: Maybe SAM_V1_6_Read_Group_Platform_Unit
                                                , sam_v1_6_read_group_sample                       :: Maybe SAM_V1_6_Read_Group_Sample
                                                }
+  deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_Read_Group where
   SAM_V1_6_Read_Group sam_v1_6_read_group_identifier1
@@ -122,35 +118,35 @@ instance Show SAM_V1_6_Read_Group where
                             platform_unit
                             sample
        ) =
-    "SAM_V1_6_Read_Group { "                  ++
-    "read_group_identifier = "                ++
-    (show group_identifier)                   ++
-    " , barcode_sequence = "                  ++
-    (show barcode_sequence)                   ++
-    " , sequencing_center = "                 ++
-    (show sequencing_center)                  ++
-    " , description = "                       ++
-    (show description)                        ++
-    " , run_date = "                          ++
-    (show run_date)                           ++
-    " , flow_order = "                        ++
-    (show flow_order)                         ++
-    " , key_sequence = "                      ++
-    (show key_sequence)                       ++
-    " , library = "                           ++
-    (show library)                            ++
-    " , programs = "                          ++
-    (show programs)                           ++
-    " , show_predicted_median_insert_size = " ++
-    (show predicted_median_insert_size)       ++
-    " , platform = "                          ++
-    (show platform)                           ++
-    " , platform_model = "                    ++
-    (show platform_model)                     ++
-    " , platform_unit = "                     ++
-    (show platform_unit)                      ++
-    " , sample = "                            ++
-    (show sample)                             ++
+    "SAM_V1_6_Read_Group { "                                      ++
+    "sam_v1_6_read_group_identifier = "                           ++
+    (show group_identifier)                                       ++
+    " , sam_v1_6_read_group_barcode_sequence = "                  ++
+    (show barcode_sequence)                                       ++
+    " , sam_v1_6_read_group_sequencing_center = "                 ++
+    (show sequencing_center)                                      ++
+    " , sam_v1_6_read_group_description = "                       ++
+    (show description)                                            ++
+    " , sam_v1_6_read_group_run_date = "                          ++
+    (show run_date)                                               ++
+    " , sam_v1_6_read_group_flow_order = "                        ++
+    (show flow_order)                                             ++
+    " , sam_v1_6_read_group_key_sequence = "                      ++
+    (show key_sequence)                                           ++
+    " , sam_v1_6_read_group_library = "                           ++
+    (show library)                                                ++
+    " , sam_v1_6_read_group_programs = "                          ++
+    (show programs)                                               ++
+    " , sam_v1_6_read_group_show_predicted_median_insert_size = " ++
+    (show predicted_median_insert_size)                           ++
+    " , sam_v1_6_read_group_platform = "                          ++
+    (show platform)                                               ++
+    " , sam_v1_6_read_group_platform_model = "                    ++
+    (show platform_model)                                         ++
+    " , sam_v1_6_read_group_platform_unit = "                     ++
+    (show platform_unit)                                          ++
+    " , sam_v1_6_read_group_sample = "                            ++
+    (show sample)                                                 ++
     " }"
 
 -- | ID tag for @"SAM_V1_6_Read_Group"@.
@@ -163,9 +159,9 @@ instance Eq SAM_V1_6_Read_Group_Identifier where
 
 instance Show SAM_V1_6_Read_Group_Identifier where
   show (SAM_V1_6_Read_Group_Identifier value) =
-    "SAM_V1_6_Read_Group_Identifier { " ++
-    "value = "                          ++
-    (show value)                        ++
+    "SAM_V1_6_Read_Group_Identifier { "       ++
+    "sam_v1_6_read_group_identifier_value = " ++
+    (show value)                              ++
     " }"
 
 -- | BC tag for @"SAM_V1_6_Read_Group"@.
@@ -178,9 +174,9 @@ instance Eq SAM_V1_6_Read_Group_Barcode_Sequence where
 
 instance Show SAM_V1_6_Read_Group_Barcode_Sequence where
   show (SAM_V1_6_Read_Group_Barcode_Sequence value) =
-    "SAM_V1_6_Read_Group_Barcode_Sequence { " ++
-    "value = "                                ++
-    (show value)                              ++
+    "SAM_V1_6_Read_Group_Barcode_Sequence { "       ++
+    "sam_v1_6_read_group_barcode_sequence_value = " ++
+    (show value)                                    ++
     " }"
 
 -- | CN tag for @"SAM_V1_6_Read_Group"@.
@@ -193,9 +189,9 @@ instance Eq SAM_V1_6_Read_Group_Sequencing_Center where
 
 instance Show SAM_V1_6_Read_Group_Sequencing_Center where
   show (SAM_V1_6_Read_Group_Sequencing_Center value) =
-    "SAM_V1_6_Read_Group_Sequencing_Center { " ++
-    "value = "                                 ++
-    (show value)                               ++
+    "SAM_V1_6_Read_Group_Sequencing_Center { "       ++
+    "sam_v1_6_read_group_sequencing_center_value = " ++
+    (show value)                                     ++
     " }"
 
 -- | DS tag for @"SAM_V1_6_Read_Group"@.
@@ -208,9 +204,9 @@ instance Eq SAM_V1_6_Read_Group_Description where
 
 instance Show SAM_V1_6_Read_Group_Description where
   show (SAM_V1_6_Read_Group_Description value) =
-    "SAM_V1_6_Read_Group_Description { " ++
-    "value = "                           ++
-    (show value)                         ++
+    "SAM_V1_6_Read_Group_Description { "       ++
+    "sam_v1_6_read_group_description_value = " ++
+    (show value)                               ++
     " }"
 
 -- | DT tag for @"SAM_V1_6_Read_Group"@.
@@ -223,9 +219,9 @@ instance Eq SAM_V1_6_Read_Group_Run_Date where
 
 instance Show SAM_V1_6_Read_Group_Run_Date where
   show (SAM_V1_6_Read_Group_Run_Date value) =
-    "SAM_V1_6_Read_Group_Run_Date { " ++
-    "value = "                        ++
-    (show value)                      ++
+    "SAM_V1_6_Read_Group_Run_Date { "       ++
+    "sam_v1_6_read_group_run_date_value = " ++
+    (show value)                            ++
     " }"
 
 -- | FO tag for @"SAM_V1_6_Read_Group"@.
@@ -238,9 +234,9 @@ instance Eq SAM_V1_6_Read_Group_Flow_Order where
 
 instance Show SAM_V1_6_Read_Group_Flow_Order where
   show (SAM_V1_6_Read_Group_Flow_Order value) =
-    "SAM_V1_6_Read_Group_Flow_Order { " ++
-    "value = "                          ++
-    (show value)                        ++
+    "SAM_V1_6_Read_Group_Flow_Order { "       ++
+    "sam_v1_6_read_group_flow_order_value = " ++
+    (show value)                              ++
     " }"
 
 -- | KS tag for @"SAM_V1_6_Read_Group"@.
@@ -253,9 +249,9 @@ instance Eq SAM_V1_6_Read_Group_Key_Sequence where
 
 instance Show SAM_V1_6_Read_Group_Key_Sequence where
   show (SAM_V1_6_Read_Group_Key_Sequence value) =
-    "SAM_V1_6_Read_Group_Key_Sequence { " ++
-    "value = "                            ++
-    (show value)                          ++
+    "SAM_V1_6_Read_Group_Key_Sequence { "       ++
+    "sam_v1_6_read_group_key_sequence_value = " ++
+    (show value)                                ++
     " }"
 
 -- | LB tag for @"SAM_V1_6_Read_Group"@.
@@ -268,9 +264,9 @@ instance Eq SAM_V1_6_Read_Group_Library where
 
 instance Show SAM_V1_6_Read_Group_Library where
   show (SAM_V1_6_Read_Group_Library value) =
-    "SAM_V1_6_Read_Group_Library { " ++
-    "value = "                       ++
-    (show value)                     ++
+    "SAM_V1_6_Read_Group_Library { "       ++
+    "sam_v1_6_read_group_library_value = " ++
+    (show value)                           ++
     " }"
 
 -- | PG tag for @"SAM_V1_6_Read_Group"@.
@@ -283,9 +279,9 @@ instance Eq SAM_V1_6_Read_Group_Programs where
 
 instance Show SAM_V1_6_Read_Group_Programs where
   show (SAM_V1_6_Read_Group_Programs value) =
-    "SAM_V1_6_Read_Group_Programs { " ++
-    "value = "                        ++
-    (show value)                      ++
+    "SAM_V1_6_Read_Group_Programs { "       ++
+    "sam_v1_6_read_group_programs_value = " ++
+    (show value)                            ++
     " }"
 
 -- | PI tag for @"SAM_V1_6_Read_Group"@.
@@ -298,9 +294,9 @@ instance Eq SAM_V1_6_Read_Group_Predicted_Median_Insert_Size where
 
 instance Show SAM_V1_6_Read_Group_Predicted_Median_Insert_Size where
   show (SAM_V1_6_Read_Group_Predicted_Median_Insert_Size value) =
-    "SAM_V1_6_Read_Group_Predicted_Median_Insert_Size { " ++
-    "value = "                                            ++
-    (show value)                                          ++
+    "SAM_V1_6_Read_Group_Predicted_Median_Insert_Size { "       ++
+    "sam_v1_6_read_group_predicted_median_insert_size_value = " ++
+    (show value)                                                ++
     " }"
 
 -- | PL tag for @"SAM_V1_6_Read_Group"@.
@@ -313,9 +309,9 @@ instance Eq SAM_V1_6_Read_Group_Platform where
 
 instance Show SAM_V1_6_Read_Group_Platform where
   show (SAM_V1_6_Read_Group_Platform value) =
-    "SAM_V1_6_Read_Group_Platform { " ++
-    "value = "                        ++
-    (show value)                      ++
+    "SAM_V1_6_Read_Group_Platform { "       ++
+    "sam_v1_6_read_group_platform_value = " ++
+    (show value)                            ++
     " }"
 
 -- | PM tag for @"SAM_V1_6_Read_Group"@.
@@ -328,9 +324,9 @@ instance Eq SAM_V1_6_Read_Group_Platform_Model where
 
 instance Show SAM_V1_6_Read_Group_Platform_Model where
   show (SAM_V1_6_Read_Group_Platform_Model value) =
-    "SAM_V1_6_Read_Group_Platform_Model { " ++
-    "value = "                              ++
-    (show value)                            ++
+    "SAM_V1_6_Read_Group_Platform_Model { "       ++
+    "sam_v1_6_read_group_platform_model_value = " ++
+    (show value)                                  ++
     " }"
 
 -- | PU tag for @"SAM_V1_6_Read_Group"@.
@@ -343,9 +339,9 @@ instance Eq SAM_V1_6_Read_Group_Platform_Unit where
 
 instance Show SAM_V1_6_Read_Group_Platform_Unit where
   show (SAM_V1_6_Read_Group_Platform_Unit value) =
-    "SAM_V1_6_Read_Group_Platform_Unit { " ++
-    "value = "                             ++
-    (show value)                           ++
+    "SAM_V1_6_Read_Group_Platform_Unit { "       ++
+    "sam_v1_6_read_group_platform_unit_value = " ++
+    (show value)                                 ++
     " }"
 
 -- | SM tag for @"SAM_V1_6_Read_Group"@.
@@ -358,7 +354,7 @@ instance Eq SAM_V1_6_Read_Group_Sample where
 
 instance Show SAM_V1_6_Read_Group_Sample where
   show (SAM_V1_6_Read_Group_Sample value) =
-    "SAM_V1_6_Read_Group_Sample { " ++
-    "value = "                      ++
-    (show value)                    ++
+    "SAM_V1_6_Read_Group_Sample { "       ++
+    "sam_v1_6_read_group_sample_value = " ++
+    (show value)                          ++
     " }"
