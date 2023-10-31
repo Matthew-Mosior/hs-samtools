@@ -33,9 +33,9 @@ import Data.SAM.Version1_6.Alignment.HOPT
 import Data.SAM.Version1_6.Alignment.BOPT
 
 import Data.ByteString            as DB    (pack,singleton)
+import Data.ByteString.Lazy       as DBL   (filter)
 import Data.ByteString.Lazy.Char8 as DBLC8 (fromStrict,unpack)
 import Data.Foldable                       (toList)
-import Data.Int                            (Int8,Int16,Int32)
 import Data.List                           (intercalate)
 import Data.Word
 import Data.ByteString.Builder             (toLazyByteString,word16LE,word32LE)
@@ -47,7 +47,8 @@ deconstructSAM_V1_6 :: SAM_V1_6
                     -> String
 deconstructSAM_V1_6 samv16 =
   ( intercalate "\n" $
-      filter (not . null) [ sam_v1_6_file_level_metadata_tos
+      Prelude.filter (not . Prelude.null)
+                          [ sam_v1_6_file_level_metadata_tos
                           , sam_v1_6_reference_sequence_dictionary_tos
                           , sam_v1_6_read_group_tos
                           , sam_v1_6_program_tos
@@ -87,13 +88,13 @@ deconstructSAM_V1_6 samv16 =
     sam_v1_6_file_level_metadata_tos = case (sam_v1_6_file_level_metadata samv16) of
                                          Nothing  -> ""
                                          Just hdf -> intercalate "\t" $
-                                                       filter (not . null) $
-                                                         [ "@HD"
-                                                         , sam_v1_6_file_level_metadata_format_version_tos hdf
-                                                         , sam_v1_6_file_level_metadata_sorting_order_tos hdf
-                                                         , sam_v1_6_file_level_metadata_alignment_grouping_tos hdf
-                                                         , sam_v1_6_file_level_metadata_subsorting_order_tos hdf 
-                                                         ]
+                                                       Prelude.filter (not . Prelude.null) $
+                                                                           [ "@HD"
+                                                                           , sam_v1_6_file_level_metadata_format_version_tos hdf
+                                                                           , sam_v1_6_file_level_metadata_sorting_order_tos hdf
+                                                                           , sam_v1_6_file_level_metadata_alignment_grouping_tos hdf
+                                                                           , sam_v1_6_file_level_metadata_subsorting_order_tos hdf 
+                                                                           ]
     sam_v1_6_reference_sequence_dictionary_reference_sequence_name_tos x = "SN:" ++
                                                                            ( unpack                                                               $
                                                                              fromStrict                                                           $
@@ -166,19 +167,19 @@ deconstructSAM_V1_6 samv16 =
                                                    Nothing  -> ""
                                                    Just sqf -> intercalate "\n" $
                                                                    map (\x -> intercalate "\t" $
-                                                                                filter (not .null) $
-                                                                                            [ "@SQ"
-                                                                                            , sam_v1_6_reference_sequence_dictionary_reference_sequence_name_tos x
-                                                                                            , sam_v1_6_reference_sequence_dictionary_reference_sequence_length_tos x
-                                                                                            , sam_v1_6_reference_sequence_dictionary_alternative_locus_tos x
-                                                                                            , sam_v1_6_reference_sequence_dictionary_alternative_reference_sequence_names_tos x
-                                                                                            , sam_v1_6_reference_sequence_dictionary_genome_assembly_identifier_tos x
-                                                                                            , sam_v1_6_reference_sequence_dictionary_description_tos x
-                                                                                            , sam_v1_6_reference_sequence_dictionary_md5_checksum_tos x
-                                                                                            , sam_v1_6_reference_sequence_dictionary_species_tos x
-                                                                                            , sam_v1_6_reference_sequence_dictionary_molecule_topology_tos x
-                                                                                            , sam_v1_6_reference_sequence_dictionary_uri_tos x
-                                                                                            ]
+                                                                                Prelude.filter (not . Prelude.null) $
+                                                                                                    [ "@SQ"
+                                                                                                    , sam_v1_6_reference_sequence_dictionary_reference_sequence_name_tos x
+                                                                                                    , sam_v1_6_reference_sequence_dictionary_reference_sequence_length_tos x
+                                                                                                    , sam_v1_6_reference_sequence_dictionary_alternative_locus_tos x
+                                                                                                    , sam_v1_6_reference_sequence_dictionary_alternative_reference_sequence_names_tos x
+                                                                                                    , sam_v1_6_reference_sequence_dictionary_genome_assembly_identifier_tos x
+                                                                                                    , sam_v1_6_reference_sequence_dictionary_description_tos x
+                                                                                                    , sam_v1_6_reference_sequence_dictionary_md5_checksum_tos x
+                                                                                                    , sam_v1_6_reference_sequence_dictionary_species_tos x
+                                                                                                    , sam_v1_6_reference_sequence_dictionary_molecule_topology_tos x
+                                                                                                    , sam_v1_6_reference_sequence_dictionary_uri_tos x
+                                                                                                    ]
                                                                        ) (toList sqf)
     sam_v1_6_read_group_identifer_tos x = "ID:" ++
                                           ( unpack                               $
@@ -281,23 +282,23 @@ deconstructSAM_V1_6 samv16 =
                                 Nothing  -> ""
                                 Just rgf -> intercalate "\n" $
                                               map (\x -> intercalate "\t" $
-                                                           filter (not . null) $
-                                                                       [ "@RG"
-                                                                       , sam_v1_6_read_group_identifer_tos x
-                                                                       , sam_v1_6_read_group_barcode_sequence_tos x
-                                                                       , sam_v1_6_read_group_sequencing_center_tos x
-                                                                       , sam_v1_6_read_group_description_tos x
-                                                                       , sam_v1_6_read_group_run_date_tos x
-                                                                       , sam_v1_6_read_group_flow_order_tos x
-                                                                       , sam_v1_6_read_group_key_sequence_tos x
-                                                                       , sam_v1_6_read_group_library_tos x
-                                                                       , sam_v1_6_read_group_programs_tos x
-                                                                       , sam_v1_6_read_group_predicted_median_insert_size_tos x
-                                                                       , sam_v1_6_read_group_platform_tos x
-                                                                       , sam_v1_6_read_group_platform_model_tos x
-                                                                       , sam_v1_6_read_group_platform_unit_tos x
-                                                                       , sam_v1_6_read_group_sample_tos x
-                                                                       ]
+                                                           Prelude.filter (not . Prelude.null) $
+                                                                               [ "@RG"
+                                                                               , sam_v1_6_read_group_identifer_tos x
+                                                                               , sam_v1_6_read_group_barcode_sequence_tos x
+                                                                               , sam_v1_6_read_group_sequencing_center_tos x
+                                                                               , sam_v1_6_read_group_description_tos x
+                                                                               , sam_v1_6_read_group_run_date_tos x
+                                                                               , sam_v1_6_read_group_flow_order_tos x
+                                                                               , sam_v1_6_read_group_key_sequence_tos x
+                                                                               , sam_v1_6_read_group_library_tos x
+                                                                               , sam_v1_6_read_group_programs_tos x
+                                                                               , sam_v1_6_read_group_predicted_median_insert_size_tos x
+                                                                               , sam_v1_6_read_group_platform_tos x
+                                                                               , sam_v1_6_read_group_platform_model_tos x
+                                                                               , sam_v1_6_read_group_platform_unit_tos x
+                                                                               , sam_v1_6_read_group_sample_tos x
+                                                                               ]
                                                   ) (toList rgf)
     sam_v1_6_program_record_identifier_tos x = "ID:" ++
                                                ( unpack                                   $
@@ -343,56 +344,56 @@ deconstructSAM_V1_6 samv16 =
     sam_v1_6_program_tos = case (sam_v1_6_program samv16) of
                              Nothing  -> ""
                              Just pgf -> intercalate "\t" $
-                                           filter (not . null) $
-                                                       [ "@PG"
-                                                       , sam_v1_6_program_record_identifier_tos pgf
-                                                       , sam_v1_6_program_name_tos pgf
-                                                       , sam_v1_6_program_command_line_tos pgf
-                                                       , sam_v1_6_program_previous_pg_id_tos pgf
-                                                       , sam_v1_6_program_description_tos pgf
-                                                       , sam_v1_6_program_version_tos pgf
-                                                       ]
+                                           Prelude.filter (not . Prelude.null) $
+                                                               [ "@PG"
+                                                               , sam_v1_6_program_record_identifier_tos pgf
+                                                               , sam_v1_6_program_name_tos pgf
+                                                               , sam_v1_6_program_command_line_tos pgf
+                                                               , sam_v1_6_program_previous_pg_id_tos pgf
+                                                               , sam_v1_6_program_description_tos pgf
+                                                               , sam_v1_6_program_version_tos pgf
+                                                               ]
     sam_v1_6_one_line_comment_tos = case (sam_v1_6_one_line_comment samv16) of
                                       Nothing  -> ""
                                       Just cof -> intercalate "\n" $
                                                     map (\x -> intercalate "\t" $
-                                                                 filter (not . null) 
-                                                                             [ "@CO"
-                                                                             , unpack     $
-                                                                               fromStrict $
-                                                                               sam_v1_6_one_line_comment_value x
-                                                                             ]
+                                                                 Prelude.filter (not . Prelude.null) 
+                                                                                     [ "@CO"
+                                                                                     , unpack     $
+                                                                                       fromStrict $
+                                                                                       sam_v1_6_one_line_comment_value x
+                                                                                     ]
                                                         ) (toList cof)
     sam_v1_6_alignment_tos            = intercalate "\n" $
-                                          map (\x -> case (null $ sam_v1_6_alignment_opts x) of
+                                          map (\x -> case (Prelude.null $ sam_v1_6_alignment_opts x) of
                                                        True  -> sam_v1_6_alignment_mand x 
                                                        False -> intercalate "\t"
                                                                             [ sam_v1_6_alignment_mand x
                                                                             , sam_v1_6_alignment_opts x
                                                                             ] ) (toList $ sam_v1_6_alignment samv16)
     sam_v1_6_alignment_mand x           = intercalate "\t" $
-                                            filter (not . null)
-                                                        [ unpack $ fromStrict $ sam_v1_6_alignment_qname x 
-                                                        , show $ sam_v1_6_alignment_flag x 
-                                                        , unpack $ fromStrict $ sam_v1_6_alignment_rname x 
-                                                        , show $ sam_v1_6_alignment_pos x 
-                                                        , show $ sam_v1_6_alignment_mapq x 
-                                                        , unpack $ fromStrict $ sam_v1_6_alignment_cigar x 
-                                                        , unpack $ fromStrict $ sam_v1_6_alignment_rnext x 
-                                                        , show $ sam_v1_6_alignment_pnext x 
-                                                        , show $ sam_v1_6_alignment_tlen x 
-                                                        , unpack $ fromStrict $ sam_v1_6_alignment_seq x 
-                                                        , unpack $ fromStrict $ sam_v1_6_alignment_qual x
-                                                        ]
+                                            Prelude.filter (not . Prelude.null)
+                                                                [ unpack $ fromStrict $ sam_v1_6_alignment_qname x 
+                                                                , show $ sam_v1_6_alignment_flag x 
+                                                                , unpack $ fromStrict $ sam_v1_6_alignment_rname x 
+                                                                , show $ sam_v1_6_alignment_pos x 
+                                                                , show $ sam_v1_6_alignment_mapq x 
+                                                                , unpack $ fromStrict $ sam_v1_6_alignment_cigar x 
+                                                                , unpack $ fromStrict $ sam_v1_6_alignment_rnext x 
+                                                                , show $ sam_v1_6_alignment_pnext x 
+                                                                , show $ sam_v1_6_alignment_tlen x 
+                                                                , unpack $ fromStrict $ sam_v1_6_alignment_seq x 
+                                                                , unpack $ fromStrict $ sam_v1_6_alignment_qual x
+                                                                ]
     sam_v1_6_alignment_opts x           = intercalate "\t" $
-                                            filter (not . null)
-                                                        [ sam_v1_6_alignment_aopt_d x 
-                                                        , sam_v1_6_alignment_iopt_d x 
-                                                        , sam_v1_6_alignment_fopt_d x 
-                                                        , sam_v1_6_alignment_zopt_d x
-                                                        , sam_v1_6_alignment_hopt_d x 
-                                                        , sam_v1_6_alignment_bopt_d x
-                                                        ]
+                                            Prelude.filter (not . Prelude.null)
+                                                                [ sam_v1_6_alignment_aopt_d x 
+                                                                , sam_v1_6_alignment_iopt_d x 
+                                                                , sam_v1_6_alignment_fopt_d x 
+                                                                , sam_v1_6_alignment_zopt_d x
+                                                                , sam_v1_6_alignment_hopt_d x 
+                                                                , sam_v1_6_alignment_bopt_d x
+                                                                ]
     sam_v1_6_alignment_aopt_d x         = case (sam_v1_6_alignment_aopt x) of
                                             Nothing   -> ""
                                             Just aopt -> ( unpack     $
@@ -459,74 +460,82 @@ deconstructSAM_V1_6 samv16 =
     sam_v1_6_alignment_bopt_d x         = case (sam_v1_6_alignment_bopt x) of
                                             Nothing   -> ""
                                             Just bopt -> concat $
-                                                           filter (not . null)
-                                                                       [ sam_v1_6_alignment_bopt_int8_d bopt
-                                                                       , sam_v1_6_alignment_bopt_word8_d bopt
-                                                                       , sam_v1_6_alignment_bopt_int16_d bopt
-                                                                       , sam_v1_6_alignment_bopt_word16_d bopt
-                                                                       , sam_v1_6_alignment_bopt_int32_d bopt
-                                                                       , sam_v1_6_alignment_bopt_word32_d bopt
-                                                                       , sam_v1_6_alignment_bopt_float_d bopt
-                                                                       ]
+                                                           Prelude.filter (not . Prelude.null)
+                                                                               [ sam_v1_6_alignment_bopt_int8_d bopt
+                                                                               , sam_v1_6_alignment_bopt_word8_d bopt
+                                                                               , sam_v1_6_alignment_bopt_int16_d bopt
+                                                                               , sam_v1_6_alignment_bopt_word16_d bopt
+                                                                               , sam_v1_6_alignment_bopt_int32_d bopt
+                                                                               , sam_v1_6_alignment_bopt_word32_d bopt
+                                                                               , sam_v1_6_alignment_bopt_float_d bopt
+                                                                               ]
     sam_v1_6_alignment_bopt_int8_d x = case (sam_v1_6_alignment_bopt_int8 x) of
                                          Nothing        -> ""
                                          Just bopt_int8 -> (unpack $ fromStrict $ pack $ toList $ sam_v1_6_alignment_bopt_int8_tag bopt_int8) ++
                                                            ":"                                                                                ++
-                                                           (unpack $ fromStrict $ singleton $ sam_v1_6_alignment_bopt_int8_type bopt_int8)    ++
+                                                           "B"                                                                                ++
                                                            ":"                                                                                ++
-                                                           (concat $ map encodeInt8 $ toList $ sam_v1_6_alignment_bopt_int8_value bopt_int8)
+                                                           (unpack $ fromStrict $ DB.singleton $ sam_v1_6_alignment_bopt_int8_type bopt_int8) ++
+                                                           ","                                                                                ++
+                                                           (concat $ map show $ toList $ sam_v1_6_alignment_bopt_int8_value bopt_int8)
     sam_v1_6_alignment_bopt_word8_d x = case (sam_v1_6_alignment_bopt_word8 x) of 
                                           Nothing         -> ""
                                           Just bopt_word8 -> (unpack $ fromStrict $ pack $ toList $ sam_v1_6_alignment_bopt_word8_tag bopt_word8) ++
                                                              ":"                                                                                  ++
-                                                             (unpack $ fromStrict $ singleton $ sam_v1_6_alignment_bopt_word8_type bopt_word8)    ++
+                                                             "B"                                                                                  ++
                                                              ":"                                                                                  ++
+                                                             (unpack $ fromStrict $ DB.singleton $ sam_v1_6_alignment_bopt_word8_type bopt_word8) ++
+                                                             ","                                                                                  ++
                                                              (unpack $ fromStrict $ pack $ toList $ sam_v1_6_alignment_bopt_word8_value bopt_word8)
     sam_v1_6_alignment_bopt_int16_d x = case (sam_v1_6_alignment_bopt_int16 x) of 
                                           Nothing         -> ""
                                           Just bopt_int16 -> (unpack $ fromStrict $ pack $ toList $ sam_v1_6_alignment_bopt_int16_tag bopt_int16) ++
                                                              ":"                                                                                  ++
-                                                             (unpack $ fromStrict $ singleton $ sam_v1_6_alignment_bopt_int16_type bopt_int16)    ++
+                                                             "B"                                                                                  ++
                                                              ":"                                                                                  ++
-                                                             (concat $ map encodeInt16 $ toList $ sam_v1_6_alignment_bopt_int16_value bopt_int16)
+                                                             (unpack $ fromStrict $ DB.singleton $ sam_v1_6_alignment_bopt_int16_type bopt_int16) ++
+                                                             ","                                                                                  ++
+                                                             (concat $ map show $ toList $ sam_v1_6_alignment_bopt_int16_value bopt_int16)
     sam_v1_6_alignment_bopt_word16_d x = case (sam_v1_6_alignment_bopt_word16 x) of
                                            Nothing          -> ""
                                            Just bopt_word16 -> (unpack $ fromStrict $ pack $ toList $ sam_v1_6_alignment_bopt_word16_tag bopt_word16) ++
                                                                ":"                                                                                    ++
-                                                               (unpack $ fromStrict $ singleton $ sam_v1_6_alignment_bopt_word16_type bopt_word16)    ++
+                                                               "B"                                                                                    ++
                                                                ":"                                                                                    ++
+                                                               (unpack $ fromStrict $ DB.singleton $ sam_v1_6_alignment_bopt_word16_type bopt_word16) ++
+                                                               ","                                                                                    ++
                                                                (concat $ map encodeWord16 $ toList $ sam_v1_6_alignment_bopt_word16_value bopt_word16)
     sam_v1_6_alignment_bopt_int32_d x = case (sam_v1_6_alignment_bopt_int32 x) of
                                           Nothing         -> ""
                                           Just bopt_int32 -> (unpack $ fromStrict $ pack $ toList $ sam_v1_6_alignment_bopt_int32_tag bopt_int32) ++
                                                              ":"                                                                                  ++
-                                                             (unpack $ fromStrict $ singleton $ sam_v1_6_alignment_bopt_int32_type bopt_int32)    ++
+                                                             "B"                                                                                  ++
                                                              ":"                                                                                  ++
-                                                             (concat $ map encodeInt32 $ toList $ sam_v1_6_alignment_bopt_int32_value bopt_int32)
+                                                             (unpack $ fromStrict $ DB.singleton $ sam_v1_6_alignment_bopt_int32_type bopt_int32) ++
+                                                             ","                                                                                  ++
+                                                             (concat $ map show $ toList $ sam_v1_6_alignment_bopt_int32_value bopt_int32)
     sam_v1_6_alignment_bopt_word32_d x = case (sam_v1_6_alignment_bopt_word32 x) of 
                                            Nothing          -> ""
                                            Just bopt_word32 -> (unpack $ fromStrict $ pack $ toList $ sam_v1_6_alignment_bopt_word32_tag bopt_word32) ++
                                                                ":"                                                                                    ++
-                                                               (unpack $ fromStrict $ singleton $ sam_v1_6_alignment_bopt_word32_type bopt_word32)    ++
+                                                               "B"                                                                                    ++
                                                                ":"                                                                                    ++
+                                                               (unpack $ fromStrict $ DB.singleton $ sam_v1_6_alignment_bopt_word32_type bopt_word32) ++
+                                                               ","                                                                                    ++
                                                                (concat $ map encodeWord32 $ toList $ sam_v1_6_alignment_bopt_word32_value bopt_word32)
     sam_v1_6_alignment_bopt_float_d x = case (sam_v1_6_alignment_bopt_float x) of 
                                           Nothing         -> ""
                                           Just bopt_float -> (unpack $ fromStrict $ pack $ toList $ sam_v1_6_alignment_bopt_float_tag bopt_float) ++
                                                              ":"                                                                                  ++
-                                                             (unpack $ fromStrict $ singleton $ sam_v1_6_alignment_bopt_float_type bopt_float)    ++
+                                                             "B"                                                                                  ++
                                                              ":"                                                                                  ++
+                                                             (unpack $ fromStrict $ DB.singleton $ sam_v1_6_alignment_bopt_float_type bopt_float) ++
+                                                             ","                                                                                  ++
                                                              (concat $ map show $ toList $ sam_v1_6_alignment_bopt_float_value bopt_float)
-    encodeInt8 :: Int8 -> [Char]
-    encodeInt8 = show
-    encodeInt16 :: Int16 -> [Char]
-    encodeInt16 = show
     encodeWord16 :: Word16 -> [Char]
-    encodeWord16 = unpack . toLazyByteString . word16LE
-    encodeInt32 :: Int32 -> [Char]
-    encodeInt32 = show
+    encodeWord16 = unpack . DBL.filter (\x -> x /= 0) . toLazyByteString . word16LE
     encodeWord32 :: Word32 -> [Char]
-    encodeWord32 = unpack . toLazyByteString . word32LE
+    encodeWord32 = unpack . DBL.filter (\x -> x /= 0) . toLazyByteString . word32LE
 
 -- | Write @"SAM_V1_6"@ to a file.
 -- Calls deconstructSAM_V1_6.
