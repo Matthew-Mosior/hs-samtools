@@ -14,7 +14,7 @@
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Read.Parser.Header.RG.FO
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -55,18 +55,27 @@ import Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_Read_Group_FO :: Parser SAM_V1_6_Read_Group_Flow_Order 
 parse_SAM_V1_6_Read_Group_FO = do
-  _ <- do rgheaderflowordertagp <- DABL.takeTill (== 58)
-          -- Parse FO tag of the header section.
-          case (rgheaderflowordertagp =~ [re|[F][O]|]) of
-            False -> fail $ show SAM_V1_6_Error_Read_Group_Flow_Order_Incorrect_Format
-            True  -> -- FO tag is in the accepted format. 
-                     return ()
-  _ <- word8 58
-  rgheaderflowordervalue <- do rgheaderflowordervaluep <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
-                               -- Parse FO value of the header section.
-                               case (rgheaderflowordervaluep =~ [re|\*|[ACMGRSVTWYHKDBN]+|]) of
-                                 False -> fail $ show SAM_V1_6_Error_Read_Group_Flow_Order_Incorrect_Format
-                                 True  -> -- FO value is in the accepted format.
-                                          return rgheaderflowordervaluep
+  _                      <- do
+    rgheaderflowordertagp <-
+      DABL.takeTill (== 58)
+    -- Parse FO tag of the header section.
+    case (rgheaderflowordertagp =~ [re|[F][O]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_Read_Group_Flow_Order_Incorrect_Format
+      True  ->
+        -- FO tag is in the accepted format. 
+        return ()
+  _                      <-
+    word8 58
+  rgheaderflowordervalue <- do
+    rgheaderflowordervaluep <-
+      DABL.takeTill (\x -> x == 09 || isEndOfLine x)
+    -- Parse FO value of the header section.
+    case (rgheaderflowordervaluep =~ [re|\*|[ACMGRSVTWYHKDBN]+|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_Read_Group_Flow_Order_Incorrect_Format
+      True  ->
+        -- FO value is in the accepted format.
+        return rgheaderflowordervaluep
   return SAM_V1_6_Read_Group_Flow_Order { sam_v1_6_read_group_flow_order_value = rgheaderflowordervalue
                                         }

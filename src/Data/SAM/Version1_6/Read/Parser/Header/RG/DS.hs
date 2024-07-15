@@ -14,7 +14,7 @@
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Read.Parser.Header.RG.DS
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -55,13 +55,19 @@ import Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_Read_Group_DS :: Parser SAM_V1_6_Read_Group_Description 
 parse_SAM_V1_6_Read_Group_DS = do
-  _ <- do rgheaderdescriptiontagp <- DABL.takeTill (== 58)
-          -- Parse DS tag of the header section.
-          case (rgheaderdescriptiontagp =~ [re|[D][S]|]) of
-            False -> fail $ show SAM_V1_6_Error_Read_Group_Description_Incorrect_Format 
-            True  -> -- DS tag is in the accepted format. 
-                     return ()
-  _ <- word8 58
-  rgheaderdescriptionvalue <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
+  _                        <- do
+    rgheaderdescriptiontagp <-
+      DABL.takeTill (== 58)
+    -- Parse DS tag of the header section.
+    case (rgheaderdescriptiontagp =~ [re|[D][S]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_Read_Group_Description_Incorrect_Format 
+      True  ->
+        -- DS tag is in the accepted format. 
+        return ()
+  _                        <-
+    word8 58
+  rgheaderdescriptionvalue <-
+    DABL.takeTill (\x -> x == 09 || isEndOfLine x)
   return SAM_V1_6_Read_Group_Description { sam_v1_6_read_group_description_value = rgheaderdescriptionvalue
                                          }

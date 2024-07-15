@@ -5,7 +5,7 @@
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Alignment
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable

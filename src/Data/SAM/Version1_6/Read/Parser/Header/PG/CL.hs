@@ -14,7 +14,7 @@
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Read.Parser.Header.PG.CL
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -55,13 +55,19 @@ import Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_Program_CL :: Parser SAM_V1_6_Program_Command_Line
 parse_SAM_V1_6_Program_CL = do
-  _ <- do pgheadercommandlinetagp <- DABL.takeTill (== 58)
-          -- Parse CL tag of the header section.
-          case (pgheadercommandlinetagp =~ [re|[C][L]|]) of
-            False -> fail $ show SAM_V1_6_Error_Program_Command_Line_Incorrect_Format 
-            True  -> -- CL tag is in the accepted format. 
-                     return ()
-  _ <- word8 58
-  pgheadercommandlinevalue <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
+  _                        <- do
+    pgheadercommandlinetagp <-
+      DABL.takeTill (== 58)
+    -- Parse CL tag of the header section.
+    case (pgheadercommandlinetagp =~ [re|[C][L]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_Program_Command_Line_Incorrect_Format 
+      True  ->
+        -- CL tag is in the accepted format. 
+        return ()
+  _                        <-
+    word8 58
+  pgheadercommandlinevalue <-
+    DABL.takeTill (\x -> x == 09 || isEndOfLine x)
   return SAM_V1_6_Program_Command_Line { sam_v1_6_program_command_line_value = pgheadercommandlinevalue
                                        }

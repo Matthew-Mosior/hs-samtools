@@ -14,7 +14,7 @@
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Read.Parser.Header.PG.PN
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -55,13 +55,19 @@ import Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_Program_PN :: Parser SAM_V1_6_Program_Name
 parse_SAM_V1_6_Program_PN = do
-  _ <- do pgheadernametagp <- DABL.takeTill (== 58)
-          -- Parse PN tag of the header section.
-          case (pgheadernametagp =~ [re|[P][N]|]) of
-            False -> fail $ show SAM_V1_6_Error_Program_Name_Incorrect_Format 
-            True  -> -- PN tag is in the accepted format. 
-                     return ()
-  _ <- word8 58
-  pgheadernamevalue <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
+  _                 <- do
+    pgheadernametagp <-
+      DABL.takeTill (== 58)
+    -- Parse PN tag of the header section.
+    case (pgheadernametagp =~ [re|[P][N]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_Program_Name_Incorrect_Format 
+      True  ->
+        -- PN tag is in the accepted format. 
+        return ()
+  _                 <-
+    word8 58
+  pgheadernamevalue <-
+    DABL.takeTill (\x -> x == 09 || isEndOfLine x)
   return SAM_V1_6_Program_Name { sam_v1_6_program_name_value = pgheadernamevalue
                                }

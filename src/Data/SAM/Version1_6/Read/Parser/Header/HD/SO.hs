@@ -15,7 +15,7 @@
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Read.Parser.Header.HD.SO
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -56,18 +56,26 @@ import Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_File_Level_Metadata_SO :: Parser SAM_V1_6_File_Level_Metadata_Sorting_Order
 parse_SAM_V1_6_File_Level_Metadata_SO = do
-  _ <- do hdheadersortingordertagp <- DABL.takeTill (== 58)
-          -- Parse SO tag of the header section.
-          case (hdheadersortingordertagp =~ [re|[S][O]|]) of
-            False -> fail $ show SAM_V1_6_Error_File_Level_Metadata_Sorting_Order_Tag_Incorrect_Format
-            True  -> -- SO tag is in the accepted format.
-                     return ()
-  _ <- word8 58
-  hdheadersortingordervalue <- do hdheadersortingordervaluep <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
-                                  -- Parse SO value of the header section.
-                                  case (hdheadersortingordervaluep =~ [re|[u][n][k][n][o][w][n]|[u][n][s][o][r][t][e][d]|[q][u][e][r][y][n][a][m][e]|[c][o][o][r][d][i][n][a][t][e]|]) of
-                                    False -> fail $ show SAM_V1_6_Error_File_Level_Metadata_Sorting_Order_Invalid_Value
-                                    True  -> -- SO value is in the accepted format.
-                                             return hdheadersortingordervaluep  
+  _                            <- do
+    hdheadersortingordertagp <-
+      DABL.takeTill (== 58)
+    -- Parse SO tag of the header section.
+    case (hdheadersortingordertagp =~ [re|[S][O]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_File_Level_Metadata_Sorting_Order_Tag_Incorrect_Format
+      True  ->
+        -- SO tag is in the accepted format.
+        return ()
+  _                            <-
+    word8 58
+  hdheadersortingordervalue <- do
+    hdheadersortingordervaluep <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
+    -- Parse SO value of the header section.
+    case (hdheadersortingordervaluep =~ [re|[u][n][k][n][o][w][n]|[u][n][s][o][r][t][e][d]|[q][u][e][r][y][n][a][m][e]|[c][o][o][r][d][i][n][a][t][e]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_File_Level_Metadata_Sorting_Order_Invalid_Value
+      True  ->
+        -- SO value is in the accepted format.
+        return hdheadersortingordervaluep  
   return SAM_V1_6_File_Level_Metadata_Sorting_Order { sam_v1_6_file_level_metadata_sorting_order_value = hdheadersortingordervalue
                                                     }

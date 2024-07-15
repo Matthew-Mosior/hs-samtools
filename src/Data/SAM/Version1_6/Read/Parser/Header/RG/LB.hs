@@ -14,7 +14,7 @@
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Read.Parser.Header.RG.LB
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -55,13 +55,19 @@ import Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_Read_Group_LB :: Parser SAM_V1_6_Read_Group_Library 
 parse_SAM_V1_6_Read_Group_LB = do
-  _ <- do rgheaderlibrarytagp <- DABL.takeTill (== 58)
-          -- Parse LB tag of the header section.
-          case (rgheaderlibrarytagp =~ [re|[L][B]|]) of
-            False -> fail $ show SAM_V1_6_Error_Read_Group_Library_Incorrect_Format
-            True  -> -- LB tag is in the accepted format. 
-                     return ()
-  _ <- word8 58
-  rgheaderlibraryvalue <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
+  _                    <- do
+    rgheaderlibrarytagp <-
+      DABL.takeTill (== 58)
+    -- Parse LB tag of the header section.
+    case (rgheaderlibrarytagp =~ [re|[L][B]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_Read_Group_Library_Incorrect_Format
+      True  ->
+        -- LB tag is in the accepted format. 
+        return ()
+  _                    <-
+    word8 58
+  rgheaderlibraryvalue <-
+    DABL.takeTill (\x -> x == 09 || isEndOfLine x)
   return SAM_V1_6_Read_Group_Library { sam_v1_6_read_group_library_value = rgheaderlibraryvalue
                                      }

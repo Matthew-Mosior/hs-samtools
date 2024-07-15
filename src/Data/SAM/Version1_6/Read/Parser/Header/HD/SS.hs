@@ -15,7 +15,7 @@
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Read.Parser.Header.HD.SS
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -56,18 +56,27 @@ import Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_File_Level_Metadata_SS :: Parser SAM_V1_6_File_Level_Metadata_SubSorting_Order
 parse_SAM_V1_6_File_Level_Metadata_SS = do
-  _ <- do hdheadersubsortingordertagp <- DABL.takeTill (== 58)
-          -- Parse SS tag of the header section.
-          case (hdheadersubsortingordertagp =~ [re|[S][S]|]) of
-            False -> fail $ show SAM_V1_6_Error_File_Level_Metadata_Subsorting_Order_Tag_Incorrect_Format
-            True  -> -- SS tag is in the accepted format.
-                     return ()
-  _ <- word8 58
-  hdheadersubsortingordervalue <- do hdheadersubsortingordervaluep <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
-                                     -- Parse SS value of the header section.
-                                     case (hdheadersubsortingordervaluep =~ [re|(coordinate|queryname|unsorted)(:[A-Za-z0-9_-]+)+|]) of
-                                       False -> fail $ show SAM_V1_6_Error_File_Level_Metadata_Subsorting_Order_Incorrect_Format 
-                                       True  -> -- SS value is in the accepted format.
-                                                return hdheadersubsortingordervaluep 
+  _                            <- do
+    hdheadersubsortingordertagp <-
+      DABL.takeTill (== 58)
+    -- Parse SS tag of the header section.
+    case (hdheadersubsortingordertagp =~ [re|[S][S]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_File_Level_Metadata_Subsorting_Order_Tag_Incorrect_Format
+      True  ->
+        -- SS tag is in the accepted format.
+        return ()
+  _                            <-
+    word8 58
+  hdheadersubsortingordervalue <- do
+    hdheadersubsortingordervaluep <-
+      DABL.takeTill (\x -> x == 09 || isEndOfLine x)
+    -- Parse SS value of the header section.
+    case (hdheadersubsortingordervaluep =~ [re|(coordinate|queryname|unsorted)(:[A-Za-z0-9_-]+)+|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_File_Level_Metadata_Subsorting_Order_Incorrect_Format 
+      True  ->
+        -- SS value is in the accepted format.
+        return hdheadersubsortingordervaluep 
   return SAM_V1_6_File_Level_Metadata_SubSorting_Order { sam_v1_6_file_level_metadata_subsorting_order_value = hdheadersubsortingordervalue
                                                        }

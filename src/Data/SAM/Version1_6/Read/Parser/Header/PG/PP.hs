@@ -14,7 +14,7 @@
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Read.Parser.Header.PG.PP
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -55,13 +55,19 @@ import Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_Program_PP :: Parser SAM_V1_6_Program_Previous_PG_ID
 parse_SAM_V1_6_Program_PP = do
-  _ <- do pgheaderpreviouspgidtagp <- DABL.takeTill (== 58)
-          -- Parse PP tag of the header section.
-          case (pgheaderpreviouspgidtagp =~ [re|[P][P]|]) of
-            False -> fail $ show SAM_V1_6_Error_Program_Previous_PG_ID_Incorrect_Format 
-            True  -> -- PP tag is in the accepted format. 
-                     return ()
-  _ <- word8 58
-  pgheaderpreviouspgidvalue <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
+  _                         <- do
+    pgheaderpreviouspgidtagp <-
+      DABL.takeTill (== 58)
+    -- Parse PP tag of the header section.
+    case (pgheaderpreviouspgidtagp =~ [re|[P][P]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_Program_Previous_PG_ID_Incorrect_Format 
+      True  ->
+        -- PP tag is in the accepted format. 
+        return ()
+  _                         <-
+    word8 58
+  pgheaderpreviouspgidvalue <-
+    DABL.takeTill (\x -> x == 09 || isEndOfLine x)
   return SAM_V1_6_Program_Previous_PG_ID { sam_v1_6_program_previous_pg_id_value = pgheaderpreviouspgidvalue
                                          }

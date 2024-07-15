@@ -93,3 +93,29 @@
 
 * Fixed BOPT deconstruction in deconstructSAM_V1_6 (writeSAM_V1_6).
 * Added extra writeSAM_V1_6 test cases.
+
+## 0.9.0.0 -- 2023-10-31
+
+* Fixed writeSAM_V1_6 function.
+* Added additional test cases for writeSAM_V1_6.
+
+## 0.10.0.0 -- 2024-07-15
+
+* Fixed SAM parsing of optional fields.
+* Reorganized/refactored SAM modules.
+* Added BAM parsing.
+* Added internal modules.
+* Updated copyright in all modules.
+* Updated LICENSE with updated year.
+
+## 0.10.0.1 -- 2024-07-15
+
+* Added missing documentation for BAM_V1_6_BAM_Alignment_OptionalFields(..).
+
+## 0.10.0.2 -- 2024-07-15
+
+* Fixed previous CHANGELOG entry (0.10.0.1).
+
+## 0.10.0.3 -- 2024-07-15
+
+* Fixed previous CHANGELOG entry (0.10.0.2).

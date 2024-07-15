@@ -15,7 +15,7 @@
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Read.Parser.Header.CO.Base
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -58,14 +58,21 @@ import Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_One_Line_Comment :: Parser SAM_V1_6_One_Line_Comment
 parse_SAM_V1_6_One_Line_Comment = do
-  _         <- do coheaderp <- DABL.takeTill (== 09)
-                  -- Parse @PG tag of the header section.
-                  case (coheaderp =~ [re|[@][C][O]|]) of
-                    False -> fail $ show SAM_V1_6_Error_One_Line_Comment_Tag_Incorrect_Format
-                    True  -> -- @CO tag is in the accepted format.
-                             return ()
-  _         <- word8 09
-  value     <- DABL.takeTill isEndOfLine
-  _         <- endOfLine
+  _     <- do
+    coheaderp <-
+      DABL.takeTill (== 09)
+    -- Parse @PG tag of the header section.
+    case (coheaderp =~ [re|[@][C][O]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_One_Line_Comment_Tag_Incorrect_Format
+      True  ->
+        -- @CO tag is in the accepted format.
+        return ()
+  _     <-
+    word8 09
+  value <-
+    DABL.takeTill isEndOfLine
+  _     <-
+    endOfLine
   return SAM_V1_6_One_Line_Comment { sam_v1_6_one_line_comment_value = value
                                    }

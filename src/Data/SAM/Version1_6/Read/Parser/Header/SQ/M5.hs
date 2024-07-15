@@ -14,7 +14,7 @@
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Read.Parser.Header.SQ.M5
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -55,13 +55,19 @@ import Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_Reference_Sequence_Dictionary_M5 :: Parser SAM_V1_6_Reference_Sequence_Dictionary_MD5_Checksum
 parse_SAM_V1_6_Reference_Sequence_Dictionary_M5 = do
-  _ <- do sqheadermd5checksumtagp <- DABL.takeTill (== 58)
-          -- Parse M5 tag of the header section.
-          case (sqheadermd5checksumtagp =~ [re|[M][5]|]) of
-            False -> fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_MD5_Checksum_Incorrect_Format 
-            True  -> -- M5 tag is in the accepted format.
-                     return ()
-  _ <- word8 58
-  sqheadermd5checksumvalue <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
+  _                        <- do
+    sqheadermd5checksumtagp <-
+      DABL.takeTill (== 58)
+    -- Parse M5 tag of the header section.
+    case (sqheadermd5checksumtagp =~ [re|[M][5]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_MD5_Checksum_Incorrect_Format 
+      True  ->
+        -- M5 tag is in the accepted format.
+        return ()
+  _                        <-
+    word8 58
+  sqheadermd5checksumvalue <-
+    DABL.takeTill (\x -> x == 09 || isEndOfLine x)
   return SAM_V1_6_Reference_Sequence_Dictionary_MD5_Checksum { sam_v1_6_reference_sequence_dictionary_md5_checksum_value = sqheadermd5checksumvalue
                                                              }

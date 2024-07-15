@@ -4,11 +4,12 @@
 {-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings     #-}
+{-# LANGUAGE StrictData            #-}
 {-# LANGUAGE TypeFamilies          #-}
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Header.CO
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -28,12 +29,14 @@ import Generics.Deriving.Base
 -- | Custom SAM (version 1.6) @"SAM_V1_6_One_Line_Comment"@ data type.
 --
 -- See section 1.3 of the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
-newtype SAM_V1_6_One_Line_Comment = SAM_V1_6_One_Line_Comment { sam_v1_6_one_line_comment_value :: ByteString
-                                                              }
-  deriving (Generic,Typeable)
+newtype SAM_V1_6_One_Line_Comment = SAM_V1_6_One_Line_Comment
+  { sam_v1_6_one_line_comment_value :: ByteString
+  } deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_One_Line_Comment where
-  SAM_V1_6_One_Line_Comment sam_v1_6_one_line_comment_value1 == SAM_V1_6_One_Line_Comment sam_v1_6_one_line_comment_value2 = sam_v1_6_one_line_comment_value1 == sam_v1_6_one_line_comment_value2
+  SAM_V1_6_One_Line_Comment sam_v1_6_one_line_comment_value1 ==
+    SAM_V1_6_One_Line_Comment sam_v1_6_one_line_comment_value2 =
+      sam_v1_6_one_line_comment_value1 == sam_v1_6_one_line_comment_value2
 
 instance Show SAM_V1_6_One_Line_Comment where
   show (SAM_V1_6_One_Line_Comment value) = "SAM_V1_6_One_Line_Comment { "       ++

@@ -14,7 +14,7 @@
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Read.Parser.Header.RG.ID
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -55,13 +55,19 @@ import Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_Read_Group_ID :: Parser SAM_V1_6_Read_Group_Identifier 
 parse_SAM_V1_6_Read_Group_ID = do
-  _ <- do rgheaderreadgroupidentifiertagp <- DABL.takeTill (== 58)
-          -- Parse ID tag of the header section.
-          case (rgheaderreadgroupidentifiertagp =~ [re|[I][D]|]) of
-            False -> fail $ show SAM_V1_6_Error_Read_Group_Read_Group_Identifier_Incorrect_Format
-            True  -> -- ID tag is in the accepted format. 
-                     return ()
-  _ <- word8 58
-  rgheaderreadgroupidentifiervalue <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
+  _                                <- do
+    rgheaderreadgroupidentifiertagp <-
+      DABL.takeTill (== 58)
+    -- Parse ID tag of the header section.
+    case (rgheaderreadgroupidentifiertagp =~ [re|[I][D]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_Read_Group_Read_Group_Identifier_Incorrect_Format
+      True  ->
+        -- ID tag is in the accepted format. 
+        return ()
+  _                                <-
+    word8 58
+  rgheaderreadgroupidentifiervalue <-
+    DABL.takeTill (\x -> x == 09 || isEndOfLine x)
   return SAM_V1_6_Read_Group_Identifier { sam_v1_6_read_group_identifier_value = rgheaderreadgroupidentifiervalue
                                         }

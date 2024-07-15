@@ -17,10 +17,10 @@ name:               hs-samtools
 -- See the Haskell package versioning policy (PVP) for standards
 -- guiding when and how versions should be incremented.
 -- https://pvp.haskell.org
--- PVP summary:     +-+------- breaking API changes
---                  | | +----- non-breaking API additions
---                  | | | +--- code changes with no API change
-version:            0.9.0.0
+-- PVP summary:     +-+-------- breaking API changes
+--                  | |  +----- non-breaking API additions
+--                  | |  | +--- code changes with no API change
+version:            0.10.0.3
 
 -- A short (one-line) description of the package.
 synopsis: Read and write SAM, BAM, and CRAM files.
@@ -65,15 +65,65 @@ library
     import:           warnings
 
     -- Modules exported by the library.
-    exposed-modules: Data.SAM.Version1_6.Base,
+    exposed-modules: Data.BAM.Version1_6.Base,
+                     Data.BAM.Version1_6.BAM,
+                     Data.BAM.Version1_6.BAM.BAMAlignments,
+                     Data.BAM.Version1_6.BAM.BAMHeader,
+                     Data.BAM.Version1_6.BAM.Alignment,
+                     Data.BAM.Version1_6.BAM.Alignment.Base,
+                     Data.BAM.Version1_6.BAM.Alignment.OptionalFields.Base,
+                     Data.BAM.Version1_6.BAM.Alignment.OptionalFields.AOPT,
+                     Data.BAM.Version1_6.BAM.Alignment.OptionalFields.BigCOPT,
+                     Data.BAM.Version1_6.BAM.Alignment.OptionalFields.BigIOPT,
+                     Data.BAM.Version1_6.BAM.Alignment.OptionalFields.BigSOPT,
+                     Data.BAM.Version1_6.BAM.Alignment.OptionalFields.SmallCOPT,
+                     Data.BAM.Version1_6.BAM.Alignment.OptionalFields.SmallIOPT,
+                     Data.BAM.Version1_6.BAM.Alignment.OptionalFields.SmallSOPT,
+                     Data.BAM.Version1_6.BAM.Alignment.OptionalFields.FOPT,
+                     Data.BAM.Version1_6.BAM.Alignment.OptionalFields.HOPT,
+                     Data.BAM.Version1_6.BAM.Alignment.OptionalFields.ZOPT,
+                     Data.BAM.Version1_6.BAM.Alignment.OptionalFields.BOPT,
+                     Data.BAM.Version1_6.BAM.Header, 
+                     Data.BAM.Version1_6.BAM.Header.CO,
+                     Data.BAM.Version1_6.BAM.Header.HD,
+                     Data.BAM.Version1_6.BAM.Header.PG,
+                     Data.BAM.Version1_6.BAM.Header.RG,
+                     Data.BAM.Version1_6.BAM.Header.SQ, 
+                     Data.BAM.Version1_6.BAM.ReferenceInformation,
+                     Data.BAM.Version1_6.BAM.ReferenceInformation.Base,
+                     Data.BAM.Version1_6.BGZFBlock,
+                     Data.BAM.Version1_6.GZipHeader,
+                     Data.BAM.Version1_6.Read.Base,
+                     Data.BAM.Version1_6.Read.Error,
+                     Data.BAM.Version1_6.Read.Parser.BGZFBlock,
+                     Data.BAM.Version1_6.Read.Parser.BAM.Base,
+                     Data.BAM.Version1_6.Read.Parser.BAM.BAMAlignments,
+                     Data.BAM.Version1_6.Read.Parser.BAM.BAMHeader,
+                     Data.BAM.Version1_6.Read.Parser.BAM.Alignment.Base,
+                     Data.BAM.Version1_6.Read.Parser.BAM.Alignment.OptionalFields.AOPT,
+                     Data.BAM.Version1_6.Read.Parser.BAM.Alignment.OptionalFields.BigCOPT,
+                     Data.BAM.Version1_6.Read.Parser.BAM.Alignment.OptionalFields.BigIOPT,
+                     Data.BAM.Version1_6.Read.Parser.BAM.Alignment.OptionalFields.BigSOPT,
+                     Data.BAM.Version1_6.Read.Parser.BAM.Alignment.OptionalFields.SmallCOPT,
+                     Data.BAM.Version1_6.Read.Parser.BAM.Alignment.OptionalFields.SmallIOPT,
+                     Data.BAM.Version1_6.Read.Parser.BAM.Alignment.OptionalFields.SmallSOPT,
+                     Data.BAM.Version1_6.Read.Parser.BAM.Alignment.OptionalFields.FOPT,
+                     Data.BAM.Version1_6.Read.Parser.BAM.Alignment.OptionalFields.HOPT,
+                     Data.BAM.Version1_6.Read.Parser.BAM.Alignment.OptionalFields.ZOPT,
+                     Data.BAM.Version1_6.Read.Parser.BAM.Alignment.OptionalFields.BOPT,
+                     Data.BAM.Version1_6.Read.Parser.BAM.ReferenceInformation.Base,
+                     Data.BAM.Version1_6.Write.Base,
+                     Data.BAM.Version1_6.Write.Error,
+                     Data.SAM.Version1_6.Base,
                      Data.SAM.Version1_6.Alignment,
                      Data.SAM.Version1_6.Alignment.Base,
-                     Data.SAM.Version1_6.Alignment.AOPT,
-                     Data.SAM.Version1_6.Alignment.FOPT,
-                     Data.SAM.Version1_6.Alignment.HOPT,
-                     Data.SAM.Version1_6.Alignment.IOPT,
-                     Data.SAM.Version1_6.Alignment.ZOPT,
-                     Data.SAM.Version1_6.Alignment.BOPT,
+                     Data.SAM.Version1_6.Alignment.OptionalFields.Base,
+                     Data.SAM.Version1_6.Alignment.OptionalFields.AOPT,
+                     Data.SAM.Version1_6.Alignment.OptionalFields.FOPT,
+                     Data.SAM.Version1_6.Alignment.OptionalFields.HOPT,
+                     Data.SAM.Version1_6.Alignment.OptionalFields.IOPT,
+                     Data.SAM.Version1_6.Alignment.OptionalFields.ZOPT,
+                     Data.SAM.Version1_6.Alignment.OptionalFields.BOPT,
                      Data.SAM.Version1_6.Header, 
                      Data.SAM.Version1_6.Header.CO,
                      Data.SAM.Version1_6.Header.HD,
@@ -83,12 +133,12 @@ library
                      Data.SAM.Version1_6.Read.Base,
                      Data.SAM.Version1_6.Read.Error,
                      Data.SAM.Version1_6.Read.Parser.Alignment.Base,
-                     Data.SAM.Version1_6.Read.Parser.Alignment.AOPT,
-                     Data.SAM.Version1_6.Read.Parser.Alignment.IOPT,
-                     Data.SAM.Version1_6.Read.Parser.Alignment.FOPT,
-                     Data.SAM.Version1_6.Read.Parser.Alignment.ZOPT,
-                     Data.SAM.Version1_6.Read.Parser.Alignment.HOPT,
-                     Data.SAM.Version1_6.Read.Parser.Alignment.BOPT,
+                     Data.SAM.Version1_6.Read.Parser.Alignment.OptionalFields.AOPT,
+                     Data.SAM.Version1_6.Read.Parser.Alignment.OptionalFields.IOPT,
+                     Data.SAM.Version1_6.Read.Parser.Alignment.OptionalFields.FOPT,
+                     Data.SAM.Version1_6.Read.Parser.Alignment.OptionalFields.ZOPT,
+                     Data.SAM.Version1_6.Read.Parser.Alignment.OptionalFields.HOPT,
+                     Data.SAM.Version1_6.Read.Parser.Alignment.OptionalFields.BOPT,
                      Data.SAM.Version1_6.Read.Parser.Header.HD.Base,
                      Data.SAM.Version1_6.Read.Parser.Header.HD.VN,
                      Data.SAM.Version1_6.Read.Parser.Header.HD.SO,
@@ -131,26 +181,37 @@ library
                      Data.SAM.Version1_6.Write.Base
 
     -- Modules included in this library but not exported.
-    -- other-modules:
+    other-modules: Data.BAM.Version1_6.Internal,
+                   Data.BAM.Version1_6.Read.Parser.BAM.Alignment.Internal,
+                   Data.BAM.Version1_6.Write.Internal,
+                   Data.SAM.Version1_6.Internal
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
 
     -- Other library packages from which modules are imported.
-    build-depends:    base                 ^>=4.17.1.0, 
-                      ascii                >= 1.7.0 && < 1.8,
-                      attoparsec           >= 0.14.4 && < 0.15,
-                      bitvec               >= 1.1.4 && < 1.2,
-                      bytestring           >= 0.11.4 && < 0.12,
-                      containers           >= 0.6.7 && < 0.7,
-                      crypton              >= 0.33 && < 0.34,
-                      generic-deriving     >= 1.14.5 && < 1.15,
-                      parser-combinators   >= 1.3.0 && < 1.4,
-                      pcre-heavy           >= 1.0.0 && < 1.1,
-                      regex-tdfa           >= 1.3.2 && < 1.4,
-                      streamly             >= 0.9.0 && < 0.10,
-                      streamly-bytestring  >= 0.2.0 && < 0.3,
-                      streamly-core        >= 0.1.0 && < 0.2 
+    build-depends: base                >= 4.18.2 && < 4.19,
+                   array               >= 0.5.6 && < 0.6,
+                   ascii               >= 1.7.0 && < 1.8,
+                   base16              >= 1.0 && < 1.1,
+                   binary              >= 0.8.9 && < 0.9,
+                   bytestring          >= 0.11.5 && < 0.12,
+                   containers          >= 0.6.7 && < 0.7,
+                   attoparsec          >= 0.14.4 && < 0.15,
+                   bitvec              >= 1.1.5 && < 1.2,
+                   crypton             >= 1.0.0 && < 1.1,
+                   deepseq             >= 1.4.8 && < 1.5,
+                   digest              >= 0.0.2 && < 0.1,
+                   generic-deriving    >= 1.14.5 && < 1.15,
+                   mason               >= 0.2.6 && < 0.3,
+                   parsers             >= 0.12.11 && < 0.13,
+                   parser-combinators  >= 1.3.0 && < 1.4,
+                   pcre-heavy          >= 1.0.0 && < 1.1,
+                   regex-tdfa          >= 1.3.2 && < 1.4,
+                   streamly            >= 0.10.0 && < 0.11,
+                   streamly-bytestring >= 0.2.1 && < 0.3,
+                   streamly-core       >= 0.2.1 && < 0.3,
+                   zlib                >= 0.7.1 && < 0.8
 
     -- Directories containing source files.
     hs-source-dirs:   src
@@ -181,7 +242,7 @@ test-suite hs-samtools-test
     main-is:          Main.hs
 
     -- Test dependencies.
-    build-depends: base ^>=4.17.1.0,
+    build-depends: base,
                    bytestring,
                    containers,
                    hspec,

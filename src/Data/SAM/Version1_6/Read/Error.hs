@@ -7,7 +7,7 @@
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Read.Error
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -232,4 +232,12 @@ data SAM_V1_6_Error = -- | @HD tag not in accepted format (only important
                     | SAM_V1_6_Error_Alignment_BOPT_Value_Type_Incorrect_Format
                       -- | BOPT value data of the alignment section not in accepted format.
                     | SAM_V1_6_Error_Alignment_BOPT_Value_Data_Incorrect_Format
+                      -- | Remaining bytes leftover from running a parser on optional fields.
+                    | SAM_V1_6_Read_Error_Alignment_OptionalFields_Remaining_Bytes
+                      -- | Optional field is missing a type.
+                    | SAM_V1_6_Read_Error_Alignment_OptionalFields_Missing_Type
+                      -- | Optional field BOPT is missing a type.
+                    | SAM_V1_6_Read_Error_Alignment_OptionalFields_BOPT_Missing_Type
+                      -- | Optional field doesn't have a type.
+                    | SAM_V1_6_Read_Error_Alignment_OptionalFields_Index_Missing
   deriving (Eq,Generic,Show,Typeable)

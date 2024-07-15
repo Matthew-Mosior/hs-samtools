@@ -14,7 +14,7 @@
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Read.Parser.Header.RG.PU
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -55,13 +55,19 @@ import Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_Read_Group_PU :: Parser SAM_V1_6_Read_Group_Platform_Unit 
 parse_SAM_V1_6_Read_Group_PU = do
-  _ <- do rgheaderplatformunittagp <- DABL.takeTill (== 58)
-          -- Parse PU tag of the header section.
-          case (rgheaderplatformunittagp =~ [re|[P][U]|]) of
-            False -> fail $ show SAM_V1_6_Error_Read_Group_Platform_Unit_Incorrect_Format 
-            True  -> -- PU tag is in the accepted format. 
-                     return ()
-  _ <- word8 58
-  rgheaderplatformunitvalue <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
+  _                         <- do
+    rgheaderplatformunittagp <-
+      DABL.takeTill (== 58)
+    -- Parse PU tag of the header section.
+    case (rgheaderplatformunittagp =~ [re|[P][U]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_Read_Group_Platform_Unit_Incorrect_Format 
+      True  ->
+        -- PU tag is in the accepted format. 
+        return ()
+  _                         <-
+    word8 58
+  rgheaderplatformunitvalue <-
+    DABL.takeTill (\x -> x == 09 || isEndOfLine x)
   return SAM_V1_6_Read_Group_Platform_Unit { sam_v1_6_read_group_platform_unit_value = rgheaderplatformunitvalue
                                            }

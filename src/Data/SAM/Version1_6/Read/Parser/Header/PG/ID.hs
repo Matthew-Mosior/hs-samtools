@@ -14,7 +14,7 @@
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Read.Parser.Header.PG.ID
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -55,13 +55,19 @@ import Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_Program_ID :: Parser SAM_V1_6_Program_Record_Identifier
 parse_SAM_V1_6_Program_ID = do
-  _ <- do pgheaderidentifiertagp <- DABL.takeTill (== 58)
-          -- Parse ID tag of the header section.
-          case (pgheaderidentifiertagp =~ [re|[I][D]|]) of
-            False -> fail $ show SAM_V1_6_Error_Program_Identifier_Incorrect_Format 
-            True  -> -- ID tag is in the accepted format. 
-                     return ()
-  _ <- word8 58
-  pgheaderidentifiervalue <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
+  _                       <- do
+    pgheaderidentifiertagp <-
+      DABL.takeTill (== 58)
+    -- Parse ID tag of the header section.
+    case (pgheaderidentifiertagp =~ [re|[I][D]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_Program_Identifier_Incorrect_Format 
+      True  ->
+        -- ID tag is in the accepted format. 
+        return ()
+  _                       <-
+    word8 58
+  pgheaderidentifiervalue <-
+    DABL.takeTill (\x -> x == 09 || isEndOfLine x)
   return SAM_V1_6_Program_Record_Identifier { sam_v1_6_program_record_identifier_value = pgheaderidentifiervalue
                                             }
