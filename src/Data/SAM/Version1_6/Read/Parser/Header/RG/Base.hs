@@ -15,7 +15,7 @@
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Read.Parser.Header.RG.Base
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -73,44 +73,51 @@ import Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_Read_Group :: Parser SAM_V1_6_Read_Group
 parse_SAM_V1_6_Read_Group = do
-  _         <- do rgheaderp <- DABL.takeTill (== 09)
-                  -- Parse @RG tag of the header section.
-                  case (rgheaderp =~ [re|[@][R][G]|]) of
-                    False -> fail $ show SAM_V1_6_Error_Read_Group_Tag_Incorrect_Format
-                    True  -> -- @RG tag is in the accepted format.
-                             return ()
-  _         <- word8 09
+  _  <- do
+    rgheaderp <-
+      DABL.takeTill (== 09)
+    -- Parse @RG tag of the header section.
+    case (rgheaderp =~ [re|[@][R][G]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_Read_Group_Tag_Incorrect_Format
+      True  ->
+        -- @RG tag is in the accepted format.
+        return ()
+  _  <-
+    word8 09
   -- This parser assumes that the
   -- ID, BC, CN, DS, DT, FO, KS, LB, PG, PI, PL,
   -- PM, PU and SM tags can appear in any order.
-  rg <- intercalateEffect (word8 09) $
-          SAM_V1_6_Read_Group
-            <$> toPermutation parse_SAM_V1_6_Read_Group_ID
-            <*> toPermutationWithDefault Nothing
-                                         (Just <$> parse_SAM_V1_6_Read_Group_BC)
-            <*> toPermutationWithDefault Nothing
-                                         (Just <$> parse_SAM_V1_6_Read_Group_CN)
-            <*> toPermutationWithDefault Nothing
-                                         (Just <$> parse_SAM_V1_6_Read_Group_DS)
-            <*> toPermutationWithDefault Nothing
-                                         (Just <$> parse_SAM_V1_6_Read_Group_DT)
-            <*> toPermutationWithDefault Nothing
-                                         (Just <$> parse_SAM_V1_6_Read_Group_FO)
-            <*> toPermutationWithDefault Nothing
-                                         (Just <$> parse_SAM_V1_6_Read_Group_KS)
-            <*> toPermutationWithDefault Nothing
-                                         (Just <$> parse_SAM_V1_6_Read_Group_LB)
-            <*> toPermutationWithDefault Nothing
-                                         (Just <$> parse_SAM_V1_6_Read_Group_PG)
-            <*> toPermutationWithDefault Nothing
-                                         (Just <$> parse_SAM_V1_6_Read_Group_PI)
-            <*> toPermutationWithDefault Nothing
-                                         (Just <$> parse_SAM_V1_6_Read_Group_PL)
-            <*> toPermutationWithDefault Nothing
-                                         (Just <$> parse_SAM_V1_6_Read_Group_PM)
-            <*> toPermutationWithDefault Nothing
-                                         (Just <$> parse_SAM_V1_6_Read_Group_PU)
-            <*> toPermutationWithDefault Nothing
-                                         (Just <$> parse_SAM_V1_6_Read_Group_SM)
-  _ <- endOfLine
+  rg <-
+    intercalateEffect (word8 09) $
+      SAM_V1_6_Read_Group
+        <$> toPermutation parse_SAM_V1_6_Read_Group_ID
+        <*> toPermutationWithDefault Nothing
+                                     (Just <$> parse_SAM_V1_6_Read_Group_BC)
+        <*> toPermutationWithDefault Nothing
+                                     (Just <$> parse_SAM_V1_6_Read_Group_CN)
+        <*> toPermutationWithDefault Nothing
+                                     (Just <$> parse_SAM_V1_6_Read_Group_DS)
+        <*> toPermutationWithDefault Nothing
+                                     (Just <$> parse_SAM_V1_6_Read_Group_DT)
+        <*> toPermutationWithDefault Nothing
+                                     (Just <$> parse_SAM_V1_6_Read_Group_FO)
+        <*> toPermutationWithDefault Nothing
+                                     (Just <$> parse_SAM_V1_6_Read_Group_KS)
+        <*> toPermutationWithDefault Nothing
+                                     (Just <$> parse_SAM_V1_6_Read_Group_LB)
+        <*> toPermutationWithDefault Nothing
+                                     (Just <$> parse_SAM_V1_6_Read_Group_PG)
+        <*> toPermutationWithDefault Nothing
+                                     (Just <$> parse_SAM_V1_6_Read_Group_PI)
+        <*> toPermutationWithDefault Nothing
+                                     (Just <$> parse_SAM_V1_6_Read_Group_PL)
+        <*> toPermutationWithDefault Nothing
+                                     (Just <$> parse_SAM_V1_6_Read_Group_PM)
+        <*> toPermutationWithDefault Nothing
+                                     (Just <$> parse_SAM_V1_6_Read_Group_PU)
+        <*> toPermutationWithDefault Nothing
+                                     (Just <$> parse_SAM_V1_6_Read_Group_SM)
+  _  <-
+    endOfLine
   return rg 

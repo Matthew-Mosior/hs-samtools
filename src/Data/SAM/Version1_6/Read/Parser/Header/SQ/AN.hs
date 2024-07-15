@@ -14,7 +14,7 @@
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Read.Parser.Header.SQ.AN
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -55,18 +55,27 @@ import Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_Reference_Sequence_Dictionary_AN :: Parser SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names
 parse_SAM_V1_6_Reference_Sequence_Dictionary_AN = do
-  _ <- do sqheaderalternativereferencesequencenamestagp <- DABL.takeTill (== 58)
-          -- Parse AN tag of the header section.
-          case (sqheaderalternativereferencesequencenamestagp =~ [re|[A][N]|]) of
-            False -> fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names_Incorrect_Format
-            True  -> -- AN tag is in the accepted format.
-                     return ()
-  _ <- word8 58
-  sqheaderalternativereferencesequencenamesvalue <- do sqheaderalternativereferencesequencenamesvaluep <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
-                                                       -- Parse AN value of the header section.
-                                                       case (sqheaderalternativereferencesequencenamesvaluep =~ [re|[0-9A-Za-z!#$%&+.:;?@^_|~-][0-9A-Za-z!#$%&*+.:;=?@^_|~-]*(,[0-9A-Za-z!#$%&+.:;?@^_|~-][0-9A-Za-z!#$%&*+.:;=?@^_|~-]*)*|]) of
-                                                         False -> fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names_Invalid_Value
-                                                         True  -> -- AN value is in the accepted format.
-                                                                  return sqheaderalternativereferencesequencenamesvaluep
+  _                                              <- do
+    sqheaderalternativereferencesequencenamestagp <-
+      DABL.takeTill (== 58)
+    -- Parse AN tag of the header section.
+    case (sqheaderalternativereferencesequencenamestagp =~ [re|[A][N]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names_Incorrect_Format
+      True  ->
+        -- AN tag is in the accepted format.
+        return ()
+  _                                              <-
+    word8 58
+  sqheaderalternativereferencesequencenamesvalue <- do
+    sqheaderalternativereferencesequencenamesvaluep <-
+      DABL.takeTill (\x -> x == 09 || isEndOfLine x)
+    -- Parse AN value of the header section.
+    case (sqheaderalternativereferencesequencenamesvaluep =~ [re|[0-9A-Za-z!#$%&+.:;?@^_|~-][0-9A-Za-z!#$%&*+.:;=?@^_|~-]*(,[0-9A-Za-z!#$%&+.:;?@^_|~-][0-9A-Za-z!#$%&*+.:;=?@^_|~-]*)*|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names_Invalid_Value
+      True  ->
+        -- AN value is in the accepted format.
+        return sqheaderalternativereferencesequencenamesvaluep
   return SAM_V1_6_Reference_Sequence_Dictionary_Alternative_Reference_Sequence_Names { sam_v1_6_reference_sequence_dictionary_alternative_reference_sequence_names_value = sqheaderalternativereferencesequencenamesvalue
                                                                                      }

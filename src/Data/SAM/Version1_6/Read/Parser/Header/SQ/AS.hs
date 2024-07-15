@@ -14,7 +14,7 @@
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Read.Parser.Header.SQ.AS
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -55,13 +55,19 @@ import Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_Reference_Sequence_Dictionary_AS :: Parser SAM_V1_6_Reference_Sequence_Dictionary_Genome_Assembly_Identifier
 parse_SAM_V1_6_Reference_Sequence_Dictionary_AS = do
-  _ <- do sqheadergenomeassemblyidentifiertagp <- DABL.takeTill (== 58)
-          -- Parse AS tag of the header section.
-          case (sqheadergenomeassemblyidentifiertagp =~ [re|[A][S]|]) of
-            False -> fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Genome_Assembly_Identifier_Incorrect_Format
-            True  -> -- AS tag is in the accepted format.
-                     return ()
-  _ <- word8 58
-  sqheadergenomeassemblyidentifiervalue <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
+  _                                     <- do
+    sqheadergenomeassemblyidentifiertagp <-
+      DABL.takeTill (== 58)
+    -- Parse AS tag of the header section.
+    case (sqheadergenomeassemblyidentifiertagp =~ [re|[A][S]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Genome_Assembly_Identifier_Incorrect_Format
+      True  ->
+        -- AS tag is in the accepted format.
+        return ()
+  _                                     <-
+    word8 58
+  sqheadergenomeassemblyidentifiervalue <-
+    DABL.takeTill (\x -> x == 09 || isEndOfLine x)
   return SAM_V1_6_Reference_Sequence_Dictionary_Genome_Assembly_Identifier { sam_v1_6_reference_sequence_dictionary_genome_assembly_identifier_value = sqheadergenomeassemblyidentifiervalue
                                                                            }

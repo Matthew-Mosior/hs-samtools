@@ -14,7 +14,7 @@
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Read.Parser.Header.SQ.LN
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -55,18 +55,27 @@ import Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_Reference_Sequence_Dictionary_LN :: Parser SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Length
 parse_SAM_V1_6_Reference_Sequence_Dictionary_LN = do
-  _ <- do sqheadersequencelengthtagp <- DABL.takeTill (== 58)
-          -- Parse LN tag of the header section.
-          case (sqheadersequencelengthtagp =~ [re|[L][N]|]) of
-            False -> fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Reference_Sequence_Length_Incorrect_Format
-            True  -> -- LN tag is in the accepted format.
-                     return ()
-  _ <- word8 58
-  sqheadersequencelengthvalue <- do sqheadersequencelengthvaluep <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
-                                    -- Parse LN value of the header section.
-                                    case (sqheadersequencelengthvaluep =~ [re|[0-9]*|]) of -- Make this regex actually check the range of [1,2^31 - 1]?
-                                      False -> fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Reference_Sequence_Length_Invalid_Value
-                                      True  -> -- LN value is in the accepted format.
-                                               return sqheadersequencelengthvaluep
+  _                           <- do
+    sqheadersequencelengthtagp <-
+      DABL.takeTill (== 58)
+    -- Parse LN tag of the header section.
+    case (sqheadersequencelengthtagp =~ [re|[L][N]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Reference_Sequence_Length_Incorrect_Format
+      True  ->
+        -- LN tag is in the accepted format.
+        return ()
+  _                           <-
+    word8 58
+  sqheadersequencelengthvalue <- do
+    sqheadersequencelengthvaluep <-
+      DABL.takeTill (\x -> x == 09 || isEndOfLine x)
+    -- Parse LN value of the header section.
+    case (sqheadersequencelengthvaluep =~ [re|[0-9]*|]) of -- Make this regex actually check the range of [1,2^31 - 1]?
+      False ->
+        fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Reference_Sequence_Length_Invalid_Value
+      True  ->
+        -- LN value is in the accepted format.
+        return sqheadersequencelengthvaluep
   return SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Length { sam_v1_6_reference_sequence_dictionary_reference_sequence_length_value = sqheadersequencelengthvalue
                                                                           }

@@ -15,7 +15,7 @@
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Read.Parser.Header.HD.VN
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -56,18 +56,27 @@ import Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_File_Level_Metadata_VN :: Parser SAM_V1_6_File_Level_Metadata_Format_Version
 parse_SAM_V1_6_File_Level_Metadata_VN = do
-  _ <- do hdheaderversiontagp <- DABL.takeTill (== 58)
-          -- Parse VN tag of the header section.
-          case (hdheaderversiontagp =~ [re|[V][N]|]) of
-            False -> fail $ show SAM_V1_6_Error_File_Level_Metadata_Format_Version_Tag_Incorrect_Format
-            True  -> -- VN tag is in the accepted format. 
-                     return ()
-  _ <- word8 58
-  hdheaderversionvalue <- do hdheaderversionvaluep <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
-                             -- Parse VN value of the header section.
-                             case (hdheaderversionvaluep =~ [re|^[0-9]+\.[0-9]+$|]) of
-                               False -> fail $ show SAM_V1_6_Error_File_Level_Metadata_Format_Version_Value_Incorrect_Format
-                               True  -> -- VN value is in the accepted format.
-                                        return hdheaderversionvaluep  
+  _                       <- do
+    hdheaderversiontagp <-
+      DABL.takeTill (== 58)
+    -- Parse VN tag of the header section.
+    case (hdheaderversiontagp =~ [re|[V][N]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_File_Level_Metadata_Format_Version_Tag_Incorrect_Format
+      True  ->
+        -- VN tag is in the accepted format. 
+        return ()
+  _                       <-
+    word8 58
+  hdheaderversionvalue <- do
+    hdheaderversionvaluep <-
+      DABL.takeTill (\x -> x == 09 || isEndOfLine x)
+    -- Parse VN value of the header section.
+    case (hdheaderversionvaluep =~ [re|^[0-9]+\.[0-9]+$|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_File_Level_Metadata_Format_Version_Value_Incorrect_Format
+      True  ->
+        -- VN value is in the accepted format.
+        return hdheaderversionvaluep  
   return SAM_V1_6_File_Level_Metadata_Format_Version { sam_v1_6_file_level_metadata_format_version_value = hdheaderversionvalue
                                                      }

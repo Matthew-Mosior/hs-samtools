@@ -14,7 +14,7 @@
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Read.Parser.Header.RG.DT
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -55,13 +55,19 @@ import Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_Read_Group_DT :: Parser SAM_V1_6_Read_Group_Run_Date 
 parse_SAM_V1_6_Read_Group_DT = do
-  _ <- do rgheaderrundatetagp <- DABL.takeTill (== 58)
-          -- Parse DT tag of the header section.
-          case (rgheaderrundatetagp =~ [re|[D][T]|]) of
-            False -> fail $ show SAM_V1_6_Error_Read_Group_Date_Run_Produced_Incorrect_Format
-            True  -> -- DT tag is in the accepted format. 
-                     return ()
-  _ <- word8 58
-  rgheaderrundatevalue <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
+  _                    <- do
+    rgheaderrundatetagp <-
+      DABL.takeTill (== 58)
+    -- Parse DT tag of the header section.
+    case (rgheaderrundatetagp =~ [re|[D][T]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_Read_Group_Date_Run_Produced_Incorrect_Format
+      True  ->
+        -- DT tag is in the accepted format. 
+        return ()
+  _                    <-
+    word8 58
+  rgheaderrundatevalue <-
+    DABL.takeTill (\x -> x == 09 || isEndOfLine x)
   return SAM_V1_6_Read_Group_Run_Date { sam_v1_6_read_group_run_date_value = rgheaderrundatevalue
                                       }

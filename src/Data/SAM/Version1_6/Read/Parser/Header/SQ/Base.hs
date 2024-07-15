@@ -14,7 +14,7 @@
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Read.Parser.Header.SQ.Base
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -68,35 +68,42 @@ import Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_Reference_Sequence_Dictionary :: Parser SAM_V1_6_Reference_Sequence_Dictionary
 parse_SAM_V1_6_Reference_Sequence_Dictionary = do
-  _         <- do sqheaderp <- DABL.takeTill (== 09)
-                  -- Parse @SQ tag of the header section.
-                  case (sqheaderp =~ [re|[@][S][Q]|]) of
-                    False -> fail $ show SAM_V1_6_Error_File_Level_Metadata_Tag_Incorrect_Format
-                    True  -> -- @SQ tag is in the accepted format.
-                             return ()
-  _         <- word8 09
+  _  <- do
+    sqheaderp <-
+      DABL.takeTill (== 09)
+    -- Parse @SQ tag of the header section.
+    case (sqheaderp =~ [re|[@][S][Q]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_File_Level_Metadata_Tag_Incorrect_Format
+      True  ->
+        -- @SQ tag is in the accepted format.
+        return ()
+  _  <-
+    word8 09
   -- This parser assumes that the
   -- SN, LN, AH, AN, AS, DS, M5,
   -- SP, TP and UR tags can appear in any order.
-  sq <- intercalateEffect (word8 09) $
-          SAM_V1_6_Reference_Sequence_Dictionary
-            <$> toPermutation parse_SAM_V1_6_Reference_Sequence_Dictionary_SN
-            <*> toPermutation parse_SAM_V1_6_Reference_Sequence_Dictionary_LN
-            <*> toPermutationWithDefault Nothing
-                                         (Just <$> parse_SAM_V1_6_Reference_Sequence_Dictionary_AH)
-            <*> toPermutationWithDefault Nothing
-                                         (Just <$> parse_SAM_V1_6_Reference_Sequence_Dictionary_AN)
-            <*> toPermutationWithDefault Nothing
-                                         (Just <$> parse_SAM_V1_6_Reference_Sequence_Dictionary_AS)
-            <*> toPermutationWithDefault Nothing
-                                         (Just <$> parse_SAM_V1_6_Reference_Sequence_Dictionary_DS)
-            <*> toPermutationWithDefault Nothing
-                                         (Just <$> parse_SAM_V1_6_Reference_Sequence_Dictionary_M5)
-            <*> toPermutationWithDefault Nothing
-                                         (Just <$> parse_SAM_V1_6_Reference_Sequence_Dictionary_SP) 
-            <*> toPermutationWithDefault Nothing
-                                         (Just <$> parse_SAM_V1_6_Reference_Sequence_Dictionary_TP)
-            <*> toPermutationWithDefault Nothing
-                                         (Just <$> parse_SAM_V1_6_Reference_Sequence_Dictionary_UR)
-  _ <- endOfLine
+  sq <-
+    intercalateEffect (word8 09) $
+      SAM_V1_6_Reference_Sequence_Dictionary
+        <$> toPermutation parse_SAM_V1_6_Reference_Sequence_Dictionary_SN
+        <*> toPermutation parse_SAM_V1_6_Reference_Sequence_Dictionary_LN
+        <*> toPermutationWithDefault Nothing
+                                     (Just <$> parse_SAM_V1_6_Reference_Sequence_Dictionary_AH)
+        <*> toPermutationWithDefault Nothing
+                                     (Just <$> parse_SAM_V1_6_Reference_Sequence_Dictionary_AN)
+        <*> toPermutationWithDefault Nothing
+                                     (Just <$> parse_SAM_V1_6_Reference_Sequence_Dictionary_AS)
+        <*> toPermutationWithDefault Nothing
+                                     (Just <$> parse_SAM_V1_6_Reference_Sequence_Dictionary_DS)
+        <*> toPermutationWithDefault Nothing
+                                     (Just <$> parse_SAM_V1_6_Reference_Sequence_Dictionary_M5)
+        <*> toPermutationWithDefault Nothing
+                                     (Just <$> parse_SAM_V1_6_Reference_Sequence_Dictionary_SP) 
+        <*> toPermutationWithDefault Nothing
+                                     (Just <$> parse_SAM_V1_6_Reference_Sequence_Dictionary_TP)
+        <*> toPermutationWithDefault Nothing
+                                     (Just <$> parse_SAM_V1_6_Reference_Sequence_Dictionary_UR)
+  _  <-
+    endOfLine
   return sq

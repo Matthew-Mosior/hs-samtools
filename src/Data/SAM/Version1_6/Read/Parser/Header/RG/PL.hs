@@ -14,7 +14,7 @@
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Read.Parser.Header.RG.PL
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -55,18 +55,27 @@ import Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_Read_Group_PL :: Parser SAM_V1_6_Read_Group_Platform 
 parse_SAM_V1_6_Read_Group_PL = do
-  _ <- do rgheaderplatformtagp <- DABL.takeTill (== 58)
-          -- Parse PL tag of the header section.
-          case (rgheaderplatformtagp =~ [re|[P][L]|]) of
-            False -> fail $ show SAM_V1_6_Error_Read_Group_Platform_Incorrect_Format
-            True  -> -- PL tag is in the accepted format. 
-                     return ()
-  _ <- word8 58
-  rgheaderplatformvalue <- do rgheaderplatformvaluep <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
-                              -- Parse PL value of the header section.
-                              case (rgheaderplatformvaluep =~ [re|[C][A][P][I][L][L][A][R][Y]|[D][N][B][S][E][Q]|[E][L][E][M][E][N][T]|[H][E][L][I][C][O][S]|[I][L][L][U][M][I][N][A]|[I][O][N][T][O][R][R][E][N][T]|[L][S][4][5][4]|[O][N][T]|[P][A][C][B][I][O]|[S][O][L][I][D]|[U][L][T][I][M][A]|]) of
-                                False -> fail $ show SAM_V1_6_Error_Read_Group_Platform_Incorrect_Format
-                                True  -> -- PL value is in the accepted format.
-                                         return rgheaderplatformvaluep
+  _                     <- do
+    rgheaderplatformtagp <-
+      DABL.takeTill (== 58)
+    -- Parse PL tag of the header section.
+    case (rgheaderplatformtagp =~ [re|[P][L]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_Read_Group_Platform_Incorrect_Format
+      True  ->
+        -- PL tag is in the accepted format. 
+        return ()
+  _                     <-
+    word8 58
+  rgheaderplatformvalue <- do
+    rgheaderplatformvaluep <-
+      DABL.takeTill (\x -> x == 09 || isEndOfLine x)
+    -- Parse PL value of the header section.
+    case (rgheaderplatformvaluep =~ [re|[C][A][P][I][L][L][A][R][Y]|[D][N][B][S][E][Q]|[E][L][E][M][E][N][T]|[H][E][L][I][C][O][S]|[I][L][L][U][M][I][N][A]|[I][O][N][T][O][R][R][E][N][T]|[L][S][4][5][4]|[O][N][T]|[P][A][C][B][I][O]|[S][O][L][I][D]|[U][L][T][I][M][A]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_Read_Group_Platform_Incorrect_Format
+      True  ->
+        -- PL value is in the accepted format.
+        return rgheaderplatformvaluep
   return SAM_V1_6_Read_Group_Platform { sam_v1_6_read_group_platform_value = rgheaderplatformvalue
                                       }

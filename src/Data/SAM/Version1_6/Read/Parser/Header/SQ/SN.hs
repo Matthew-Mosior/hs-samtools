@@ -14,7 +14,7 @@
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Read.Parser.Header.SQ.SN
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -55,18 +55,27 @@ import Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_Reference_Sequence_Dictionary_SN :: Parser SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Name
 parse_SAM_V1_6_Reference_Sequence_Dictionary_SN = do
-  _ <- do sqheadersequencenametagp <- DABL.takeTill (== 58)
-          -- Parse SN tag of the header section.
-          case (sqheadersequencenametagp =~ [re|[S][N]|]) of
-            False -> fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Reference_Sequence_Name_Incorrect_Format
-            True  -> -- SN tag is in the accepted format. 
-                     return ()
-  _ <- word8 58
-  sqheadersequencenamevalue <- do sqheadersequencenamevaluep <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
-                                  -- Parse SN value of the header section.
-                                  case (sqheadersequencenamevaluep =~ [re|[0-9A-Za-z!#$%&+./:;?@^_|~-][0-9A-Za-z!#$%&*+./:;=?@^_|~-]*|]) of
-                                    False -> fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Reference_Sequence_Name_Invalid_Value
-                                    True  -> -- SN value is in the accepted format.
-                                             return sqheadersequencenamevaluep
+  _                         <- do
+    sqheadersequencenametagp <-
+      DABL.takeTill (== 58)
+    -- Parse SN tag of the header section.
+    case (sqheadersequencenametagp =~ [re|[S][N]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Reference_Sequence_Name_Incorrect_Format
+      True  ->
+        -- SN tag is in the accepted format. 
+        return ()
+  _                         <-
+    word8 58
+  sqheadersequencenamevalue <- do
+    sqheadersequencenamevaluep <-
+      DABL.takeTill (\x -> x == 09 || isEndOfLine x)
+    -- Parse SN value of the header section.
+    case (sqheadersequencenamevaluep =~ [re|[0-9A-Za-z!#$%&+./:;?@^_|~-][0-9A-Za-z!#$%&*+./:;=?@^_|~-]*|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Reference_Sequence_Name_Invalid_Value
+      True  ->
+        -- SN value is in the accepted format.
+        return sqheadersequencenamevaluep
   return SAM_V1_6_Reference_Sequence_Dictionary_Reference_Sequence_Name { sam_v1_6_reference_sequence_dictionary_reference_sequence_name_value = sqheadersequencenamevalue
                                                                         }

@@ -4,11 +4,12 @@
 {-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE OverloadedStrings     #-}
+{-# LANGUAGE StrictData            #-}
 {-# LANGUAGE TypeFamilies          #-}
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Header.PG
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -35,14 +36,14 @@ import Generics.Deriving.Base
 -- | Custom SAM (version 1.6) @"SAM_V1_6_Program"@ data type.
 --
 -- See section 1.3 of the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
-data SAM_V1_6_Program = SAM_V1_6_Program { sam_v1_6_program_record_identifier :: SAM_V1_6_Program_Record_Identifier
-                                         , sam_v1_6_program_name              :: Maybe SAM_V1_6_Program_Name
-                                         , sam_v1_6_program_command_line      :: Maybe SAM_V1_6_Program_Command_Line
-                                         , sam_v1_6_program_previous_pg_id    :: Maybe SAM_V1_6_Program_Previous_PG_ID
-                                         , sam_v1_6_program_description       :: Maybe SAM_V1_6_Program_Description
-                                         , sam_v1_6_program_version           :: Maybe SAM_V1_6_Program_Version
-                                         }
-  deriving (Generic,Typeable)
+data SAM_V1_6_Program = SAM_V1_6_Program
+  { sam_v1_6_program_record_identifier :: SAM_V1_6_Program_Record_Identifier
+  , sam_v1_6_program_name              :: Maybe SAM_V1_6_Program_Name
+  , sam_v1_6_program_command_line      :: Maybe SAM_V1_6_Program_Command_Line
+  , sam_v1_6_program_previous_pg_id    :: Maybe SAM_V1_6_Program_Previous_PG_ID
+  , sam_v1_6_program_description       :: Maybe SAM_V1_6_Program_Description
+  , sam_v1_6_program_version           :: Maybe SAM_V1_6_Program_Version
+  } deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_Program where
   SAM_V1_6_Program sam_v1_6_program_record_identifier1
@@ -50,17 +51,19 @@ instance Eq SAM_V1_6_Program where
                    sam_v1_6_program_command_line1
                    sam_v1_6_program_previous_pg_id1
                    sam_v1_6_program_description1
-                   sam_v1_6_program_version1 == SAM_V1_6_Program sam_v1_6_program_record_identifier2
-                                                                 sam_v1_6_program_name2
-                                                                 sam_v1_6_program_command_line2
-                                                                 sam_v1_6_program_previous_pg_id2
-                                                                 sam_v1_6_program_description2
-                                                                 sam_v1_6_program_version2 = sam_v1_6_program_record_identifier1 == sam_v1_6_program_record_identifier2 &&
-                                                                                             sam_v1_6_program_name1              == sam_v1_6_program_name2              &&
-                                                                                             sam_v1_6_program_command_line1      == sam_v1_6_program_command_line2      &&
-                                                                                             sam_v1_6_program_previous_pg_id1    == sam_v1_6_program_previous_pg_id2    &&
-                                                                                             sam_v1_6_program_description1       == sam_v1_6_program_description2       &&
-                                                                                             sam_v1_6_program_version1           == sam_v1_6_program_version2
+                   sam_v1_6_program_version1 ==
+    SAM_V1_6_Program sam_v1_6_program_record_identifier2
+                     sam_v1_6_program_name2
+                     sam_v1_6_program_command_line2
+                     sam_v1_6_program_previous_pg_id2
+                     sam_v1_6_program_description2
+                     sam_v1_6_program_version2 =
+      sam_v1_6_program_record_identifier1 == sam_v1_6_program_record_identifier2 &&
+      sam_v1_6_program_name1              == sam_v1_6_program_name2              &&
+      sam_v1_6_program_command_line1      == sam_v1_6_program_command_line2      &&
+      sam_v1_6_program_previous_pg_id1    == sam_v1_6_program_previous_pg_id2    &&
+      sam_v1_6_program_description1       == sam_v1_6_program_description2       &&
+      sam_v1_6_program_version1           == sam_v1_6_program_version2
 
 instance Show SAM_V1_6_Program where
   show (SAM_V1_6_Program record_identifier name command_line previous_pg_id description version) =
@@ -80,12 +83,14 @@ instance Show SAM_V1_6_Program where
     " }"
 
 -- | ID tag for @"SAM_V1_6_Program"@.
-newtype SAM_V1_6_Program_Record_Identifier = SAM_V1_6_Program_Record_Identifier { sam_v1_6_program_record_identifier_value :: ByteString
-                                                                                }
-  deriving (Generic,Typeable)
+newtype SAM_V1_6_Program_Record_Identifier = SAM_V1_6_Program_Record_Identifier
+  { sam_v1_6_program_record_identifier_value :: ByteString
+  } deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_Program_Record_Identifier where
-  SAM_V1_6_Program_Record_Identifier sam_v1_6_program_record_identifier_value1 == SAM_V1_6_Program_Record_Identifier sam_v1_6_program_record_identifier_value2 = sam_v1_6_program_record_identifier_value1 == sam_v1_6_program_record_identifier_value2
+  SAM_V1_6_Program_Record_Identifier sam_v1_6_program_record_identifier_value1 ==
+    SAM_V1_6_Program_Record_Identifier sam_v1_6_program_record_identifier_value2 =
+      sam_v1_6_program_record_identifier_value1 == sam_v1_6_program_record_identifier_value2
 
 instance Show SAM_V1_6_Program_Record_Identifier where
   show (SAM_V1_6_Program_Record_Identifier value) =
@@ -95,12 +100,14 @@ instance Show SAM_V1_6_Program_Record_Identifier where
     " }"
 
 -- | PN tag for @"SAM_V1_6_Program"@.
-newtype SAM_V1_6_Program_Name = SAM_V1_6_Program_Name { sam_v1_6_program_name_value :: ByteString
-                                                      }
-  deriving (Generic,Typeable)
+newtype SAM_V1_6_Program_Name = SAM_V1_6_Program_Name
+  { sam_v1_6_program_name_value :: ByteString
+  } deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_Program_Name where
-  SAM_V1_6_Program_Name sam_v1_6_program_name_value1 == SAM_V1_6_Program_Name sam_v1_6_program_name_value2 = sam_v1_6_program_name_value1 == sam_v1_6_program_name_value2
+  SAM_V1_6_Program_Name sam_v1_6_program_name_value1 ==
+    SAM_V1_6_Program_Name sam_v1_6_program_name_value2 =
+      sam_v1_6_program_name_value1 == sam_v1_6_program_name_value2
 
 instance Show SAM_V1_6_Program_Name where
   show (SAM_V1_6_Program_Name value) =
@@ -110,12 +117,14 @@ instance Show SAM_V1_6_Program_Name where
     " }"
 
 -- | CL tag for @"SAM_V1_6_Program"@.
-newtype SAM_V1_6_Program_Command_Line = SAM_V1_6_Program_Command_Line { sam_v1_6_program_command_line_value :: ByteString
-                                                                      }
-  deriving (Generic,Typeable)
+newtype SAM_V1_6_Program_Command_Line = SAM_V1_6_Program_Command_Line
+  { sam_v1_6_program_command_line_value :: ByteString
+  } deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_Program_Command_Line where
-  SAM_V1_6_Program_Command_Line sam_v1_6_program_command_line_value1 == SAM_V1_6_Program_Command_Line sam_v1_6_program_command_line_value2 = sam_v1_6_program_command_line_value1 == sam_v1_6_program_command_line_value2
+  SAM_V1_6_Program_Command_Line sam_v1_6_program_command_line_value1 ==
+    SAM_V1_6_Program_Command_Line sam_v1_6_program_command_line_value2 =
+      sam_v1_6_program_command_line_value1 == sam_v1_6_program_command_line_value2
 
 instance Show SAM_V1_6_Program_Command_Line where
   show (SAM_V1_6_Program_Command_Line value) =
@@ -125,12 +134,14 @@ instance Show SAM_V1_6_Program_Command_Line where
     " }"
 
 -- | PP tag for @"SAM_V1_6_Program"@.
-newtype SAM_V1_6_Program_Previous_PG_ID = SAM_V1_6_Program_Previous_PG_ID { sam_v1_6_program_previous_pg_id_value :: ByteString
-                                                                          }
-  deriving (Generic,Typeable)
+newtype SAM_V1_6_Program_Previous_PG_ID = SAM_V1_6_Program_Previous_PG_ID
+  { sam_v1_6_program_previous_pg_id_value :: ByteString
+  } deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_Program_Previous_PG_ID where
-  SAM_V1_6_Program_Previous_PG_ID sam_v1_6_program_previous_pg_id_value1 == SAM_V1_6_Program_Previous_PG_ID sam_v1_6_program_previous_pg_id_value2 = sam_v1_6_program_previous_pg_id_value1 == sam_v1_6_program_previous_pg_id_value2
+  SAM_V1_6_Program_Previous_PG_ID sam_v1_6_program_previous_pg_id_value1 ==
+    SAM_V1_6_Program_Previous_PG_ID sam_v1_6_program_previous_pg_id_value2 =
+      sam_v1_6_program_previous_pg_id_value1 == sam_v1_6_program_previous_pg_id_value2
 
 instance Show SAM_V1_6_Program_Previous_PG_ID where
   show (SAM_V1_6_Program_Previous_PG_ID value) =
@@ -140,12 +151,14 @@ instance Show SAM_V1_6_Program_Previous_PG_ID where
     " }"
 
 -- | DS tag for @"SAM_V1_6_Program"@.
-newtype SAM_V1_6_Program_Description = SAM_V1_6_Program_Description { sam_v1_6_program_description_value :: ByteString
-                                                                    }
-  deriving (Generic,Typeable)
+newtype SAM_V1_6_Program_Description = SAM_V1_6_Program_Description
+  { sam_v1_6_program_description_value :: ByteString
+  } deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_Program_Description where
-  SAM_V1_6_Program_Description sam_v1_6_program_description_value1 == SAM_V1_6_Program_Description sam_v1_6_program_description_value2 = sam_v1_6_program_description_value1 == sam_v1_6_program_description_value2
+  SAM_V1_6_Program_Description sam_v1_6_program_description_value1 ==
+    SAM_V1_6_Program_Description sam_v1_6_program_description_value2 =
+      sam_v1_6_program_description_value1 == sam_v1_6_program_description_value2
 
 instance Show SAM_V1_6_Program_Description where
   show (SAM_V1_6_Program_Description value) =
@@ -155,12 +168,14 @@ instance Show SAM_V1_6_Program_Description where
     " }"
 
 -- | VN tag for @"SAM_V1_6_Program"@.
-newtype SAM_V1_6_Program_Version = SAM_V1_6_Program_Version { sam_v1_6_program_version_value :: ByteString
-                                                            }
-  deriving (Generic,Typeable)
+newtype SAM_V1_6_Program_Version = SAM_V1_6_Program_Version
+  { sam_v1_6_program_version_value :: ByteString
+  } deriving (Generic,Typeable)
 
 instance Eq SAM_V1_6_Program_Version where
-  SAM_V1_6_Program_Version sam_v1_6_program_version_value1 == SAM_V1_6_Program_Version sam_v1_6_program_version_value2 = sam_v1_6_program_version_value1 == sam_v1_6_program_version_value2
+  SAM_V1_6_Program_Version sam_v1_6_program_version_value1 ==
+    SAM_V1_6_Program_Version sam_v1_6_program_version_value2 =
+      sam_v1_6_program_version_value1 == sam_v1_6_program_version_value2
 
 instance Show SAM_V1_6_Program_Version where
   show (SAM_V1_6_Program_Version value) =

@@ -14,7 +14,7 @@
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Read.Parser.Header.SQ.TP
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -55,18 +55,27 @@ import Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_Reference_Sequence_Dictionary_TP :: Parser SAM_V1_6_Reference_Sequence_Dictionary_Molecule_Topology
 parse_SAM_V1_6_Reference_Sequence_Dictionary_TP = do
-  _ <- do sqheadermoleculetopologytagp <- DABL.takeTill (== 58)
-          -- Parse TP tag of the header section.
-          case (sqheadermoleculetopologytagp =~ [re|[T][P]|]) of
-            False -> fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Molecule_Topology_Incorrect_Format
-            True  -> -- TP tag is in the accepted format. 
-                     return ()
-  _ <- word8 58
-  sqheadermoleculetopologyvalue <- do sqheadermoleculetopologyvaluep <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
-                                      -- Parse TP value of the header section.
-                                      case (sqheadermoleculetopologyvaluep =~ [re|[l][i][n][e][a][r]|[c][i][r][c][u][l][a][r]|]) of
-                                        False -> fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Molecule_Topology_Invalid_Value
-                                        True  -> -- TP value is in the accepted format.
-                                                 return sqheadermoleculetopologyvaluep
+  _                             <- do
+    sqheadermoleculetopologytagp <-
+      DABL.takeTill (== 58)
+    -- Parse TP tag of the header section.
+    case (sqheadermoleculetopologytagp =~ [re|[T][P]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Molecule_Topology_Incorrect_Format
+      True  ->
+        -- TP tag is in the accepted format. 
+        return ()
+  _                             <-
+    word8 58
+  sqheadermoleculetopologyvalue <- do
+    sqheadermoleculetopologyvaluep <-
+      DABL.takeTill (\x -> x == 09 || isEndOfLine x)
+    -- Parse TP value of the header section.
+    case (sqheadermoleculetopologyvaluep =~ [re|[l][i][n][e][a][r]|[c][i][r][c][u][l][a][r]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Molecule_Topology_Invalid_Value
+      True  ->
+        -- TP value is in the accepted format.
+        return sqheadermoleculetopologyvaluep
   return SAM_V1_6_Reference_Sequence_Dictionary_Molecule_Topology { sam_v1_6_reference_sequence_dictionary_molecule_topology_value = sqheadermoleculetopologyvalue
                                                                   }

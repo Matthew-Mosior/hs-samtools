@@ -14,7 +14,7 @@
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Read.Parser.Header.HD.Base
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -62,23 +62,30 @@ import Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_File_Level_Metadata :: Parser SAM_V1_6_File_Level_Metadata
 parse_SAM_V1_6_File_Level_Metadata = do
-  _         <- do hdheaderp <- DABL.takeTill (== 09)
-                  -- Parse @HD tag of the header section.
-                  case (hdheaderp =~ [re|[@][H][D]|]) of
-                    False -> fail $ show SAM_V1_6_Error_File_Level_Metadata_Tag_Incorrect_Format
-                    True  -> -- @HD tag is in the accepted format.
-                             return () 
-  _         <- word8 09
+  _  <- do
+    hdheaderp <-
+      DABL.takeTill (== 09)
+    -- Parse @HD tag of the header section.
+    case (hdheaderp =~ [re|[@][H][D]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_File_Level_Metadata_Tag_Incorrect_Format
+      True  ->
+        -- @HD tag is in the accepted format.
+        return () 
+  _  <-
+    word8 09
   -- This parser assumes that the
   -- VN, SO, GO and SS tags can appear in any order.
-  hd <- intercalateEffect (word8 09) $
-          SAM_V1_6_File_Level_Metadata
-            <$> toPermutation parse_SAM_V1_6_File_Level_Metadata_VN
-            <*> toPermutationWithDefault Nothing 
-                                         (Just <$> parse_SAM_V1_6_File_Level_Metadata_SO)
-            <*> toPermutationWithDefault Nothing
-                                         (Just <$> parse_SAM_V1_6_File_Level_Metadata_GO)
-            <*> toPermutationWithDefault Nothing
-                                         (Just <$> parse_SAM_V1_6_File_Level_Metadata_SS)
-  _ <- endOfLine
+  hd <-
+    intercalateEffect (word8 09) $
+      SAM_V1_6_File_Level_Metadata
+        <$> toPermutation parse_SAM_V1_6_File_Level_Metadata_VN
+        <*> toPermutationWithDefault Nothing 
+                                     (Just <$> parse_SAM_V1_6_File_Level_Metadata_SO)
+        <*> toPermutationWithDefault Nothing
+                                     (Just <$> parse_SAM_V1_6_File_Level_Metadata_GO)
+        <*> toPermutationWithDefault Nothing
+                                     (Just <$> parse_SAM_V1_6_File_Level_Metadata_SS)
+  _  <-
+    endOfLine
   return hd 

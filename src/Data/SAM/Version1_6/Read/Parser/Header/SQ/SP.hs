@@ -15,7 +15,7 @@
 
 -- |
 -- Module      :  Data.SAM.Version1_6.Read.Parser.Header.SQ.SP
--- Copyright   :  (c) Matthew Mosior 2023
+-- Copyright   :  (c) Matthew Mosior 2024
 -- License     :  BSD-style
 -- Maintainer  :  mattm.github@gmail.com
 -- Portability :  portable
@@ -56,13 +56,19 @@ import Text.Regex.PCRE.Heavy
 -- See the [SAM v1.6](http://samtools.github.io/hts-specs/SAMv1.pdf) specification documentation.
 parse_SAM_V1_6_Reference_Sequence_Dictionary_SP :: Parser SAM_V1_6_Reference_Sequence_Dictionary_Species
 parse_SAM_V1_6_Reference_Sequence_Dictionary_SP = do
-  _ <- do sqheaderspeciestagp <- DABL.takeTill (== 58)
-          -- Parse SP tag of the header section.
-          case (sqheaderspeciestagp =~ [re|[S][P]|]) of
-            False -> fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Species_Incorrect_Format
-            True  -> -- SP tag is in the accepted format.
-                     return ()
-  _ <- word8 58
-  sqheaderspeciesvalue <- DABL.takeTill (\x -> x == 09 || isEndOfLine x)
+  _                    <- do
+    sqheaderspeciestagp <-
+      DABL.takeTill (== 58)
+    -- Parse SP tag of the header section.
+    case (sqheaderspeciestagp =~ [re|[S][P]|]) of
+      False ->
+        fail $ show SAM_V1_6_Error_Reference_Sequence_Dictionary_Species_Incorrect_Format
+      True  ->
+        -- SP tag is in the accepted format.
+        return ()
+  _                    <-
+    word8 58
+  sqheaderspeciesvalue <-
+    DABL.takeTill (\x -> x == 09 || isEndOfLine x)
   return SAM_V1_6_Reference_Sequence_Dictionary_Species { sam_v1_6_reference_sequence_dictionary_species_value = sqheaderspeciesvalue
                                                         }
